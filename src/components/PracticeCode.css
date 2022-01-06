@@ -1,0 +1,114 @@
+@font-face {
+    font-family: 'consolas';
+    src: url('../../Consolas.ttf')
+}
+
+.practice-code {
+    display: flex; 
+    height: 92%; 
+    width: 100%; 
+    flex-flow: column; 
+    flex-direction: column; 
+    justify-content: center;
+    align-items: center;
+}
+
+.practice-code .row {
+    border: 1px dotted grey;
+  }
+  
+.practice-code .row.header {
+    flex: 0 1 auto;
+}
+
+.practice-code .row.content {
+    flex: 1 1 auto;
+}
+
+.practice-code .row.footer {
+    flex: 0 1 40px;
+}
+
+.practice-code-button {
+    display: flex; 
+    justify-content: center;
+    align-items: flex-start;
+    flex-direction: column;
+    border-style: none;
+}
+
+.practice-code-container {
+    display: flex; 
+    flex-direction: column;
+    justify-content: inherit;
+    align-items: inherit;
+    width: 800px; 
+    height: 300px; 
+    color: #7c7896; 
+    border-top-left-radius: 20px;
+    border-top-right-radius: 20px;
+    background-color: #2b2936; 
+    transition: all 100ms ease; 
+    padding: 40px; 
+    z-index: 1; 
+    cursor: pointer; 
+}
+
+.practice-code-line {
+    display: flex; 
+    flex-direction: row; 
+    background-color: inherit;
+    margin: 10px; 
+}
+
+.practice-code-container:focus {
+    color: transparent; 
+    text-shadow: 0 0 8px rgba(255, 255, 255, 0.5);
+}
+
+.practice-code-text {
+    background: inherit; 
+    font-size: 24px; 
+}
+
+.tab-space {
+    word-spacing: 10px; 
+}
+
+#text-index {
+    color: #c9ddf1;
+    transform: scale(0.3, 1.4)
+}
+
+#text-correct {
+    color: rgba(255, 255, 255, 0.7); 
+}
+
+#text-wrong {
+    color: #ff7962; 
+}
+
+#text-space-wrong {
+    background-color: #ff796277; 
+    transform: scale(1, 0.7);
+    transform: translateY(-3px);
+}
+
+pre {
+    background-color: inherit; 
+    font-family: consolas; 
+}
+
+.text-input {
+    height: 30px; 
+    width: 800px; 
+    margin-top: 40px; 
+    padding: 10px 40px; 
+    background-color: #2b2936; 
+    border-radius: 8px; 
+    border-style: none;
+    color: #7c7896; 
+    font-family: consolas, sans-serif; 
+    font-size: 22px; 
+    resize: none; 
+}
