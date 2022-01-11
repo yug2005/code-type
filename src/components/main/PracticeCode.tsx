@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import UnderBar from './UnderBar'
-import './PracticeCode.css'; 
+import './PracticeCode.css'
 
 interface PracticeCodeInterface {
     code: string[]

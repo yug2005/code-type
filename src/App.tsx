@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react'
-import Header from './components/Header'
-import LanguagesPanel from './components/LanguagesPanel'
-import PracticeCode from './components/PracticeCode'
+import Header from './components//header/Header'
+import LanguagesPanel from './components//header/LanguagesPanel'
+import SignIn from './components/signin/SignIn'
+import PracticeCode from './components/main/PracticeCode'
 
 function App() {
   
@@ -38,7 +39,8 @@ function App() {
     <div className="App">
       <Header language={language === '' ? 'languages' : language} onClickLanguages={() => (setLanguagesPanelOpen(true))} />
       {languagesPanelOpen && <LanguagesPanel onLanguageClick={updateLanguage} />}
-      <PracticeCode code={code}/>
+      {/* <PracticeCode code={code}/> */}
+      <SignIn />
     </div>
   );
 }

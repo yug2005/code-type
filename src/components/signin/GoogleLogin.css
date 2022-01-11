@@ -1,0 +1,29 @@
+.google-button {
+    display: flex; 
+    justify-content: center;
+    align-items: center;
+    background-color: #616b75;
+    height: 30px; 
+    border-radius: 8px; 
+    border-style: none; 
+    margin: 5px 0px; 
+    padding: 0px 20px; 
+    color: #1d1c24;
+    font-size: 15px; 
+    cursor: pointer; 
+    transition: all 300ms ease; 
+}
+
+.google-button:hover {
+    transform: scale(1.05);
+}
+
+.google-button p {
+    background-color: inherit;
+    word-spacing: -2px;
+}
+
+.google-logo {
+    margin-right: 10px; 
+    background-color: inherit;
+}

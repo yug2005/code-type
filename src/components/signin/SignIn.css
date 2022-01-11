@@ -1,0 +1,87 @@
+.sign-in-container {
+    display: flex; 
+    flex-direction: row; 
+    justify-content: center;
+    width: 100%;
+    height: 80%;
+    align-items: center;
+}
+
+.register-container {
+    display: flex; 
+    flex-direction: column; 
+    padding: 100px; 
+}
+
+.log-in-container {
+    display: flex; 
+    flex-direction: column;
+    padding: 100px; 
+}
+
+.register-form {
+    display: flex; 
+    flex-direction: column; 
+    justify-content: center;
+    align-items: flex-start;
+
+}
+
+.sign-in-title {
+    font-size: 22px; 
+    color: #8b949c;
+    margin-bottom: 10px; 
+    text-align: center; 
+    word-spacing: -5px; 
+}
+
+.register-form label {
+    color: #a1aebb67; 
+    width: 100%;
+    margin: 5px 0px; 
+}
+
+.register-or {
+    color: #a1aebb67;
+    width: 5px; 
+    margin: 5px 0px; 
+    font-size: 15px; 
+    /* border-style: solid; */
+}
+
+.form-input {
+    background-color: #272630; 
+    width: 350px; 
+    height: 35px; 
+    padding: 0px 20px; 
+    border-radius: 8px; 
+    margin: 5px 0px; 
+    border-style: none;
+    color: #8b949c;
+    font-size: 13px; 
+    word-spacing: -3px;
+}
+
+input::-webkit-credentials-auto-fill-button {
+    color: white; 
+}
+
+.form-submit {
+    background-color: #616b75;
+    color: #1d1c24; 
+    height: 30px; 
+    padding: 0px 20px; 
+    border-radius: 8px; 
+    border-style: none; 
+    margin-top: 10px; 
+    margin-bottom: 5px; 
+    word-spacing: -3px;
+    cursor: pointer; 
+    transition: all 300ms ease; 
+    font-size: 14px; 
+}
+
+.form-submit:hover {
+    transform: scale(1.05)
+}
+

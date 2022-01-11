@@ -1,6 +1,6 @@
 import React from 'react'
 import './Header.css';
-import Button from './Button'
+import Button from '../Button'
 
 interface HeaderInterface {
     text: string
@@ -9,8 +9,6 @@ interface HeaderInterface {
 }
 
 const Header = (props: HeaderInterface) => {
-    
-
     const log = () => {
         console.log('hello')
     }
