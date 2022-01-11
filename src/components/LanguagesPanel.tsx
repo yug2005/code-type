@@ -1,9 +1,9 @@
-import { useState } from 'react'
+import React, { useState } from 'react'
 import Button from './Button'
 import './LanguagesPanel.css'; 
 
 interface LanguagesPanelInterface {
-    onClick(): void; 
+    onLanguageClick(language: string): void; 
 }
 
 const LanguagesPanel = (props: LanguagesPanelInterface) => {
@@ -25,7 +25,7 @@ const LanguagesPanel = (props: LanguagesPanelInterface) => {
                 </form>
                 {searchText == '' && <div className='search-suggestions'>
                     {preferredLanguages.map((language) => (
-                        <Button text={language} button_id='preferred-language-btn' onClick={props.onClick} />
+                        <Button text={language} button_id='preferred-language-btn' onClick={() => props.onLanguageClick(language)} />
                     ))}
                 </div>}
                 <div className='all-languages'></div>

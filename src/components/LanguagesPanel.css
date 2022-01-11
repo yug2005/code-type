@@ -30,15 +30,15 @@
     background-color: #6a687e;
     width: 90%; 
     margin-top: 20px; 
-    margin-bottom: 20px; 
+    margin-bottom: 26px; 
     border-radius: 8px; 
     padding: 5px; 
     padding-left: 20px; 
-    transition: all 500ms ease;
+    transition: all 300ms ease;
 }
 
 .form:hover {
-    transform: scale(1, 1.1);
+    transform: scale(1, 1.15);
 }
 
 ::placeholder {
@@ -53,6 +53,7 @@
     display: flex; 
     width: 100%; 
     height: 30px; 
+    
 }
 
 .search-suggestions {
@@ -63,14 +64,13 @@
     justify-content: center;
     grid-template-columns: auto auto auto;
     grid-template-rows: auto auto; 
-    grid-gap: 20px 20px; 
+    grid-gap: 26px 16px; 
 }
 
 .preferred-language-btn {
     background-color: #6a687e; 
     color: #323141; 
-    margin: 0; 
-    width: 174px; 
+    width: 170px; 
     height: 60px; 
     border-radius: 8px;
     transition: all 300ms ease; 
