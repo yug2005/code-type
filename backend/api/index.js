@@ -20,34 +20,34 @@ db.connect((err) => {
 })
 
 
+// app.get('/:language', (req, res) => {
+//     let sql = `SELECT * FROM ${req.params.language}`
+//     db.query(sql, (err, result) => {
+//         if (err) {
+//             console.log(err)
+//             res.status(400).send(`${req.params.language} table not found`)
+//         }
+//         else {
+//             res.send(result)
+//         }
+//     })
+// })
+
+app.get('/:language/:id', (req, res) => {
+    let sql = `SELECT body FROM ${req.params.language} WHERE id = ${req.params.id}`
+    db.query(sql, (err, result) => {
+        if (err) {
+            console.log(err)
+            res.status(400).send(`${req.params.language} table or element with id ${req.params.id} not found`)
+        }
+        else {
+            res.send(result)
+        }
+    })
+})
+
 app.get('/:language', (req, res) => {
-    let sql = `SELECT * FROM ${req.params.language}`
-    db.query(sql, (err, result) => {
-        if (err) {
-            console.log(err)
-            res.status(400).send(`${req.params.language} table not found`)
-        }
-        else {
-            res.send(result)
-        }
-    })
-})
-
-app.get('/:language/:category/:id', (req, res) => {
-    let sql = `SELECT body FROM ${req.params.language} WHERE category = '${req.params.category}' AND id = ${req.params.id}`
-    db.query(sql, (err, result) => {
-        if (err) {
-            console.log(err)
-            res.status(400).send(`${req.params.language} table or element with category ${req.params.category} and id ${req.params.id} not found`)
-        }
-        else {
-            res.send(result)
-        }
-    })
-})
-
-app.get('/:language/:category', (req, res) => {
-    let sql = `SELECT COUNT(id) AS count FROM ${req.params.language} WHERE category = '${req.params.category}'`
+    let sql = `SELECT COUNT(id) AS count FROM ${req.params.language}`
     db.query(sql, (err, result) => {
         if (err) {
             console.log(err) 

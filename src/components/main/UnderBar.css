@@ -2,13 +2,13 @@
     display: flex; 
     justify-content: space-around;
     align-items: center; 
-    width: 920px; 
+    width: 1000px; 
     height: 60px; 
     border-bottom-left-radius: 20px;
     border-bottom-right-radius: 20px;
     background-color: #403e50; 
     transition: all 300ms ease; 
-    padding: 0px 80px; 
+    padding: 0px 40px; 
 }
 
 .under-bar-item {
@@ -74,6 +74,7 @@
     color: #a19fb993; 
     font-family: inherit; 
     border-style: none; 
+    border-radius: 6px; 
     cursor: pointer;  
     font-size: 12px; 
 }

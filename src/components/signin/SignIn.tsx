@@ -1,5 +1,7 @@
 import React from 'react'
+import { Link } from 'react-router-dom'
 import GoogleLogin from './GoogleLogin'
+import { CgClose } from 'react-icons/cg'
 import './SignIn.css'
 
 const SignIn = () => {
@@ -10,13 +12,10 @@ const SignIn = () => {
     const signIn = () => {
         console.log('Signed in')
     }
-
-    const googleSignIn = () => {
-        console.log('Sign in with google')
-    }
     
     return (
         <div className='sign-in-container'>
+            <Link className='close-sign-in' to='/'><CgClose /></Link>
             <div className='register-container'>
                 <div className="sign-in-title">register</div>
                 <form className='register-form' onSubmit={createAccount}>

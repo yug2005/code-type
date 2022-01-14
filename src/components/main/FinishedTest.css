@@ -1,0 +1,138 @@
+.test-finished-container {
+    display: flex; 
+    flex-direction: column; 
+    justify-content: center;
+    align-items: center;
+    width: 100%; 
+    height: 90%; 
+}
+
+.test-finished-title h2 {
+    font-family: 'Quicksand', sans-serif;
+    color: #8b949c; 
+    margin-bottom: 10px; 
+    word-spacing: 2px; 
+}
+
+.charts-container {
+    display: flex; 
+    flex-direction: row; 
+    justify-content: center;
+    width: 60%; 
+}
+
+.wpm-chart {
+    display: flex; 
+    width: 80%; 
+    padding-top: 20px; 
+}
+
+.errors-chart {
+    display: flex; 
+    padding: 20px; 
+    width: 20%; 
+    max-height: 500px; 
+}
+
+.errors-chart Line {
+    max-height: 500px; 
+}
+
+.others-container {
+    display: flex; 
+    flex-direction: row; 
+    justify-content: center;
+    align-items: center; 
+    width: 60%; 
+    margin: 10px; 
+}
+
+.other-stat {
+    display: flex; 
+    flex-direction: column; 
+    justify-content: center;
+    min-width: 140px; 
+    height: 70px; 
+    padding: 10px 15px; 
+    margin: 8px; 
+    background-color: #2b2936; 
+    border-radius: 12px; 
+}
+
+.other-stat h3 {
+    background-color: inherit;
+    color: #8b949c; 
+    word-spacing: -3px; 
+    font-size: 18px; 
+}
+
+.other-stat p {
+    background-color: inherit;
+    color: #606e7a;     
+    font-size: 14px; 
+    margin-top: 2px; 
+}
+
+.other-stat div {
+    background-color: inherit;
+    color: #606e7a; 
+    font-size: 34px; 
+    font-weight: 600; 
+}
+
+.finished-test-buttons {
+    display: flex; 
+    justify-content: center;
+    align-items: center; 
+    width: 40%; 
+}
+
+.finished-test-buttons button {
+    display: flex; 
+    flex-direction: row;
+    width: 30%; 
+    height: 28px; 
+    margin: 8px; 
+    border-radius: 12px; 
+    background-color: #2b2936; 
+    color: #606e7a;
+    transition: all 300ms ease; 
+}
+
+.finished-test-buttons button:hover {
+    transform: scaleX(1.05);
+}
+
+.finished-test-buttons button > * {
+    background-color: inherit;
+    color: #606e7a;
+}
+
+#add-some-margin {
+    margin-top: 2px; 
+}
+
+.button-label {
+    margin-right: 10px;
+}
+
+.button-label span {
+    background-color: inherit;
+    color: #606e7a;
+    font-weight: 600; 
+}
+
+#typed {
+    color: #8b949c;
+}
+
+.temporary-input {
+    opacity: 0; 
+    width: 0px; 
+    height: 0px; 
+    margin: 20px; 
+    border: none; 
+    background-color: #2b2936; 
+    color: #8b949c; 
+    padding: 0px 10px; 
+}

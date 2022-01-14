@@ -1,6 +1,6 @@
 import React from 'react'
+import { Link } from 'react-router-dom'
 import './Header.css';
-import Button from '../Button'
 
 interface HeaderInterface {
     text: string
@@ -8,23 +8,23 @@ interface HeaderInterface {
     onClickLanguages: () => void
 }
 
-const Header = (props: HeaderInterface) => {
-    const log = () => {
-        console.log('hello')
-    }
-    
+const Header = (props: HeaderInterface) => {    
     return (
         <header className='header'>
-            <h2 className='title'>{props.text}</h2>
+            <div className='title'>
+                <Link className='title-text' to='/'>
+                    <h2>{props.text}</h2>
+                </Link>     
+            </div>
             <button className='button navbar-button' onClick={props.onClickLanguages}>
                 <h3 className='button-text'>{props.language}</h3>
-                <div className='button-under-line'></div>
             </button>
-            <button className='button navbar-button' onClick={props.onClickLanguages}>
+            <Link className='button navbar-link' to='/settings'>
                 <h3 className='button-text'>settings</h3>
-                <div className='button-under-line'></div>
-            </button>
-            <Button text='sign in' button_id='sign-up-button' onClick={log} />
+            </Link>
+            <Link className='button sign-up-link' to={'/signin'}>
+                <h3 className='button-text'>sign in</h3>
+            </Link>
         </header>
     )
 }

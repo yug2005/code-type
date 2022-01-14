@@ -1,6 +1,6 @@
 @font-face {
     font-family: 'consolas';
-    src: url('../Consolas.ttf')
+    src: url('../../Consolas.ttf')
 }
 
 .practice-code {
@@ -13,26 +13,10 @@
     align-items: center;
 }
 
-/* .practice-code .row {
-    border: 1px dotted grey;
-  }
-  
-.practice-code .row.header {
-    flex: 0 1 auto;
-}
-
-.practice-code .row.content {
-    flex: 1 1 auto;
-}
-
-.practice-code .row.footer {
-    flex: 0 1 40px;
-} */
-
 .practice-code-container {
     display: flex; 
     flex-direction: column;
-    justify-content: center;
+    justify-content: flex-start;
     align-items: flex-start;
     width: 1000px; 
     height: 300px; 

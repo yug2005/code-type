@@ -35,6 +35,10 @@ const UnderBar = (props: BarInterface) => {
             <div className='under-bar-setting'>
                 <label className={`under-bar-label ${props.limit === 'time' ? 'selected-setting' : ''}`}>timed</label>
                 <div className='under-bar-drop-down'>
+                    <button className='drop-down-button' onClick={() => props.onSetTimeLimit(15)}>
+                        {props.limit === 'time' && props.limitValue === 15 && <FiCheck className='drop-down-check'/>}
+                        <p>15 sec</p>
+                    </button>
                     <button className='drop-down-button' onClick={() => props.onSetTimeLimit(30)}>
                         {props.limit === 'time' && props.limitValue === 30 && <FiCheck className='drop-down-check'/>}
                         <p>30 sec</p>
@@ -47,11 +51,6 @@ const UnderBar = (props: BarInterface) => {
                         {props.limit === 'time' && props.limitValue === 60 && <FiCheck className='drop-down-check'/>}
                         <p>60 sec</p>
                     </button>
-                    <button className='drop-down-button' onClick={() => props.onSetTimeLimit(90)}>
-                        {props.limit === 'time' && props.limitValue === 90 && <FiCheck className='drop-down-check'/>}
-                        <p>90 sec</p>
-                    </button>
-                    
                 </div>
             </div>
             <div className='under-bar-setting'>
