@@ -5,20 +5,11 @@ import SignIn from "./components/signin/SignIn";
 import LanguagesPanel from "./components/header/LanguagesPanel";
 import Main from "./components/main/Main";
 import Settings from "./components/settings/Settings"
-import { AnyRecord } from "dns";
 
 function App() {
   const [language, setLanguage] = useState("");
   const [languagesPanelOpen, setLanguagesPanelOpen] = useState(false);
   const [code, setCode] = useState([""]);
-
-  // const [languageList, setLanguageList] = useState([])
-
-  // const getLanguage = async (language: string) => {
-  //   const res = await fetch(`http://localhost:3001/${language}`)
-  //   const data = await res.json()
-  //   setLanguageList(data)
-  // }
 
   const fetchCode = async (language: string) => {
       const len_res = await fetch(
@@ -43,7 +34,7 @@ function App() {
 
   const updateLanguage = (newLanguage: any) => {
       setLanguage(newLanguage);
-      fetchCode("cpp");
+      // fetchCode("cpp");
       setLanguagesPanelOpen(false);
   };
 
@@ -58,7 +49,7 @@ function App() {
           <LanguagesPanel onLanguageClick={updateLanguage} />
         )}
         <Routes>
-          <Route path="/" element={<Main getCode={getCode}/>} />
+          <Route path="/" element={<Main getCode={getCode} code={code}/>} />
           <Route path="/signin" element={<SignIn />} />
           <Route path='/settings' element={<Settings />}/>
         </Routes>

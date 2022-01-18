@@ -3,16 +3,6 @@
     src: url('../../Consolas.ttf')
 }
 
-.practice-code {
-    display: flex; 
-    height: 92%; 
-    width: 100%; 
-    flex-flow: column; 
-    flex-direction: column; 
-    justify-content: center;
-    align-items: center;
-}
-
 .practice-code-container {
     display: flex; 
     flex-direction: column;
@@ -130,15 +120,7 @@ pre {
     height: 0; 
     width: 0; 
     opacity: 0;
-    /* margin-top: 40px; 
-    padding: 10px 40px; 
-    background-color: #2b2936; 
-    border-radius: 8px; 
-    border-style: none;
-    color: #7c7896; 
-    font-family: consolas, sans-serif; 
-    font-size: 22px; 
-    resize: none;  */
+    position: absolute; 
 }
 
 .toggle-status-bar {

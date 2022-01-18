@@ -2,84 +2,106 @@ import React, { useState, useEffect } from 'react'
 import PracticeCode from './PracticeCode'
 import UnderBar from './UnderBar'
 import FinishedTest from './FinishedTest'
+import './Main.css'
+import { ScriptElementKindModifier } from 'typescript'
 
 interface PropsInteface {
+    code: string[]
     getCode: () => any
+
 }
 
 const Main = (props: PropsInteface) => {
     
-    const [limit, setLimit] = useState('time')
-    const [timeLimit, setTimeLimit] = useState(30)
-    const [lineLimit, setLineLimit] = useState(0)
+    const [showStatusBar, setShowStatusBar] = useState(true)
+
+    const [limit, setLimit] = useState({
+        type: 'time', 
+        timeLimit: 30, 
+        lineLimit: 15
+    })
 
     const setNewTimeLimit = (newTimeLimit: number) => {
-        setLimit('time')
-        setTimeLimit(newTimeLimit)
+        setLimit({...limit, type: 'time'})
+        setLimit({...limit, timeLimit: newTimeLimit})
     }
 
     const setNewLineLimit = (newLineLimit: number) => {
-        setLimit('line')
-        setLineLimit(newLineLimit)
+        setLimit({...limit, type: 'line'})
+        setLimit({...limit, lineLimit: newLineLimit})
     }
     
-    const [time, setTime] = useState(0)
-    const [userStarted, setUserStarted] = useState(false)
-    const [userFinished, setUserFinished] = useState(false)
+    const [timer, setTimer] = useState({
+        time: 0, 
+        started: false, 
+        finished: false 
+    })
 
-    const [showStatusBar, setShowStatusBar] = useState(true)
-    
     // timer 
     useEffect(() => {
         let interval: any = null
-        if (userStarted) {
+        if (timer.started) {
             interval = setInterval(() => {
-                setTime(time => time + 1)
+                setTimer({...timer, time: timer.time + 1})
             }, 1000)
         } 
-        if (limit === 'time' && timeLimit - time === 0) {
-            setUserFinished(true)
+        if (limit.type === 'time' && limit.timeLimit - timer.time === 0) {
+            setTimer({...timer, finished: true})
             clearInterval(interval)
         }
-        if (userFinished && limit !== 'time' && time !== 0) {
+        if (timer.finished && limit.type !== 'time' && timer.time !== 0) {
             clearInterval(interval)
         }
         return () => clearInterval(interval)
-    }, [userStarted, time]) 
+    }, [timer]) 
     
     const startTimer = () => {
-        if (!userStarted) setUserStarted(true)
+        if (!timer.started) setTimer({...timer, started: true})
     }
 
     const endTimer = () => {
-        setUserFinished(true)
+        setTimer({...timer, finished: true})
     }
-    
-    const [charCount, setCharCount] = useState(0)
-    const [lineCharCount, setLineCharCount] = useState(0)
-    const [incorrectCharCount, setincorrectCharCount] = useState(0)
+
+    const [test, setTest] = useState({
+        chars: 0, 
+        lineChars: 0,
+        incorrectChars: 0, 
+    })
+
+    // const [testStats, setTestStats] = useState({
+    //     wpm: Math.round(((test.chars + test.lineChars)/4.5)/(timer.time/60)),
+    //     accuracy: Math.round(((test.chars + test.lineChars - test.incorrectChars)/(test.chars + test.lineChars)) * 100)
+    // })
+
+    const [wpm, setWpm] = useState([])
+    const [errors, setErrors] = useState([])
     
     return (
-        <div className='main-container'>
-            {!userFinished ? 
-                <div>
-                    <PracticeCode code={['']} time={time}  charCount={charCount} lineCharCount={lineCharCount} incorrectCharCount={incorrectCharCount} showStatusBar={showStatusBar} numberOfLinesShown={6} startTimer={startTimer} endTimer={endTimer} />
-                    {showStatusBar ? <UnderBar   
-                        wpm={(time === 0 || charCount + lineCharCount === 0) ? '' : Math.round(((charCount + lineCharCount)/4.5)/(time/60))} 
-                        accuracy={charCount + lineCharCount === 0 ? '' : Math.round(((charCount + lineCharCount - incorrectCharCount)/(charCount + lineCharCount)) * 100)}
-                        time={limit === 'time' ? timeLimit - time : userStarted ? time : ''} 
-                        limit={limit}
-                        limitValue={limit === 'time' ? timeLimit : lineLimit}
-                        onSetTimeLimit={setNewTimeLimit}
-                        onSetLineLimit={setNewLineLimit}
-                    /> : <div className='placeholder-status-bar'></div>}
-                    {/* show status bar button */}
-                    <button className='toggle-status-bar' onClick={() => (setShowStatusBar(!showStatusBar))}>{showStatusBar ? 'HIDE STATUS BAR' : 'SHOW STATUS BAR'}</button>
-                </div>
-                :
-                <FinishedTest timeLimit={timeLimit}/>
-            }
-        </div>
+        (!timer.finished ? 
+            <div className='main-container'>
+                <PracticeCode code={['void print() {', '    std::cout << "Hello World" << \n', '}']} 
+                    test={test} 
+                    setTest={setTest} 
+                    startTimer={startTimer} 
+                    endTimer={endTimer} 
+                    showStatusBar={showStatusBar}
+                />
+                {showStatusBar ? <UnderBar   
+                    wpm={(timer.time === 0 || test.chars + test.lineChars === 0) ? '' : Math.round(((test.chars + test.lineChars)/4.5)/(timer.time/60))} 
+                    accuracy={test.chars + test.lineChars === 0 ? '' : Math.round(((test.chars + test.lineChars - test.incorrectChars)/(test.chars + test.lineChars)) * 100)}
+                    time={limit.type === 'time' ? limit.timeLimit - timer.time : timer.started ? timer.time : ''} 
+                    limit={limit.type}
+                    limitValue={limit.type === 'time' ? limit.timeLimit : limit.lineLimit}
+                    onSetTimeLimit={setNewTimeLimit}
+                    onSetLineLimit={setNewLineLimit}
+                /> : <div className='placeholder-status-bar'></div>}
+                {/* show status bar button */}
+                <button className='toggle-status-bar' onClick={() => (setShowStatusBar(!showStatusBar))}>{showStatusBar ? 'HIDE STATUS BAR' : 'SHOW STATUS BAR'}</button>
+            </div>
+            :
+            <FinishedTest timeLimit={limit.timeLimit}/>
+        )
     )
 }
 

@@ -13,12 +13,10 @@ interface BarInterface {
 }
 
 const UnderBar = (props: BarInterface) => {
-
-    const [autocomplete, setAutocomplete] = useState(false)
-    const [snippets, setSnippets] = useState(false)
     
     return (
         <div className='under-bar-container'>
+            {/* wpm, accuracy, and time display */}
             <div className='under-bar-item' id='wpm'>
                 <label className='under-bar-label'>wpm</label>
                 <p className='under-bar-value'>{props.wpm}</p>
@@ -31,7 +29,7 @@ const UnderBar = (props: BarInterface) => {
                 <label className='under-bar-label'>time</label>
                 {props.time !== '' && <p className='under-bar-value'>{props.time}s</p>}
             </div>
-
+            {/* timed setting */}
             <div className='under-bar-setting'>
                 <label className={`under-bar-label ${props.limit === 'time' ? 'selected-setting' : ''}`}>timed</label>
                 <div className='under-bar-drop-down'>
@@ -53,6 +51,7 @@ const UnderBar = (props: BarInterface) => {
                     </button>
                 </div>
             </div>
+            {/* lines setting */}
             <div className='under-bar-setting'>
                 <label className={`under-bar-label ${props.limit === 'line' ? 'selected-setting' : ''}`}>lines</label>
                 <div className="under-bar-drop-down">
@@ -74,6 +73,7 @@ const UnderBar = (props: BarInterface) => {
                     </button>
                 </div>
             </div>
+            {/* custom setting */}
             <div className='under-bar-setting'>
                 <label className='under-bar-label'>custom</label>
                 <div className="under-bar-drop-down" id='custom-drop-down'>
@@ -87,8 +87,6 @@ const UnderBar = (props: BarInterface) => {
 
 UnderBar.defaultProps = {
     wpm: '',
-    time: 30, 
-    accuracy: 100, 
 }
 
 export default UnderBar
