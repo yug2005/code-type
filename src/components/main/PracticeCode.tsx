@@ -32,13 +32,8 @@ const PracticeCode = (props: PropsInterface) => {
         const input = (e.target.value).split('')
         const lastChar = e.target.value.charAt(e.target.value.length - 1)
 
-        props.setTest({...props.test, lineChars: input.length})
-        if (lastChar !== line[e.target.value.length - 1]) props.setTest({...props.test, incorrectChars: props.test.incorrectChars + 1})
-
-        console.log('total chars : ' + props.test.chars)
-        console.log('total line chars : ' + props.test.lineChars)
-        console.log('total incorrect chars : ' + props.test.incorrectChars)
-        console.log(props.test)
+        props.setTest({...props.test, lineChars: input.length, incorrectChars: 
+        (lastChar !== line[e.target.value.length - 1]) ? props.test.incorrectChars + 1 : props.test.incorrectChars})
 
         setCurrentLine(input.map((val: string, index: number) => {
             if (val === line[index]) return 'text-correct'
@@ -51,17 +46,11 @@ const PracticeCode = (props: PropsInterface) => {
         if (e.key === 'Enter'){
             setUserInput('')
             setLineIndex(lineIndex + 1)
-            console.log(props.test)
-            console.log(props.test.chars + props.test.lineChars)
-            props.setTest({...props.test, chars: (props.test.chars + props.test.lineChars)})
-            props.setTest({...props.test, lineChars: 0})
-            console.log('props.test is now : ')
-            console.log(props.test)
+            props.setTest({...props.test, chars: (props.test.chars + props.test.lineChars), lineChars: 0})
             previousLines.push(currentLine)
             if (previousLines.length === 3) previousLines.splice(0, 1)
             setCurrentLine([])
-            if (lineIndex >= props.code.length - 1) 
-                props.endTimer()
+            if (lineIndex >= props.code.length - 1) props.endTimer()
         }
     }
 

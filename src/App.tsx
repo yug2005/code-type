@@ -49,7 +49,7 @@ function App() {
           <LanguagesPanel onLanguageClick={updateLanguage} />
         )}
         <Routes>
-          <Route path="/" element={<Main getCode={getCode} code={code}/>} />
+          <Route path="/" element={<Main getCode={getCode} code={['void print() {', '    std::cout << "Hello World" << \n', '}']}/>} />
           <Route path="/signin" element={<SignIn />} />
           <Route path='/settings' element={<Settings />}/>
         </Routes>

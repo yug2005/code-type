@@ -1,24 +1,20 @@
 .header {
   display: flex;
-  justify-content: center;
+  justify-content: flex-end;
   align-items: center;
   background-color: #2b2936;
   border-bottom: solid;
   border-bottom-width: 0px;
   border-color: #c0d7ee83;
   min-height: 70px;
+  min-width: 1200px; 
   height: 8%;
 }
 
 .title {
-  display: flex; 
-  justify-content: flex-start;
-  align-items: center;
-  flex-grow: 2;
-  background-color: inherit;
-  height: 92%; 
-  width: 400px; 
-  padding: 0px 100px; 
+  background-color: inherit; 
+  left: 100px; 
+  position: absolute; 
 }
 
 .title-text {
@@ -85,6 +81,7 @@
   color: #2b2936;
   padding: 0 25px; 
   height: 55%;
+  min-width: 80px; 
   margin-right: 100px;
   margin-left: 30px;
   border-radius: 10px;

@@ -1,7 +1,7 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { Line } from 'react-chartjs-2'
 import { MdNavigateNext } from 'react-icons/md'
-import { IoReader, IoRepeatOutline } from 'react-icons/io5'
+import { IoRepeatOutline } from 'react-icons/io5'
 import "./FinishedTest.css"
 
 import {
@@ -15,6 +15,7 @@ import {
     Tooltip,
     Legend,
   } from 'chart.js';
+import { FiAlignJustify } from 'react-icons/fi'
   
 ChartJS.register(
     CategoryScale,
@@ -27,19 +28,42 @@ ChartJS.register(
 );
 
 interface propsInterface {
-    timeLimit: number
+    testDetails: any
+    limit: string
+    limitValue: number
 }
 
 const FinishedTest = (props: propsInterface) => {
-    const labels = []
-    for (let i = 0; i <= props.timeLimit; (i += props.timeLimit / 10)) labels.push(i + 's')
-    
+
+    useEffect(() => {
+        focusInput()
+    }, [])
+
+    const [userInput, setUserInput] = useState('')
+
+    const focusInput = () => {
+        document.getElementById('finished-test-input')?.focus()
+    }
+
+    const newTest = () => {
+        
+    }
+
+    const getWordInUserInput = (word: string) => {
+        for (let i = word.length; i > 0; i--) {
+            if (userInput.length - i !== -1 && userInput.lastIndexOf(word.substring(0, i)) === userInput.length - i) {
+                return Array.from({length: word.length}, (val: any, index: number) => index < i ? 'typed' : '')
+            }     
+        }
+        return ['', '', '', '', '']
+    }
+
     const wpm = {
-        labels: labels,
+        labels: props.testDetails.wpmLabels,
         datasets: [
             {
                 label: 'words per minute', 
-                data: Array.from({length: 11}, () => Math.floor(Math.random() * 20 ) + 80),
+                data: props.testDetails.wpmData,
                 borderColor: '#606e7a',
                 backgroundColor: '#8b949c'
             }
@@ -47,11 +71,11 @@ const FinishedTest = (props: propsInterface) => {
     }
 
     const errors = {
-        labels: ['3s', '6s', '15s', '21s', '24s'], 
+        labels: props.testDetails.errorsLabels, 
         datasets: [
             {
                 label: 'errors', 
-                data: [1, 3, 2, 4, 2],
+                data: props.testDetails.errorsData,
                 borderColor: '#795c58', 
                 backgroundColor: '#ff7962', 
             }
@@ -173,26 +197,15 @@ const FinishedTest = (props: propsInterface) => {
                     color: '#606e7ac0'
                 },
                 min: 0, 
-                suggestedMax: 4
+                suggestedMax: 3
             }
         }, 
         radius: 4, 
         hoverRadius: 8
     }
 
-    const [userInput, setUserInput] = useState('')
-
-    const getWordInUserInput = (word: string) => {
-        for (let i = word.length; i > 0; i--) {
-            if (userInput.length - i !== -1 && userInput.lastIndexOf(word.substring(0, i)) === userInput.length - i) {
-                return Array.from({length: word.length}, (val: any, index: number) => index < i ? 'typed' : '')
-            }     
-        }
-        return ['', '', '', '', '']
-    }
-
     return (
-        <div className='test-finished-container'>
+        <div className='test-finished-container' onClick={() => focusInput()}>
             <div className='test-finished-title'>
                 <h2>TEST SUMMARY</h2>
             </div>
@@ -216,29 +229,29 @@ const FinishedTest = (props: propsInterface) => {
             </div>
             <div className='others-container'>
                 <div className='other-stat'>
-                    <h3>test details</h3>
-                    <p>234 chars</p>
-                    <p>time {props.timeLimit}s</p>
+                    <h3 id='test-details'>test details</h3>
+                    <p>{props.testDetails.totalChars} chars</p>
+                    <p id='test-type'>time {props.limitValue}s</p>
                 </div>
                 <div className='other-stat'>
                     <h3>average wpm</h3>
-                    <div>72</div>
+                    <div>{props.testDetails.averageWpm}</div>
                 </div>
                 <div className='other-stat'>
                     <h3>fastest wpm</h3>
-                    <div>93</div>
+                    <div>{props.testDetails.maxWpm}</div>
                 </div>
                 <div className='other-stat'>
                     <h3>slowest wpm</h3>
-                    <div>61</div>
+                    <div>{props.testDetails.minWpm}</div>
                 </div>
                 <div className='other-stat'>
                     <h3>accuracy</h3>
-                    <div>93%</div>
+                    <div>{props.testDetails.accuracy}</div>
                 </div>
                 <div className='other-stat'> 
                     <h3>correct chars</h3>
-                    <div>223</div>
+                    <div>{props.testDetails.correctChars}</div>  
                 </div>
             </div>
             <div className='finished-test-buttons'>
@@ -258,11 +271,11 @@ const FinishedTest = (props: propsInterface) => {
                     </div>
                     <IoRepeatOutline id='add-some-margin'/>
                 </button>
-
             </div>
             {/* temporary text box */}
             <input 
                 className='temporary-input'
+                id='finished-test-input'
                 type='text' 
                 value={userInput} 
                 placeholder='type...'
