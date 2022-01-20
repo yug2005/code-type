@@ -31,6 +31,7 @@ interface propsInterface {
     testDetails: any
     limit: string
     limitValue: number
+    onNewTest: any
 }
 
 const FinishedTest = (props: propsInterface) => {
@@ -45,13 +46,10 @@ const FinishedTest = (props: propsInterface) => {
         document.getElementById('finished-test-input')?.focus()
     }
 
-    const newTest = () => {
-        
-    }
-
     const getWordInUserInput = (word: string) => {
         for (let i = word.length; i > 0; i--) {
             if (userInput.length - i !== -1 && userInput.lastIndexOf(word.substring(0, i)) === userInput.length - i) {
+                if (i === word.length) props.onNewTest(word)
                 return Array.from({length: word.length}, (val: any, index: number) => index < i ? 'typed' : '')
             }     
         }
@@ -255,7 +253,7 @@ const FinishedTest = (props: propsInterface) => {
                 </div>
             </div>
             <div className='finished-test-buttons'>
-                <button className='button'>
+                <button className='button' onClick={() => props.onNewTest('next')}>
                     <div className='button-label'>
                         {"next".split('').map((char, index) => {
                             return <span id={getWordInUserInput('next')[index]}>{char}</span>
@@ -263,7 +261,7 @@ const FinishedTest = (props: propsInterface) => {
                     </div> 
                     <MdNavigateNext id='add-some-margin'/>
                 </button>
-                <button className='button'>
+                <button className='button' onClick={() => props.onNewTest('again')}>
                     <div className='button-label'>
                         {"again".split('').map((char, index) => {
                             return <span id={getWordInUserInput('again')[index]}>{char}</span>

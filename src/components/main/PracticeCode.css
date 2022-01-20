@@ -6,16 +6,16 @@
 .practice-code-container {
     display: flex; 
     flex-direction: column;
-    justify-content: flex-start;
+    justify-content: center;
     align-items: flex-start;
     width: 1000px; 
-    height: 300px; 
+    height: 200px; 
     color: #7c7896; 
     border-top-left-radius: 20px;
     border-top-right-radius: 20px;
     background-color: #2b2936; 
     transition: all 100ms ease; 
-    padding: 40px; 
+    padding: 50px 20px 40px 60px; 
     z-index: 1; 
     cursor: pointer; 
 }
@@ -31,7 +31,7 @@
     width: 100%; 
     height: 100%; 
     background-color: inherit; 
-    margin-top: 40px; 
+    margin-top: 20px; 
 }
 
 .practice-code-click-to-start p {
@@ -51,6 +51,17 @@
     flex-direction: row; 
     background-color: inherit;
     margin: 10px; 
+    /* border: solid;  */
+}
+
+.line-blur {
+    /* border: solid;  */
+    opacity: 0.8;
+}
+
+.double-line-blur {
+    opacity: 0.6; 
+    /* border: solid;  */
 }
 
 .practice-code-container:focus {
@@ -67,7 +78,7 @@
     background: #d4ceff; 
     font-size: 4px; 
     height: 32px; 
-    transform: translateY(-3px);
+    transform: translateY(-4px);
     position: absolute; 
     z-index: 5;
     
@@ -77,7 +88,7 @@
     background: #cac6e6; 
     font-size: 4px; 
     height: 32px; 
-    transform: translateY(-3px);
+    transform: translateY(-4px);
     animation: blink 1.5s steps(1) infinite;
     position: absolute; 
     z-index: 5;
@@ -85,7 +96,8 @@
 
 .practice-code-text {
     background: inherit; 
-    font-size: 24px; 
+    font-size: 23px; 
+    
 }
 
 .tab-space {
@@ -113,6 +125,7 @@
 
 pre {
     background-color: inherit; 
+    /* font-family: 'Red Hat Mono';  */
     font-family: consolas; 
 }
 

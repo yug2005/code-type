@@ -3,15 +3,33 @@ import PracticeCode from './PracticeCode'
 import UnderBar from './UnderBar'
 import FinishedTest from './FinishedTest'
 import './Main.css'
-import { ScriptElementKindModifier } from 'typescript'
-import { CgCode } from 'react-icons/cg'
 
 interface PropsInteface {
-    code: string[]
-    getCode: () => any
+    language: string
 }
 
 const Main = (props: PropsInteface) => {
+    
+    const [code, setCode] = useState([""]);
+
+    const getCode = async (language: string) => {
+        const len_res = await fetch(
+            `http://localhost:3001/${language}`
+        );
+        const len_data = await len_res.json();
+        const length: number = len_data[0].count;
+        const id: number = Math.floor(Math.random() * length + 1);
+        const code_res = await fetch(
+            `http://localhost:3001/${language}/${id}`
+        );
+        const code_data = await code_res.json();
+        const code: string[] = code_data[0].body.split("\n");
+        setCode(code);
+    }
+
+    useEffect(() => {
+        getCode('cpp')
+    }, [])
     
     const [showStatusBar, setShowStatusBar] = useState(true)
 
@@ -79,6 +97,23 @@ const Main = (props: PropsInteface) => {
         incorrectChars: 0, 
     })
 
+    const resetTest = (command: string) => {
+        setTimer({
+            time: 0, 
+            started: false, 
+            finished: false
+        })
+        setWpm([])
+        setErrors([])
+        setTempIncorrectChars(0)
+        setTest({
+            chars: 0, 
+            lineChars: 0, 
+            incorrectChars: 0
+        })
+        if (command === 'next') getCode('cpp')
+    }
+
 
     const [testDetails, setTestDetails] = useState({
         wpmLabels: [], 
@@ -125,7 +160,7 @@ const Main = (props: PropsInteface) => {
         (test.chars + test.lineChars)) * 100), 0)
 
         let totalChars = 0 
-        props.code.map((val) => totalChars += val.replace(/\s+/g, ' ').trim().length)
+        code.map((val) => totalChars += val.replace(/\s+/g, ' ').trim().length)
 
         // setting all properties
         setTestDetails({
@@ -138,7 +173,7 @@ const Main = (props: PropsInteface) => {
             minWpm: min, 
             accuracy: accuracy,
             totalChars: totalChars, 
-            correctChars: totalChars - test.incorrectChars
+            correctChars: test.chars - test.incorrectChars
         })
         document.getElementById('finished-test-input')?.focus()
     }
@@ -146,7 +181,7 @@ const Main = (props: PropsInteface) => {
     return (
         (!timer.finished ? 
             <div className='main-container'>
-                <PracticeCode code={props.code} 
+                <PracticeCode code={code} 
                     test={test} 
                     setTest={setTest} 
                     startTimer={startTimer} 
@@ -170,15 +205,16 @@ const Main = (props: PropsInteface) => {
                 testDetails={testDetails}
                 limit={limit.type} 
                 limitValue={limit.type === 'time' ? limit.timeLimit : limit.lineLimit}
+                onNewTest={resetTest}
             />
         )
     )
 
-    return (<FinishedTest 
-        testDetails={testDetails}
-        limit={limit.type} 
-        limitValue={limit.type === 'time' ? limit.timeLimit : limit.lineLimit}
-    />)
+    // return (<FinishedTest 
+    //     testDetails={testDetails}
+    //     limit={limit.type} 
+    //     limitValue={limit.type === 'time' ? limit.timeLimit : limit.lineLimit}
+    // />)
 }
 
 export default Main

@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import './PracticeCode.css'
 
 interface PropsInterface {
@@ -13,10 +13,15 @@ interface PropsInterface {
 const PracticeCode = (props: PropsInterface) => {
     
     const [active, setActive] = useState(false)
+    
     const enable = () => {
         document.getElementById('practice-code-input')?.focus()
         setActive(true)
     }
+    
+    useEffect(() => {
+        enable()
+    })
 
     const [userInput, setUserInput] = useState('')
     const [lineIndex, setLineIndex] = useState(0)
@@ -57,7 +62,7 @@ const PracticeCode = (props: PropsInterface) => {
     const getLine = (line: any, index: number) => {
         if (index < lineIndex) {
             return line.map((char: string, charIndex: number) => ( 
-                <span className='practice-code-text'
+                <span className='practice-code-text practice-code-line-blur'
                 id={previousLines[2 - lineIndex + index][charIndex]}>
                 <pre>{char}</pre></span> 
             ))
@@ -79,7 +84,7 @@ const PracticeCode = (props: PropsInterface) => {
         }
         else {
             return line.map((char: string) => (
-                <span className='practice-code-text'><pre>{char}</pre></span> 
+                <span className='practice-code-text practice-code-line-blur'><pre>{char}</pre></span> 
                 ))
             }
         }
@@ -92,8 +97,8 @@ const PracticeCode = (props: PropsInterface) => {
             
     const getPreviewCode = (): any => {
         return props.code.map((line) => line.replace(/\s+/g, ' ').trim().split('')).map((line: any, index: number) =>
-            ((lineIndex < 2 && index < 6) || (index >= lineIndex - 2 && index <= lineIndex + 3)) && 
-                <div className='practice-code-line'>
+            ((lineIndex < 1 && index < 4) || (index >= lineIndex - 1 && index <= lineIndex + 2)) && 
+                <div className={`practice-code-line`} style={{opacity: 1 - 0.12 * Math.abs(index - lineIndex)}}>
                     {getTabSpace(index)}
                     {getLine(line, index)}
                 </div>
