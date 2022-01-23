@@ -15,7 +15,7 @@
 }
 
 .settings-container h2 {
-    color: #8b949c; 
+    color: var(--finished-test-color); 
     margin-bottom: 15px; 
     font-family: 'Quicksand';
     word-spacing: 2px; 
@@ -30,14 +30,14 @@
 }
 
 .setting label {
-    color: #606e7a; 
+    color: var(--finished-test-secondary-color); 
     word-spacing: -2px; 
     flex-grow: 3; 
 }
 
 .setting-button {
-    background-color: #2b2936;
-    color: #606e7a; 
+    background: var(--practice-code-background-color);
+    color: var(--finished-test-secondary-color); 
     height: 25px; 
     min-width: 120px;
     padding: 0px 25px; 
@@ -52,8 +52,8 @@
 }
 
 .setting-selected {
-    background-color: #8b949c;
-    color: #2b2936;
+    color: var(--practice-code-background-color);
+    background: var(--finished-test-color);
     min-width: 120px;
     padding: 0px 25px; 
     border-radius: 8px; 
@@ -66,13 +66,13 @@
 }
 
 .setting-button:hover {
-    background-color: #606e7a;
-    color: #2b2936; 
+    color: var(--practice-code-background-color); 
+    background: var(--finished-test-secondary-color);
 }
 
 .close-settings {
     height: 40px; 
-    color: #a1aebb67; 
+    color: var(--close-settings-color); 
     position: absolute;
     font-size: 40px; 
     top: 150px; 
@@ -82,6 +82,6 @@
 }
 
 .close-settings:hover {
-    color: #8b949c;
+    color: var(--finished-test-color);
     transform: scale(1.05)
 }

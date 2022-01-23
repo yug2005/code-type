@@ -1,18 +1,18 @@
 .panel {
-    background-color: rgba(0, 0, 0, 0.5); 
-    backdrop-filter: blur(6px);
+    /* background-color: rgba(0, 0, 0, 0.1);  */
+    background: none; 
+    backdrop-filter: blur(5px);
     width: 100%; 
-    height: 92%; 
+    height: 100%; 
     display: flex; 
     justify-content: center;
     align-items: center; 
     position: absolute; 
-    z-index: 99
+    z-index: 100; 
 }
 
 .languages-panel {
-    background-color: #323141;
-    /* margin-bottom: 100%;  */
+    background-color: var(--languages-panel-background-color);
     display: flex; 
     flex-direction: column; 
     justify-content: flex-start;
@@ -21,13 +21,12 @@
     width: 600px; 
     height: 550px; 
     padding: 10px; 
-    top: 1; 
     font-family: 'Space Mono', monospace;
 }
 
 .form {
     font-family: 'Space Mono', monospace;
-    background-color: #6a687e;
+    background-color: var(--languages-panel-color);
     width: 90%; 
     margin-top: 20px; 
     margin-bottom: 26px; 
@@ -38,28 +37,27 @@
 }
 
 .form:hover {
-    transform: scale(1, 1.15);
+    transform: scale(1, 1.07);
 }
 
 ::placeholder {
-    color: #323141;
+    color: var(--placeholder-color);
 }
 
 .search-bar {
     background-color: inherit;
     border-style: none; 
     font-size: 16px; 
-    color: #323141;
+    color: var(--placeholder-color);
     display: flex; 
     width: 100%; 
-    height: 30px; 
-    
+    height: 30px;  
 }
 
 .search-suggestions {
-    background-color: #323141;
+    background-color: inherit;
     width: 100%; 
-    height: 100px; 
+    margin-bottom: 26px; 
     display: grid; 
     justify-content: center;
     grid-template-columns: auto auto auto;
@@ -68,8 +66,8 @@
 }
 
 .preferred-language-btn {
-    background-color: #6a687e; 
-    color: #323141; 
+    background-color: var(--languages-panel-color); 
+    color: var(--languages-panel-background-color); 
     width: 170px; 
     height: 60px; 
     border-radius: 8px;
@@ -78,6 +76,44 @@
 
 .preferred-language-btn:hover {
     transform: scale(1.03);
-    color: #a1aebb;
+}
+
+.languages-list-before {
+    background: var(--languages-panel-bar-color); 
+    height: 20px; 
+    width: 554px; 
+    border-radius: 5px; 
+}
+
+.languages-list {
+    background: inherit; 
+    display: flex; 
+    flex-direction: column; 
+    width: 562px;
+    margin-bottom: 20px; 
+    overflow: hidden; 
+    overflow-y: scroll; 
+    scroll-behavior: smooth;
+}
+
+.listed-language {
+    background: inherit; 
+    color: var(--languages-panel-color);
+    display: flex; 
+    justify-content: flex-start;
+    width: 100%; 
+    padding: 12px; 
+    padding-left: 26px; 
+    border-style: none; 
+    border-radius: 8px;
+    font-family: 'Red Hat Mono', sans-serif; 
+    font-size: 16px; 
+    font-weight: 600; 
+    cursor: pointer; 
+    transition: all 300ms ease;
+}
+
+.listed-language:hover {
+    background: var(--practice-code-background-color);
 }
 

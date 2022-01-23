@@ -173,7 +173,7 @@ const Main = (props: PropsInteface) => {
             minWpm: min, 
             accuracy: accuracy,
             totalChars: totalChars, 
-            correctChars: test.chars - test.incorrectChars
+            correctChars: Math.max(test.chars - test.incorrectChars, 0)
         })
         document.getElementById('finished-test-input')?.focus()
     }

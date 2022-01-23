@@ -8,31 +8,31 @@
 }
 
 .close-sign-in {
-    height: 40px; 
-    color: #a1aebb67; 
+    color: var(--close-settings-color); 
     position: absolute;
+    height: 40px; 
+    top: 200px; 
+    right: 180px; 
     font-size: 40px; 
-    top: 250px; 
-    right: 350px; 
     cursor: pointer; 
     transition: all 300ms ease;
 }
 
 .close-sign-in:hover {
-    color: #8b949c;
+    color: var(--finished-test-color);
     transform: scale(1.05)
 }
 
 .register-container {
     display: flex; 
     flex-direction: column; 
-    padding: 100px; 
+    padding: 80px; 
 }
 
 .log-in-container {
     display: flex; 
     flex-direction: column;
-    padding: 100px; 
+    padding: 80px; 
 }
 
 .register-form {
@@ -43,47 +43,43 @@
 }
 
 .sign-in-title {
+    color: var(--finished-test-color);
     font-size: 22px; 
-    color: #8b949c;
     margin-bottom: 10px; 
     text-align: center; 
     word-spacing: -5px; 
+    /* font-weight: 600;  */
 }
 
 .register-form label {
-    color: #606e7a; 
+    color: var(--finished-test-secondary-color); 
     width: 100%;
     margin: 5px 0px; 
 }
 
 .register-or {
-    color: #606e7a;
+    color: var(--finished-test-secondary-color);
     width: 5px; 
     margin: 5px 0px; 
     font-size: 15px; 
-    /* border-style: solid; */
 }
 
 .form-input {
-    background-color: #272630; 
+    color: var(--finished-test-secondary-color);
+    background: var(--practice-code-background-color); 
     width: 350px; 
     height: 35px; 
     padding: 0px 20px; 
     border-radius: 8px; 
     margin: 5px 0px; 
     border-style: none;
-    color: #606e7a;
     font-size: 13px; 
     word-spacing: -3px;
 }
 
-input::-webkit-credentials-auto-fill-button {
-    color: white; 
-}
-
 .form-submit {
-    background-color: #8b949c;
-    color: #1d1c24; 
+    color: var(--background-color); 
+    background: var(--finished-test-color);
     height: 32px; 
     padding: 0px 25px; 
     border-radius: 8px; 
@@ -91,9 +87,10 @@ input::-webkit-credentials-auto-fill-button {
     margin-top: 10px; 
     margin-bottom: 5px; 
     word-spacing: -3px;
+    font-size: 14px; 
+    font-weight: 600; 
     cursor: pointer; 
     transition: all 300ms ease; 
-    font-size: 14px; 
 }
 
 .form-submit:hover {

@@ -1,15 +1,16 @@
 .google-button {
+    background-color: var(--finished-test-color);
+    color: var(--background-color);
     display: flex; 
     justify-content: center;
     align-items: center;
-    background-color: #8b949c;
     height: 32px; 
     border-radius: 8px; 
     border-style: none; 
     margin: 5px 0px; 
     padding: 0px 25px; 
-    color: #1d1c24;
     font-size: 14px; 
+    font-weight: 600; 
     cursor: pointer; 
     transition: all 300ms ease; 
 }

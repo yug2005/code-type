@@ -18,13 +18,13 @@ function App() {
   return (
     <Router>
       <div className="App">
+        {languagesPanelOpen && (
+          <LanguagesPanel onLanguageClick={updateLanguage} />
+        )}
         <Header
           language={language === "" ? "languages" : language}
           onClickLanguages={() => setLanguagesPanelOpen(true)}
         />
-        {languagesPanelOpen && (
-          <LanguagesPanel onLanguageClick={updateLanguage} />
-        )}
         <Routes>
           <Route path="/" element={<Main language={language}/>} />
           <Route path="/signin" element={<SignIn />} />

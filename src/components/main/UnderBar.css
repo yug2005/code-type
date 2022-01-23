@@ -1,4 +1,5 @@
 .under-bar-container {
+    background: var(--underbar-background-color); 
     display: flex; 
     justify-content: space-around;
     align-items: center; 
@@ -6,7 +7,6 @@
     height: 60px; 
     border-bottom-left-radius: 20px;
     border-bottom-right-radius: 20px;
-    background-color: #403e50; 
     transition: all 300ms ease; 
     padding: 0px 40px; 
 }
@@ -33,12 +33,12 @@
 }
 
 .under-bar-setting {
+    background: inherit;
     display: flex; 
     flex-direction: column; 
     justify-content: center; 
     align-items: center;
     width: 100px; 
-    background-color: inherit;
     height: 100%;
 }
 
@@ -51,11 +51,11 @@
 }
 
 .under-bar-drop-down {
+    background: inherit; 
     display: none;
     flex-direction: column; 
     transform: translate(3px, 90px);
     position: absolute;
-    background-color: inherit; 
     padding: 5px; 
 }
 
@@ -64,14 +64,14 @@
 }
 
 .drop-down-button {
+    color: var(--drop-down-button-color); 
+    background: inherit; 
     display: flex; 
     justify-content: flex-end;
     align-items: center;
     height: 30px; 
     width: 140px; 
     padding: 5px 20px; 
-    background-color: inherit; 
-    color: #a19fb993; 
     font-family: inherit; 
     border-style: none; 
     border-radius: 6px; 
@@ -91,19 +91,18 @@
 }
 
 .drop-down-button:hover {
-    background-color: #363342;
+    background: var(--drop-down-button-hover-color);
 }
 
 .under-bar-label {
-    background-color: inherit;
-    color: #a19fb9;
+    color: var(--underbar-color);
+    background: inherit;
     margin: 5px;
-
 }
 
 .under-bar-value {
+    color: var(--underbar-value-color); 
     background-color: inherit;
-    color: #ff7962; 
     margin: 5px; 
     cursor: default; 
 }

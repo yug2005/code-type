@@ -2,11 +2,66 @@
 @import url('https://fonts.googleapis.com/css2?family=Red+Hat+Mono:wght@300;400;600&display=swap');
 
 * {
-  background-color: #2e2d3a;
+  background: var(--background-color);
   font-family: 'Red Hat Mono', monospace;
   margin: 0; 
   padding: 0;  
 }
+
+:root {
+  --background-color: #2e2d3a;
+  --placeholder-color: #323141; 
+  --header-background-color: var(--background-color);
+  --header-color: #a1aebb;
+  --header-hover-color: #c7d5e2; 
+  --languages-panel-background-color: var(--placeholder-color); 
+  --languages-panel-color: #6a687e;
+  --languages-panel-bar-color: #57546d9f; 
+  --practice-code-background-color: #2b2936; 
+  --pracitce-code-color: #7c7896; 
+  --practice-code-cursor: #d4ceff; 
+  --practice-code-correct-color: #ffffffb9; 
+  --practice-code-error-color: #ff7962; 
+  --practice-code-space-error-color: #ff796277; 
+  --practice-code-hover-color: #5f5b72; 
+  --underbar-background-color: #403e50;
+  --underbar-color: #a19fb9; 
+  --underbar-value-color: var(--practice-code-error-color);
+  --drop-down-button-color: #a19fb993;
+  --drop-down-button-hover-color: #363342;  
+  --finished-test-color: #8b949c; 
+  --finished-test-secondary-color: #606e7a; 
+  --close-settings-color: #a1aebb67; 
+  --toggle-status-bar: #454157;
+}
+
+/* :root {
+  --background-color: #1d1d1d;
+  --placeholder-color: #292929; 
+  --header-background-color: var(--background-color);
+  --header-color: #fa9f7c;
+  --header-hover-color: #ffb394; 
+  --languages-panel-background-color: var(--placeholder-color); 
+  --languages-panel-color: #4d4d4d;
+  --languages-panel-bar-color: #6b6b6b9f; 
+  --practice-code-background-color: #1b1b1b; 
+  --pracitce-code-color: #525252; 
+  --practice-code-cursor: #d6d6d6; 
+  --practice-code-correct-color: #ffffffb9; 
+  --practice-code-error-color: #ff6262; 
+  --practice-code-space-error-color: #ffcd6277; 
+  --practice-code-hover-color: #ffffffb9; 
+  --underbar-background-color: #333333;
+  --underbar-color: #fa9f7c; 
+  --underbar-value-color: var(--practice-code-error-color);
+  --drop-down-button-color: #70707093;
+  --drop-down-button-hover-color: #4b4b4b;  
+  --finished-test-color: #bd8d7a; 
+  --finished-test-secondary-color: #917368; 
+  --close-settings-color: #a1aebb67; 
+  --toggle-status-bar: #444444; 
+} */
+
 
 input:focus,
 select:focus,
