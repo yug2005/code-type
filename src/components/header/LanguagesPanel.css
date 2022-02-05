@@ -8,7 +8,15 @@
     justify-content: center;
     align-items: center; 
     position: absolute; 
-    z-index: 100; 
+    z-index: 5; 
+}
+
+.close-panel {
+    position: absolute; 
+    height: 100%; 
+    width: 100%; 
+    opacity: 0; 
+    z-index: 0; 
 }
 
 .languages-panel {
@@ -22,6 +30,7 @@
     height: 550px; 
     padding: 10px; 
     font-family: 'Space Mono', monospace;
+    z-index: 1; 
 }
 
 .form {

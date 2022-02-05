@@ -1,4 +1,5 @@
 import React, { useState } from 'react'
+import { isPropertyAccessExpression } from 'typescript';
 import Button from '../Button'
 import './LanguagesPanel.css'; 
 
@@ -84,6 +85,7 @@ const LanguagesPanel = (props: LanguagesPanelInterface) => {
                 <div className='languages-list-before'></div>
                 {getLanguagesList(searchText)}
             </div>
+            <div className='close-panel' onClick={() => props.onLanguageClick('')} ></div>
         </div>
     )
 }

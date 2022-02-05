@@ -1,9 +1,13 @@
 .settings {
     display: flex;  
     flex-direction: column; 
-    justify-content: center;
+    justify-content: flex-start;
     align-items: center; 
-    margin-top: 100px; 
+    margin-top: 5%; 
+    height: 70%; 
+    margin-bottom: 2%; 
+    overflow-y: scroll;
+    /* border: solid;  */
 }
 
 .settings-container {
@@ -11,7 +15,8 @@
     flex-direction: column;
     justify-content: center;
     width: 60%; 
-    padding-top: 40px; 
+    padding-top: 2%; 
+    /* overflow-y: scroll; */
 }
 
 .settings-container h2 {
@@ -24,15 +29,45 @@
 .setting {
     display: flex; 
     flex-direction: row;
-    justify-content: center;
+    justify-content: flex-start;
+    align-items: center;
     margin-top: 5px; 
-    
+    /* border: solid;  */
 }
 
-.setting label {
+.test-fails {
+    margin-bottom: 5px; 
+}
+
+.test-fails-options {
+    /* border: solid;  */
+    width: 60%; 
+}
+
+.test-fails-setting {
+    display: flex;
+    margin-top: 5px; 
+    margin-left: 15px; 
+}
+
+
+.setting-description {
     color: var(--finished-test-secondary-color); 
     word-spacing: -2px; 
     flex-grow: 3; 
+    /* border: solid;  */
+}
+
+.setting-description p {
+    /* background: white;  */
+    width: 70%; 
+}
+
+.button-container {
+    display: flex; 
+    max-width: 40%;
+    align-items: center;
+    /* border: solid;  */
 }
 
 .setting-button {
@@ -42,9 +77,9 @@
     min-width: 120px;
     padding: 0px 25px; 
     border-radius: 8px; 
-    border-style: none; 
     margin-left: 10px; 
     word-spacing: -3px;
+    border-style: none; 
     cursor: pointer; 
     transition: all 300ms ease; 
     font-size: 14px; 
@@ -55,6 +90,7 @@
     color: var(--practice-code-background-color);
     background: var(--finished-test-color);
     min-width: 120px;
+    height: 25px; 
     padding: 0px 25px; 
     border-radius: 8px; 
     border-style: none; 
@@ -70,13 +106,14 @@
     background: var(--finished-test-secondary-color);
 }
 
+
 .close-settings {
     height: 40px; 
     color: var(--close-settings-color); 
     position: absolute;
     font-size: 40px; 
-    top: 150px; 
-    right: 325px; 
+    top: 20%; 
+    right: 15%; 
     cursor: pointer; 
     transition: all 300ms ease;;
 }

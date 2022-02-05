@@ -7,7 +7,7 @@ import Main from "./components/main/Main";
 import Settings from "./components/settings/Settings"
 
 function App() {
-  const [language, setLanguage] = useState("");
+  const [language, setLanguage] = useState('');
   const [languagesPanelOpen, setLanguagesPanelOpen] = useState(false);
   
   const updateLanguage = (newLanguage: any) => {
