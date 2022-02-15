@@ -1,46 +1,87 @@
-# Getting Started with Create React App
+# Code Type
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+## About 
 
-## Available Scripts
+Code Type is a minimal and elegant application to allow users to get familiar and faster at typing code. It is currently in development and the website only supports pregenerated C++ code. 
 
-In the project directory, you can run:
+The application will implement machine learning to generate code automatically and multiple languages will be supported for the user to choose from. 
 
-### `npm start`
+The front-end uses React JS, TypeScript, CSS, and HTML. The routing and navigation is done through react-router-dom. 
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+The backend is currently a MySQL server for development however it will be transitioned to a MongoDB server. All get requests are through Node.js and Express JS. 
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+## Features 
 
-### `npm test`
+* minimal design inspired by [monkeytype](https://monkeytype.com)
+* test can be customized and have different limits
+* test results are displayed through graph
+* easy commands to start new test or restart previous test
+* live wpm and accuracy on dynamic status bar 
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+## Features Coming Soon
 
-### `npm run build`
+* users can log in to save their settings
+* customizable with more settings and themes 
+* auto generating code and support for multiple programming languages 
+* user can upload their own code
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+## Preview Images
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+Since the Code Type is not released yet, the following is a preview of the current progress. 
 
-### `npm run eject`
+### Main Page 
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+This is the default view of the application. 
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+* It will support more themes and focus mode in the future. 
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+<img src="https://drive.google.com/uc?id=1CDVl0wV1LDgGspv3YWNIGV9QVZ2B9zrn">
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+### Select Language  
 
-## Learn More
+This is the pop-up window for selecting the language. 
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+* There are many options present but for the time being, only C++ is supported. 
+* Auto generated code and ML will enable support for multiple languages. 
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+<img src="https://drive.google.com/uc?id=1vVVLqveqB9c2Ia4gDbfUMJP2A6Mhycaw">
+
+### Practice Code 
+
+This is a preview of the practice code section. 
+
+* As you type, the display changes according to whether you typed the correct characters. 
+* You can see the live wpm, accuracy, and the time remaining the status bar. 
+* You can change the limit of the test to either time or the number of lines. 
+
+<img src="https://drive.google.com/uc?id=1tapABsUi49-lgrHGmyVIKTOsVs2wgQ7R">
+
+### Test Results 
+
+This is a preview of the test result display after the user completes a test. 
+
+* This shows the words per minute and the accuracy across the test in a plot over time. 
+* It also shows the errors in the test in a separate plot. 
+* The average, best, and worst wpm are displayed. The final accuracy is also displayed.  
+
+<img src="https://drive.google.com/uc?id=1ZGheq6EGphCp16klwd9vWioYkKQlJVmz">
+
+### Sign In Page 
+
+This is a preview of the sign in or sign up page. The user can sign in to save their progress and settings.
+
+* The user will be able to sign in with their email. 
+* The user can also log in with google. 
+* The users progress and settings will be saved. 
+
+<img src="https://drive.google.com/uc?id=12z4UwU34Bb23UprhR9oSmAicj35HXkYF">
+
+### Settings Page
+
+This is a preview of the settings page where the user can change multiple options to their liking. 
+
+* The user will be able to change test settings, status bar settings, and appearance settings. 
+* There will be more settings and customization in the future. 
+
+<img src="https://drive.google.com/uc?id=1aDoh-M882Vi0zUjodP0cX38v7YYkQZi7">
