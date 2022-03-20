@@ -112,7 +112,7 @@
     color: var(--close-settings-color); 
     position: absolute;
     font-size: 40px; 
-    top: 20%; 
+    top: 16%; 
     right: 15%; 
     cursor: pointer; 
     transition: all 300ms ease;;

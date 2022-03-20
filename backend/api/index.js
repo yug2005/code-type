@@ -7,6 +7,7 @@ const app = express()
 app.use(cors())
 app.use(express.json())
 
+// create a connection
 const db = mysql.createConnection({
     host: 'localhost', 
     user: 'root', 
@@ -14,25 +15,27 @@ const db = mysql.createConnection({
     database: 'languages'
 })
 
+// connect to the database
 db.connect((err) => {
     if (err) throw err
     console.log('connected to languages')
 })
 
+// get all the code blocks
+app.get('/:language/all', (req, res) => {
+    let sql = `SELECT * FROM ${req.params.language}`
+    db.query(sql, (err, result) => {
+        if (err) {
+            console.log(err)
+            res.status(400).send(`${req.params.language} table not found`)
+        }
+        else {
+            res.send(result)
+        }
+    })
+})
 
-// app.get('/:language', (req, res) => {
-//     let sql = `SELECT * FROM ${req.params.language}`
-//     db.query(sql, (err, result) => {
-//         if (err) {
-//             console.log(err)
-//             res.status(400).send(`${req.params.language} table not found`)
-//         }
-//         else {
-//             res.send(result)
-//         }
-//     })
-// })
-
+// get the code block with the id passed in
 app.get('/:language/:id', (req, res) => {
     let sql = `SELECT body FROM ${req.params.language} WHERE id = ${req.params.id}`
     db.query(sql, (err, result) => {
@@ -46,6 +49,7 @@ app.get('/:language/:id', (req, res) => {
     })
 })
 
+// get the number of code blocks available 
 app.get('/:language', (req, res) => {
     let sql = `SELECT COUNT(id) AS count FROM ${req.params.language}`
     db.query(sql, (err, result) => {
@@ -58,6 +62,7 @@ app.get('/:language', (req, res) => {
         }
     })
 })
+
 
 app.listen(3001, () => {
     console.log('server running on port 3001')

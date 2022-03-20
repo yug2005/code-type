@@ -10,6 +10,7 @@
 }
 
 .title {
+  display: flex; 
   background: inherit; 
   margin-left: 100px; 
   flex-grow: 3; 
@@ -21,6 +22,10 @@
   color: var(--header-color);
   text-decoration: none;
   word-spacing: -10px;
+}
+
+.title-text:hover {
+  color: var(--header-hover-color)
 }
 
 .title-text h2 {

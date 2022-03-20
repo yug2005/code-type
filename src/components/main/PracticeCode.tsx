@@ -11,7 +11,7 @@ interface PropsInterface {
 }
 
 const PracticeCode = (props: PropsInterface) => {
-    
+    // whether the test is active
     const [active, setActive] = useState(false)
     
     const enable = () => {
@@ -90,8 +90,8 @@ const PracticeCode = (props: PropsInterface) => {
         }
         
     const getTabSpace = (index: number) => {
-        return props.code[index].split('    ').splice(1).map(() => (
-            <pre className='practice-code-text tab-space'>   </pre>
+        return props.code[index].split('  ').splice(1).map(() => (
+            <pre className='practice-code-text tab-space'> </pre>
         ))
     }
             

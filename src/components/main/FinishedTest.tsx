@@ -32,6 +32,7 @@ interface propsInterface {
     limit: string
     limitValue: number
     onNewTest: any
+    language: string
 }
 
 const FinishedTest = (props: propsInterface) => {
@@ -228,8 +229,10 @@ const FinishedTest = (props: propsInterface) => {
             <div className='others-container'>
                 <div className='other-stat'>
                     <h3 id='test-details'>test details</h3>
-                    <p>{props.testDetails.totalChars} chars</p>
-                    <p id='test-type'>time {props.limitValue}s</p>
+                    <p>language: {props.language}</p>
+                    {props.limit === 'time' ? 
+                    <p id='test-type'>timed {props.limitValue}s</p> :
+                    <p id='test-type'>{props.limitValue} lines</p>}
                 </div>
                 <div className='other-stat'>
                     <h3>average wpm</h3>

@@ -15,6 +15,7 @@
     "cors": "^2.8.5",
     "express": "^4.17.2",
     "mysql": "^2.18.1",
+    "node-fetch": "^3.2.3",
     "react": "^17.0.2",
     "react-chartjs-2": "^4.0.0",
     "react-dom": "^17.0.2",
@@ -30,7 +31,7 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject", 
+    "eject": "react-scripts eject",
     "dev": "concurrently \"npm start\" \"node backend/api/index\""
   },
   "eslintConfig": {

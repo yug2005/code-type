@@ -4,7 +4,7 @@
 }
 
 .practice-code-container {
-    color: var(--pracitce-code-color); 
+    color: var(--practice-code-color); 
     background: var(--practice-code-background-color); 
     display: flex; 
     flex-direction: column;
@@ -35,7 +35,7 @@
 }
 
 .practice-code-click-to-start p {
-    color: var(--pracitce-code-color);
+    color: var(--practice-code-color);
     font-size: 24px; 
     background-color: inherit;
     font-family: consolas; 

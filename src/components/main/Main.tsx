@@ -6,30 +6,12 @@ import './Main.css'
 
 interface PropsInteface {
     language: string
+    code: any
+    getCodeBlock: any
+    addCodeLines: any
 }
 
 const Main = (props: PropsInteface) => {
-    
-    const [code, setCode] = useState([""]);
-
-    const getCode = async (language: string) => {
-        const len_res = await fetch(
-            `http://localhost:3001/${language}`
-        );
-        const len_data = await len_res.json();
-        const length: number = len_data[0].count;
-        const id: number = Math.floor(Math.random() * length + 1);
-        const code_res = await fetch(
-            `http://localhost:3001/${language}/${id}`
-        );
-        const code_data = await code_res.json();
-        const code: string[] = code_data[0].body.split("\n");
-        setCode(code);
-    }
-
-    useEffect(() => {
-        getCode('cpp')
-    }, [])
     
     const [showStatusBar, setShowStatusBar] = useState(true)
 
@@ -40,15 +22,22 @@ const Main = (props: PropsInteface) => {
     })
 
     const setNewTimeLimit = (newTimeLimit: number) => {
-        setLimit({...limit, type: 'time'})
-        setLimit({...limit, timeLimit: newTimeLimit})
+        setLimit({...limit, type: 'time', timeLimit: newTimeLimit})
     }
 
     const setNewLineLimit = (newLineLimit: number) => {
-        setLimit({...limit, type: 'line'})
-        setLimit({...limit, lineLimit: newLineLimit})
+        setLimit({...limit, type: 'line', lineLimit: newLineLimit})
+        if (props.code.length < newLineLimit) {
+            console.log("Calling add props.code lines")
+            props.addCodeLines(newLineLimit)
+            return
+        }
+        while (props.code.length > newLineLimit) {
+            props.code.pop()
+        }
     }
     
+    // object for the timer
     const [timer, setTimer] = useState({
         time: 0, 
         started: false, 
@@ -97,6 +86,7 @@ const Main = (props: PropsInteface) => {
         incorrectChars: 0, 
     })
 
+    // reset all the variables for new test
     const resetTest = (command: string) => {
         setTimer({
             time: 0, 
@@ -111,10 +101,15 @@ const Main = (props: PropsInteface) => {
             lineChars: 0, 
             incorrectChars: 0
         })
-        if (command === 'next') getCode('cpp')
+        if (command === 'next') {
+            if (limit.type === 'line') {
+                props.getCodeBlock(limit.lineLimit)
+            }
+            else props.getCodeBlock()
+        }
     }
 
-
+    // object for storing the test statistics
     const [testDetails, setTestDetails] = useState({
         wpmLabels: [], 
         wpmData: [], 
@@ -128,6 +123,7 @@ const Main = (props: PropsInteface) => {
         correctChars: 0
     })
 
+    // getting the test statistics for after the test
     const getTestDetails = () => {
         // wpm labels and data
         const wpmLabels: any = []
@@ -160,7 +156,7 @@ const Main = (props: PropsInteface) => {
         (test.chars + test.lineChars)) * 100), 0)
 
         let totalChars = 0 
-        code.map((val) => totalChars += val.replace(/\s+/g, ' ').trim().length)
+        props.code.map((val:any) => totalChars += val.replace(/\s+/g, ' ').trim().length)
 
         // setting all properties
         setTestDetails({
@@ -181,7 +177,7 @@ const Main = (props: PropsInteface) => {
     return (
         (!timer.finished ? 
             <div className='main-container'>
-                <PracticeCode code={code} 
+                <PracticeCode code={props.code} 
                     test={test} 
                     setTest={setTest} 
                     startTimer={startTimer} 
@@ -206,15 +202,10 @@ const Main = (props: PropsInteface) => {
                 limit={limit.type} 
                 limitValue={limit.type === 'time' ? limit.timeLimit : limit.lineLimit}
                 onNewTest={resetTest}
+                language={props.language}
             />
         )
     )
-
-    // return (<FinishedTest 
-    //     testDetails={testDetails}
-    //     limit={limit.type} 
-    //     limitValue={limit.type === 'time' ? limit.timeLimit : limit.lineLimit}
-    // />)
 }
 
 export default Main

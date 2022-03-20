@@ -123,6 +123,20 @@
 }
 
 .listed-language:hover {
-    background: var(--practice-code-background-color);
+    background-color: var(--languages-panel-hover-color);
 }
 
+.unsupported-language {
+    /* filter: brightness(0.8); */
+    /* filter: contrast(0.5);  */
+    color: #888; 
+}
+
+.unsupported-message {
+    display: flex;
+    justify-content: flex-end;
+    flex-grow: 10; 
+    background: none; 
+    color: #666; 
+    /* font-weight: 400; */
+}

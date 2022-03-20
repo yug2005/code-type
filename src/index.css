@@ -8,7 +8,7 @@
   padding: 0;  
 }
 
-:root {
+/* :root {
   --background-color: #2e2d3a;
   --placeholder-color: #323141; 
   --header-background-color: var(--background-color);
@@ -33,34 +33,35 @@
   --finished-test-secondary-color: #606e7a; 
   --close-settings-color: #a1aebb67; 
   --toggle-status-bar: #454157;
-}
+} */
 
-/* :root {
-  --background-color: #1d1d1d;
-  --placeholder-color: #292929; 
+:root {
+  --background-color: #273138;
+  --placeholder-color: #242c33; 
   --header-background-color: var(--background-color);
-  --header-color: #fa9f7c;
-  --header-hover-color: #ffb394; 
+  --header-color: #88beb8;
+  --header-hover-color: #94d8d0; 
   --languages-panel-background-color: var(--placeholder-color); 
-  --languages-panel-color: #4d4d4d;
-  --languages-panel-bar-color: #6b6b6b9f; 
-  --practice-code-background-color: #1b1b1b; 
-  --pracitce-code-color: #525252; 
+  --languages-panel-color: #88beb8;
+  --languages-panel-bar-color: #4D6772; 
+  --languages-panel-hover-color: #1b2125; 
+  --practice-code-background-color: #242c33; 
+  --practice-code-color: #4D6772; 
   --practice-code-cursor: #d6d6d6; 
-  --practice-code-correct-color: #ffffffb9; 
+  --practice-code-correct-color: #ffffffe0; 
   --practice-code-error-color: #ff6262; 
   --practice-code-space-error-color: #ffcd6277; 
-  --practice-code-hover-color: #ffffffb9; 
-  --underbar-background-color: #333333;
-  --underbar-color: #fa9f7c; 
-  --underbar-value-color: var(--practice-code-error-color);
-  --drop-down-button-color: #70707093;
-  --drop-down-button-hover-color: #4b4b4b;  
-  --finished-test-color: #bd8d7a; 
-  --finished-test-secondary-color: #917368; 
-  --close-settings-color: #a1aebb67; 
-  --toggle-status-bar: #444444; 
-} */
+  --practice-code-hover-color: #ffffffc0; 
+  --underbar-background-color: #33444d;
+  --underbar-color: #dfdfdf; 
+  --underbar-value-color: #80CBC4;
+  --drop-down-button-color: #eeeeee93;
+  --drop-down-button-hover-color: #314149;  
+  --finished-test-color: #88beb8; 
+  --finished-test-secondary-color: #dfdfdf; 
+  --close-settings-color: #dfdfdfbb; 
+  --toggle-status-bar:  var(--underbar-background-color); 
+}
 
 
 input:focus,
