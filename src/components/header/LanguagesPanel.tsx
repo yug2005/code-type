@@ -8,12 +8,19 @@ interface LanguagesPanelInterface {
 }
 
 const supportedLanguages = [
-    "c++",
-    "css", 
-    "html", 
-    "javascript", 
-    "mysql",
-    "python"
+    'c',
+    'c#',
+    'c++',
+    'css', 
+    'go',
+    'html', 
+    'java',
+    'javascript', 
+    'kotlin',
+    'mysql',
+    'php',
+    'python',
+    'xml'
 ]
 
 const LanguagesPanel = (props: LanguagesPanelInterface) => {
@@ -21,22 +28,27 @@ const LanguagesPanel = (props: LanguagesPanelInterface) => {
     const [preferredLanguages, setPreferredLanguages] = useState([
         'c++', 
         'javascript', 
-        'typescript', 
+        'java', 
         'python',
-        'c', 
+        'mysql', 
         'html'
     ])
-
+    
     const [languages, setLanguages] = useState([
-        'c++', 
-        'css', 
-        'html', 
-        'javascript', 
-        'mysql', 
-        'python', 
-        'assembly', 
         'c', 
         'c#', 
+        'c++', 
+        'css', 
+        'go',
+        'html', 
+        'java', 
+        'javascript', 
+        'kotlin',
+        'mysql', 
+        'php', 
+        'python', 
+        'xml',
+        'assembly', 
         'clike', 
         'CQL', 
         'dart',
@@ -45,22 +57,18 @@ const LanguagesPanel = (props: LanguagesPanelInterface) => {
         'flow', 
         'http', 
         'hxml', 
-        'java', 
-        'json', 
         'jsx', 
         'latex', 
         'livescript', 
         'matlab', 
         'perl', 
-        'php', 
         'rust', 
         'swift', 
         'tsx', 
         'typescript', 
         'verilog', 
         'vhdl',
-        'vue',
-        'xml'
+        'vue'
     ])
 
     const getFilteredLanguagesList = () => {
@@ -99,7 +107,6 @@ const LanguagesPanel = (props: LanguagesPanelInterface) => {
                         <Button text={language} button_id='preferred-language-btn' onClick={() => props.onLanguageClick(language)} />
                     ))}
                 </div>}
-                <div className='languages-list-before'></div>
                 {getLanguagesList(searchText)}
             </div>
             <div className='close-panel' onClick={() => props.onLanguageClick('')} ></div>

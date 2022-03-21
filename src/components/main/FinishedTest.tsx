@@ -57,14 +57,22 @@ const FinishedTest = (props: propsInterface) => {
         return ['', '', '', '', '']
     }
 
+    const style = getComputedStyle(document.body)
+    const chart_color = style.getPropertyValue('--chart-color')
+    const chart_text_color = style.getPropertyValue('--chart-text-color')
+    const wpm_color = style.getPropertyValue('--chart-wpm-color')
+    const wpm_border_color = style.getPropertyValue('--chart-wpm-border-color')
+    const error_color = style.getPropertyValue('--chart-error-color')
+    const error_border_color =  style.getPropertyValue('--chart-error-border-color')
+
     const wpm = {
         labels: props.testDetails.wpmLabels,
         datasets: [
             {
                 label: 'words per minute', 
                 data: props.testDetails.wpmData,
-                borderColor: '#606e7a',
-                backgroundColor: '#8b949c'
+                backgroundColor: wpm_color,
+                borderColor: wpm_border_color
             }
         ], 
     }
@@ -75,8 +83,8 @@ const FinishedTest = (props: propsInterface) => {
             {
                 label: 'errors', 
                 data: props.testDetails.errorsData,
-                borderColor: '#795c58', 
-                backgroundColor: '#ff7962', 
+                backgroundColor: error_color, 
+                borderColor: error_border_color
             }
         ]
     }
@@ -91,7 +99,7 @@ const FinishedTest = (props: propsInterface) => {
                         size: 14, 
                         family: 'Red Hat Mono',
                     }, 
-                    color: '#606e7a', 
+                    color: chart_text_color, 
                 }
             },
             title: {
@@ -107,14 +115,14 @@ const FinishedTest = (props: propsInterface) => {
                 },
                 grid: {
                     display: true, 
-                    color: 'rgba(125, 125, 125, 0.2)'
+                    color: chart_color
                 },
                 ticks: {
                     font: {
                         family: 'Red Hat Mono', 
                         size: 11
                     }, 
-                    color: '#606e7ac0'
+                    color: chart_text_color
                 }
             },
             yAxes: {
@@ -124,14 +132,14 @@ const FinishedTest = (props: propsInterface) => {
                 },
                 grid: {
                     display: true, 
-                    color: 'rgba(125, 125, 125, 0.1)'
+                    color: chart_color
                 },
                 ticks: {
                     font: {
                         family: 'Red Hat Mono', 
                         size: 11
                     }, 
-                    color: '#606e7ac0'
+                    color: chart_text_color
                 },
                 min: 0, 
                 suggestedMax: 120
@@ -152,7 +160,7 @@ const FinishedTest = (props: propsInterface) => {
                         size: 13, 
                         family: 'Red Hat Mono',
                     }, 
-                    color: '#606e7a'
+                    color: chart_text_color
                 }
             },
             title: {
@@ -168,14 +176,14 @@ const FinishedTest = (props: propsInterface) => {
                 },
                 grid: {
                     display: true, 
-                    color: 'rgba(125, 125, 125, 0.1)'
+                    color: chart_color
                 }, 
                 ticks: {
                     font: {
                         family: 'Red Hat Mono', 
                         size: 11
                     }, 
-                    color: '#606e7ac0'
+                    color: chart_text_color
                 }
             },
             yAxes: {
@@ -185,7 +193,7 @@ const FinishedTest = (props: propsInterface) => {
                 },
                 grid: {
                     display: true, 
-                    color: 'rgba(125, 125, 125, 0.1)'
+                    color: chart_color
                 },
                 ticks: {
                     stepSize: 1, 
@@ -193,7 +201,7 @@ const FinishedTest = (props: propsInterface) => {
                         family: 'Red Hat Mono', 
                         size: 11
                     }, 
-                    color: '#606e7ac0'
+                    color: chart_text_color
                 },
                 min: 0, 
                 suggestedMax: 3

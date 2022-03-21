@@ -66,7 +66,7 @@
 .search-suggestions {
     background-color: inherit;
     width: 100%; 
-    margin-bottom: 26px; 
+    margin-bottom: 27px; 
     display: grid; 
     justify-content: center;
     grid-template-columns: auto auto auto;
@@ -91,7 +91,7 @@
     background: var(--languages-panel-bar-color); 
     height: 20px; 
     width: 554px; 
-    border-radius: 5px; 
+    /* border-radius: 5px;  */
 }
 
 .languages-list {
@@ -133,6 +133,7 @@
 }
 
 .unsupported-message {
+    margin-right: 12px; 
     display: flex;
     justify-content: flex-end;
     flex-grow: 10; 

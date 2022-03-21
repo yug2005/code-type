@@ -80,6 +80,7 @@
     color: var(--finished-test-secondary-color);     
     background: inherit;
     font-size: 77%; 
+    word-spacing: -3px; 
 }
 
 .other-stat div {

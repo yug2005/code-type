@@ -33,6 +33,12 @@
   --finished-test-secondary-color: #606e7a; 
   --close-settings-color: #a1aebb67; 
   --toggle-status-bar: #454157;
+  --chart-color: #7d7d7d20; 
+  --chart-text-color: #60737ac0;
+  --chart-wpm-color: #8b949c; 
+  --chart-wpm-border-color: #606e7a;
+  --chart-error-color: #ff7962;
+  --chart-error-border-color: #795c58;
 } */
 
 :root {
@@ -49,8 +55,8 @@
   --practice-code-color: #4D6772; 
   --practice-code-cursor: #d6d6d6; 
   --practice-code-correct-color: #ffffffe0; 
-  --practice-code-error-color: #ff6262; 
-  --practice-code-space-error-color: #ffcd6277; 
+  --practice-code-error-color: #ff7962; 
+  --practice-code-space-error-color: #ff796277; 
   --practice-code-hover-color: #ffffffc0; 
   --underbar-background-color: #33444d;
   --underbar-color: #dfdfdf; 
@@ -61,6 +67,12 @@
   --finished-test-secondary-color: #dfdfdf; 
   --close-settings-color: #dfdfdfbb; 
   --toggle-status-bar:  var(--underbar-background-color); 
+  --chart-color: #7d7d7d20; 
+  --chart-text-color: #60737ac0;
+  --chart-wpm-color: #88beb8; 
+  --chart-wpm-border-color: #677c7a;
+  --chart-error-color: #ff7962;
+  --chart-error-border-color: #795c58;
 }
 
 

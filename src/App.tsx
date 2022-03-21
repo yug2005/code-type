@@ -15,6 +15,7 @@ function App() {
   const updateLanguage = (newLanguage: any) => {
     setLanguage(newLanguage);
     newLanguage = newLanguage.replaceAll('+', 'p')
+    newLanguage = newLanguage.replaceAll('#', 's')
     if (newLanguage == language) {
       setLanguagesPanelOpen(false)
       return
