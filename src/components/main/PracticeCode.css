@@ -17,7 +17,7 @@
     transition: all 100ms ease; 
     padding: 50px 20px 40px 60px; 
     z-index: 1; 
-    cursor: pointer; 
+    cursor: default; 
 }
 
 .practice-code-container:hover .practice-code-click-to-start p {
@@ -142,4 +142,50 @@ pre {
     border-bottom-right-radius: 20px;
     padding: 0px 80px; 
     padding-top: 1px; 
+}
+
+.practice-code-next-prev-buttons {
+    height: 40px; 
+    margin-bottom: 220px; 
+    width: inherit; 
+    display: flex;
+    justify-content: flex-end; 
+    position: absolute; 
+    background: none; 
+    margin-left: 6px; 
+}
+
+.practice-code-button {
+    color: var(--underbar-background-color); 
+    background-color: inherit; 
+    display: flex; 
+    justify-content: center;
+    align-items: center;
+    font-size: 28px; 
+    width: 50px; 
+    height: 50px; 
+    border-radius: 10px;
+    margin-right: 8px; 
+    cursor: pointer; 
+    transition: all 400ms ease; 
+}
+
+.practice-code-button:hover {
+    color: var(--practice-code-background-color);
+    background-color: var(--underbar-background-color);
+}
+
+.practice-code-right-arrow {
+    background: none; 
+    margin-left: 2px; 
+}
+.practice-code-left-arrow {
+    background: none; 
+    margin-right: 2px; 
+}
+
+.hide-button {
+    opacity: 0; 
+    z-index: -1; 
+
 }

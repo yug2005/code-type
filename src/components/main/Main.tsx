@@ -8,12 +8,20 @@ interface PropsInteface {
     language: string
     code: any
     getCodeBlock: any
-    addCodeLines: any
+    adjustCodeLines: any
+    onFileSubmit: any
+    usingCustom: any
 }
 
 const Main = (props: PropsInteface) => {
     
     const [showStatusBar, setShowStatusBar] = useState(true)
+
+    const [userInput, setUserInput] = useState('')
+    const [lineIndex, setLineIndex] = useState(0)
+
+    const [currentLine, setCurrentLine] = useState([''])
+    const [previousLines, setPreviousLines] = useState([[''], ['']])
 
     const [limit, setLimit] = useState({
         type: 'time', 
@@ -23,18 +31,12 @@ const Main = (props: PropsInteface) => {
 
     const setNewTimeLimit = (newTimeLimit: number) => {
         setLimit({...limit, type: 'time', timeLimit: newTimeLimit})
+        props.adjustCodeLines(50)
     }
 
     const setNewLineLimit = (newLineLimit: number) => {
         setLimit({...limit, type: 'line', lineLimit: newLineLimit})
-        if (props.code.length < newLineLimit) {
-            console.log("Calling add props.code lines")
-            props.addCodeLines(newLineLimit)
-            return
-        }
-        while (props.code.length > newLineLimit) {
-            props.code.pop()
-        }
+        props.adjustCodeLines(newLineLimit)
     }
     
     // object for the timer
@@ -101,6 +103,10 @@ const Main = (props: PropsInteface) => {
             lineChars: 0, 
             incorrectChars: 0
         })
+        setUserInput('')
+        setLineIndex(0)
+        setCurrentLine([''])
+        setPreviousLines([[''], ['']])
         if (command === 'next') {
             if (limit.type === 'line') {
                 props.getCodeBlock(limit.lineLimit)
@@ -173,16 +179,30 @@ const Main = (props: PropsInteface) => {
         })
         document.getElementById('finished-test-input')?.focus()
     }
-    
+
+    const onFileSubmit = (file:any) => {
+        resetTest("none")
+        props.onFileSubmit(file)
+    }
+
     return (
         (!timer.finished ? 
             <div className='main-container'>
                 <PracticeCode code={props.code} 
                     test={test} 
                     setTest={setTest} 
+                    resetTest={resetTest}
                     startTimer={startTimer} 
                     endTimer={endTimer} 
                     showStatusBar={showStatusBar}
+                    userInput={userInput}
+                    setUserInput={setUserInput}
+                    lineIndex={lineIndex}
+                    setLineIndex={setLineIndex} 
+                    currentLine={currentLine} 
+                    setCurrentLine={setCurrentLine} 
+                    previousLines={previousLines}
+                    usingCustom={props.usingCustom}
                 />
                 {showStatusBar ? <UnderBar   
                     wpm={(timer.time === 0 || test.chars + test.lineChars === 0) ? '' : Math.round(((test.chars + test.lineChars)/4.5)/(timer.time/60))} 
@@ -192,6 +212,7 @@ const Main = (props: PropsInteface) => {
                     limitValue={limit.type === 'time' ? limit.timeLimit : limit.lineLimit}
                     onSetTimeLimit={setNewTimeLimit}
                     onSetLineLimit={setNewLineLimit}
+                    onFileSubmit={onFileSubmit}
                 /> : <div className='placeholder-status-bar'></div>}
                 {/* show status bar button */}
                 <button className='toggle-status-bar' onClick={() => (setShowStatusBar(!showStatusBar))}>{showStatusBar ? 'HIDE STATUS BAR' : 'SHOW STATUS BAR'}</button>

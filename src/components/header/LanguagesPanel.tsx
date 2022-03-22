@@ -104,9 +104,11 @@ const LanguagesPanel = (props: LanguagesPanelInterface) => {
                 </form>
                 {searchText === '' && <div className='search-suggestions'>
                     {preferredLanguages.map((language) => (
-                        <Button text={language} button_id='preferred-language-btn' onClick={() => props.onLanguageClick(language)} />
+                        <Button text={language} button_id='preferred-language-btn' 
+                        onClick={() => props.onLanguageClick(language)}/>
                     ))}
                 </div>}
+                {searchText === '' && <div className="search-suggestions-bottom-bar"></div>}
                 {getLanguagesList(searchText)}
             </div>
             <div className='close-panel' onClick={() => props.onLanguageClick('')} ></div>

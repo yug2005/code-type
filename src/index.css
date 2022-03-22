@@ -49,9 +49,13 @@
   --header-hover-color: #94d8d0; 
   --languages-panel-background-color: var(--placeholder-color); 
   --languages-panel-color: #88beb8;
-  --languages-panel-bar-color: #4D6772; 
+  --languages-panel-button-color: #77a8a3;
+  --languages-panel-search-bar-color: #77a8a3;
+  --languages-panel-bar-color: #455754; 
   --languages-panel-hover-color: #1b2125; 
-  --practice-code-background-color: #242c33; 
+  --languages-unsupported-primary-color: #455754;
+  --languages-unsupported-secondary-color: #455754;
+  --practice-code-background-color: #20272e; 
   --practice-code-color: #4D6772; 
   --practice-code-cursor: #d6d6d6; 
   --practice-code-correct-color: #ffffffe0; 
@@ -62,7 +66,7 @@
   --underbar-color: #dfdfdf; 
   --underbar-value-color: #80CBC4;
   --drop-down-button-color: #eeeeee93;
-  --drop-down-button-hover-color: #314149;  
+  --drop-down-button-hover-color: #28353b;  
   --finished-test-color: #88beb8; 
   --finished-test-secondary-color: #dfdfdf; 
   --close-settings-color: #dfdfdfbb; 
@@ -73,6 +77,8 @@
   --chart-wpm-border-color: #677c7a;
   --chart-error-color: #ff7962;
   --chart-error-border-color: #795c58;
+  --file-upload-preview-color: #656f74;
+  --file-upload-preview-background-color: #20272e;
 }
 
 

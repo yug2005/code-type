@@ -35,7 +35,7 @@
 
 .form {
     font-family: 'Space Mono', monospace;
-    background-color: var(--languages-panel-color);
+    background-color: var(--languages-panel-search-bar-color);
     width: 90%; 
     margin-top: 20px; 
     margin-bottom: 26px; 
@@ -46,7 +46,7 @@
 }
 
 .form:hover {
-    transform: scale(1, 1.07);
+    transform: scale(1, 1.05);
 }
 
 ::placeholder {
@@ -66,7 +66,7 @@
 .search-suggestions {
     background-color: inherit;
     width: 100%; 
-    margin-bottom: 27px; 
+    margin-bottom: 23px; 
     display: grid; 
     justify-content: center;
     grid-template-columns: auto auto auto;
@@ -74,8 +74,15 @@
     grid-gap: 26px 16px; 
 }
 
+.search-suggestions-bottom-bar {
+    height: 30px; 
+    width: 93.5%; 
+    border-radius: 12px; 
+    background: var(--languages-panel-bar-color);
+}
+
 .preferred-language-btn {
-    background-color: var(--languages-panel-color); 
+    background-color: var(--languages-panel-button-color); 
     color: var(--languages-panel-background-color); 
     width: 170px; 
     height: 60px; 
@@ -129,7 +136,7 @@
 .unsupported-language {
     /* filter: brightness(0.8); */
     /* filter: contrast(0.5);  */
-    color: #888; 
+    color: var(--languages-unsupported-primary-color); 
 }
 
 .unsupported-message {
@@ -138,6 +145,6 @@
     justify-content: flex-end;
     flex-grow: 10; 
     background: none; 
-    color: #666; 
+    color: var(--languages-unsupported-secondary-color); 
     /* font-weight: 400; */
 }

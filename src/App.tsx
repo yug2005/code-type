@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import Header from "./components//header/Header";
 import SignIn from "./components/signin/SignIn";
@@ -11,18 +11,29 @@ function App() {
   const [languagesPanelOpen, setLanguagesPanelOpen] = useState(false);
   const [code, setCode] = useState([""])
   const [codeBlocks, setCodeBlocks]:any = useState([])
+
+  const customFile = useRef({
+    use: false,
+    file: [], 
+    index: 0
+  })
   
   const updateLanguage = (newLanguage: any) => {
     setLanguage(newLanguage);
     newLanguage = newLanguage.replaceAll('+', 'p')
     newLanguage = newLanguage.replaceAll('#', 's')
-    if (newLanguage == language) {
+    if (newLanguage === language) {
       setLanguagesPanelOpen(false)
       return
     }
     // console.log("Getting code for language : " + newLanguage)
     getAllCodeBlocks(newLanguage, getNewCodeBlock); 
     setLanguagesPanelOpen(false);
+    customFile.current = {
+      use: false, 
+      file: [], 
+      index: 0
+    }
   };
   
   // Gets all the code block for a specified language from the mysql database
@@ -45,6 +56,11 @@ function App() {
 
   // Gets a new code block with the number of lines specified
   const getNewCodeBlock = (numLines = 50) => {
+    if (customFile.current.use) {
+      getCustomCodeBlock(numLines)
+      return
+    }
+    
     const numCodeBlocks = codeBlocks.length
     setCodeBlocks(codeBlocks)
     // If there are no code blocks, alert the user and return
@@ -72,18 +88,32 @@ function App() {
   }
 
   // if the current code block does not have enough lines, this function adds more lines
-  const addCodeLines = (numLines: number) => {
+  const adjustCodeLines = (numLines: number) => {
+    if (customFile.current.use) {
+      adjustCustomLines(numLines)
+      return
+    }
+
     const numCodeBlocks = codeBlocks.length
     if (numCodeBlocks === 0) {
       alert("There are no code blocks available for this language.")
       return
     }
+    while (code.length > numLines) {
+      code.pop()
+    }
     const usedIndices = new Set()
     while (code.length < numLines) {
       // find a new random code block that has not already been used
       var index = Math.floor(Math.random() * numCodeBlocks + 1)
+      let maxIterations = 0
       while (usedIndices.has(index)) {
         index = Math.floor(Math.random() * numCodeBlocks + 1)
+        if (maxIterations > numCodeBlocks * 5) {
+          alert("There are not enough code blocks for " + numLines + " lines")
+          return
+        }
+        maxIterations++
       }
       usedIndices.add(index)
       // add lines from the code block to the test until you enough lines
@@ -95,8 +125,45 @@ function App() {
     }
   }
 
+  const onCustomFileSubmit = (file: any) => {
+    customFile.current = {
+      use: true, 
+      file: file.split('\n'), 
+      index: 0
+    }
+    getCustomCodeBlock()
+  }
+
+  const getCustomCodeBlock = (numLines = 50) => {
+    if (!customFile.current.file) return
+    const temp:any = []
+    var index = customFile.current.index
+    for (let i = 0; i < numLines; i++) {
+      temp.push(customFile.current.file[index])
+      index++
+      if (index === customFile.current.file.length) index = 0; 
+    }
+    customFile.current.index = index
+    setCode(temp)
+  }
+
+  const adjustCustomLines = (numLines: number) => {
+    var index = customFile.current.index
+    while (code.length > numLines) {
+      if (index === 0) index = customFile.current.file.length
+      code.pop()
+      index--
+    }
+    customFile.current.index = index
+    while (code.length < numLines) {
+      if (index == customFile.current.file.length) index = 0
+      code.push(customFile.current.file[index])
+      index++; 
+    }
+    customFile.current.index = index
+  }
+
   useEffect(() => {
-      // currently supported : c++, javascript, python, css, html
       getAllCodeBlocks(language === "" ? "javascript" : language, getNewCodeBlock)
   }, [])
 
@@ -107,11 +174,20 @@ function App() {
           <LanguagesPanel onLanguageClick={updateLanguage} />
         )}
         <Header
-          language={language === "" ? "languages" : language}
+          language={customFile.current.use ? "custom" : language === "" ? "languages" : language}
           onClickLanguages={() => setLanguagesPanelOpen(true)}
         />
         <Routes>
-          <Route path="/" element={<Main language={language === "" ? 'javascript' : language} code={code} getCodeBlock={getNewCodeBlock} addCodeLines={addCodeLines}/>}/>
+          <Route path="/" element={
+            <Main 
+              language={customFile.current.use ? "custom" : language === "" ? 'javascript' : language} 
+              code={code} 
+              getCodeBlock={getNewCodeBlock} 
+              adjustCodeLines={adjustCodeLines}
+              onFileSubmit={onCustomFileSubmit}
+              usingCustom={customFile.current.use}
+            />
+          }/>
           <Route path="/signin" element={<SignIn />} />
           <Route path='/settings' element={<Settings />}/>
         </Routes>
