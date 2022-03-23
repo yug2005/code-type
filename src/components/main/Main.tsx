@@ -11,15 +11,19 @@ interface PropsInteface {
     adjustCodeLines: any
     onFileSubmit: any
     usingCustom: any
+    refresh: any
 }
 
 const Main = (props: PropsInteface) => {
     
+    useEffect(() => {
+        resetTest("none")
+    }, [props.refresh])
+
     const [showStatusBar, setShowStatusBar] = useState(true)
 
     const [userInput, setUserInput] = useState('')
     const [lineIndex, setLineIndex] = useState(0)
-
     const [currentLine, setCurrentLine] = useState([''])
     const [previousLines, setPreviousLines] = useState([[''], ['']])
 
@@ -41,6 +45,7 @@ const Main = (props: PropsInteface) => {
     
     // object for the timer
     const [timer, setTimer] = useState({
+        httime: 0,
         time: 0, 
         started: false, 
         finished: false 
@@ -60,11 +65,21 @@ const Main = (props: PropsInteface) => {
             if (timer.started) {
                 interval = setInterval(() => {
                     setTempIncorrectChars(test.incorrectChars)
+                    // set timer
                     setTimer({...timer, time: timer.time + 1})
-                    if (timer.time > 0) wpm.push([Math.round(((test.chars + test.lineChars)/4.5)/(timer.time/60)), timer.time])
-                    if (test.incorrectChars > tempIncorrectChars) errors.push([test.incorrectChars - tempIncorrectChars, timer.time])
+                    // determine the wpm
+                    if (timer.time > 0) {
+                        const currentwpm = Math.round(((test.chars + test.lineChars)/4.5)/(timer.time/60.0))
+                        wpm.push([currentwpm, timer.time])
+                    }
+                    // determine the number of errors
+                    if (test.incorrectChars > tempIncorrectChars) {
+                        const numErrors = test.incorrectChars - tempIncorrectChars
+                        errors.push([numErrors, timer.time])
+                    }
                 }, 1000)
             } 
+            // when the timer limit is reached
             if (limit.type === 'time' && limit.timeLimit - timer.time === 0) {
                 endTimer()
                 clearInterval(interval)
@@ -73,15 +88,18 @@ const Main = (props: PropsInteface) => {
         return () => clearInterval(interval)
     }, [timer]) 
     
+    // starts the timer
     const startTimer = () => {
         if (!timer.started) setTimer({...timer, started: true})
     }
 
+    // ends the timer
     const endTimer = () => {
         setTimer({...timer, finished: true})
         getTestDetails()
     }
 
+    // stores the test details
     const [test, setTest] = useState({
         chars: 0, 
         lineChars: 0,
@@ -91,6 +109,7 @@ const Main = (props: PropsInteface) => {
     // reset all the variables for new test
     const resetTest = (command: string) => {
         setTimer({
+            httime: 0,
             time: 0, 
             started: false, 
             finished: false
@@ -108,9 +127,7 @@ const Main = (props: PropsInteface) => {
         setCurrentLine([''])
         setPreviousLines([[''], ['']])
         if (command === 'next') {
-            if (limit.type === 'line') {
-                props.getCodeBlock(limit.lineLimit)
-            }
+            if (limit.type === 'line') props.getCodeBlock(limit.lineLimit)
             else props.getCodeBlock()
         }
     }
@@ -180,6 +197,7 @@ const Main = (props: PropsInteface) => {
         document.getElementById('finished-test-input')?.focus()
     }
 
+    // when the user submits a file, then reset the test
     const onFileSubmit = (file:any) => {
         resetTest("none")
         props.onFileSubmit(file)
@@ -188,6 +206,7 @@ const Main = (props: PropsInteface) => {
     return (
         (!timer.finished ? 
             <div className='main-container'>
+                {/* practice code block */}
                 <PracticeCode code={props.code} 
                     test={test} 
                     setTest={setTest} 
@@ -204,20 +223,25 @@ const Main = (props: PropsInteface) => {
                     previousLines={previousLines}
                     usingCustom={props.usingCustom}
                 />
-                {showStatusBar ? <UnderBar   
-                    wpm={(timer.time === 0 || test.chars + test.lineChars === 0) ? '' : Math.round(((test.chars + test.lineChars)/4.5)/(timer.time/60))} 
-                    accuracy={test.chars + test.lineChars === 0 ? '' : Math.max(Math.round(((test.chars + test.lineChars - test.incorrectChars)/(test.chars + test.lineChars)) * 100), 0)}
-                    time={limit.type === 'time' ? limit.timeLimit - timer.time : timer.started ? Math.min(timer.time, 300) : ''} 
+                {/* status bar below the practice code */}
+                {showStatusBar && <UnderBar   
+                    wpm={(timer.time === 0 || test.chars + test.lineChars === 0) ? '' : 
+                    Math.round(((test.chars+test.lineChars)/4.5)/(timer.time/60))} 
+                    accuracy={test.chars + test.lineChars === 0 ? '' : 
+                    Math.max(Math.round(((test.chars+test.lineChars-test.incorrectChars)/(test.chars+test.lineChars))*100), 0)}
+                    time={limit.type === 'time' ? limit.timeLimit-timer.time : timer.started ? Math.min(timer.time, 300) : ''} 
                     limit={limit.type}
                     limitValue={limit.type === 'time' ? limit.timeLimit : limit.lineLimit}
                     onSetTimeLimit={setNewTimeLimit}
                     onSetLineLimit={setNewLineLimit}
                     onFileSubmit={onFileSubmit}
-                /> : <div className='placeholder-status-bar'></div>}
+                />}
                 {/* show status bar button */}
-                <button className='toggle-status-bar' onClick={() => (setShowStatusBar(!showStatusBar))}>{showStatusBar ? 'HIDE STATUS BAR' : 'SHOW STATUS BAR'}</button>
-            </div>
-            :
+                <button className='toggle-status-bar' 
+                    onClick={() => setShowStatusBar(!showStatusBar)}>
+                    {showStatusBar ? 'HIDE STATUS BAR' : 'SHOW STATUS BAR'}
+                </button>
+            </div> : 
             <FinishedTest 
                 testDetails={testDetails}
                 limit={limit.type} 

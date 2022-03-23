@@ -7,6 +7,8 @@ import Main from "./components/main/Main";
 import Settings from "./components/settings/Settings"
 
 function App() {
+  const [refresh, setRefresh] = useState(false)
+  
   const [language, setLanguage] = useState('');
   const [languagesPanelOpen, setLanguagesPanelOpen] = useState(false);
   const [code, setCode] = useState([""])
@@ -56,6 +58,7 @@ function App() {
 
   // Gets a new code block with the number of lines specified
   const getNewCodeBlock = (numLines = 50) => {
+    setRefresh(!refresh)
     if (customFile.current.use) {
       getCustomCodeBlock(numLines)
       return
@@ -186,6 +189,7 @@ function App() {
               adjustCodeLines={adjustCodeLines}
               onFileSubmit={onCustomFileSubmit}
               usingCustom={customFile.current.use}
+              refresh={refresh}
             />
           }/>
           <Route path="/signin" element={<SignIn />} />

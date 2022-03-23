@@ -20,6 +20,12 @@
     cursor: default; 
 }
 
+.practice-code-no-status-bar {
+    border-bottom-left-radius: 20px;
+    border-bottom-right-radius: 20px;
+    padding-bottom: 50px; 
+}
+
 .practice-code-container:hover .practice-code-click-to-start p {
     color: var(--practice-code-correct-color);
 }
@@ -32,6 +38,7 @@
     height: 100%; 
     background-color: inherit; 
     margin-top: 20px; 
+    cursor: pointer;
 }
 
 .practice-code-click-to-start p {
@@ -53,10 +60,10 @@
     margin: 10px; 
 }
 
-/* .practice-code-container:focus {
+.practice-code-container:focus {
     color: transparent; 
     text-shadow: 0 0 8px rgba(255, 255, 255, 0.5);
-} */
+}
 
 .practice-code-cursor {
     background: var(--practice-code-cursor); 
@@ -137,11 +144,12 @@ pre {
 .placeholder-status-bar {
     background: var(--practice-code-background-color); 
     width: 920px; 
-    height: 59px; 
+    height: 60px; 
     border-bottom-left-radius: 20px;
     border-bottom-right-radius: 20px;
     padding: 0px 80px; 
     padding-top: 1px; 
+    display: none; 
 }
 
 .practice-code-next-prev-buttons {

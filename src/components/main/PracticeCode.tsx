@@ -32,6 +32,7 @@ const PracticeCode = (props: PropsInterface) => {
     }
     
     useEffect(() => {
+        // setActive(document.activeElement === document.getElementById('practice-code-input'))
         enable()
     })
 
@@ -47,11 +48,9 @@ const PracticeCode = (props: PropsInterface) => {
         props.setTest({...props.test, lineChars: input.length, incorrectChars: 
         (lastChar !== line[e.target.value.length - 1]) ? props.test.incorrectChars + 1 : props.test.incorrectChars})
 
-        props.setCurrentLine(input.map((val: string, index: number) => {
-            if (val === line[index]) return 'text-correct'
-            else if (line[index] === ' ') return 'text-space-wrong'
-            else return 'text-wrong'
-        }))
+        props.setCurrentLine(input.map((val: string, index: number) => (
+            val === line[index] ? 'text-correct' : line[index] === ' ' ? 'text-space-wrong' : 'text-wrong'
+        )))     
     }
     
     // when the user presses enter on the keyboard
@@ -122,7 +121,8 @@ const PracticeCode = (props: PropsInterface) => {
     return (
         <div>
             {/* main practice code container */}
-            <div className='practice-code-container' onClick={enable} > 
+            <div className={`practice-code-container ${!props.showStatusBar ? 'practice-code-no-status-bar' : ''}`}
+            onClick={enable} > 
                 {active ? getPreviewCode() : 
                 (<div className='practice-code-click-to-start' id={!props.showStatusBar ? 'add-margin' : ''}>
                     <p>click or press enter to start...</p>

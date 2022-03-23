@@ -1,5 +1,4 @@
 import React, { useState } from 'react'
-import { isPropertyAccessExpression } from 'typescript';
 import Button from '../Button'
 import './LanguagesPanel.css'; 
 
@@ -23,57 +22,54 @@ const supportedLanguages = [
     'xml'
 ]
 
+const preferredLanguages = [
+    'c++', 
+    'javascript', 
+    'java', 
+    'python',
+    'mysql', 
+    'html'
+]
+
+const languages = [
+    'c', 
+    'c#', 
+    'c++', 
+    'css', 
+    'go',
+    'html', 
+    'java', 
+    'javascript', 
+    'kotlin',
+    'mysql', 
+    'php', 
+    'python', 
+    'xml',
+    'assembly', 
+    'dart',
+    'django', 
+    'F#', 
+    'flow', 
+    'hxml', 
+    'jsx', 
+    'latex', 
+    'livescript', 
+    'matlab', 
+    'perl', 
+    'rust', 
+    'swift', 
+    'typescript', 
+    'verilog', 
+    'vhdl',
+    'vue'
+]
+
 const LanguagesPanel = (props: LanguagesPanelInterface) => {
     const [searchText, setSearchText] = useState('')
-    const [preferredLanguages, setPreferredLanguages] = useState([
-        'c++', 
-        'javascript', 
-        'java', 
-        'python',
-        'mysql', 
-        'html'
-    ])
-    
-    const [languages, setLanguages] = useState([
-        'c', 
-        'c#', 
-        'c++', 
-        'css', 
-        'go',
-        'html', 
-        'java', 
-        'javascript', 
-        'kotlin',
-        'mysql', 
-        'php', 
-        'python', 
-        'xml',
-        'assembly', 
-        'clike', 
-        'CQL', 
-        'dart',
-        'django', 
-        'F#', 
-        'flow', 
-        'http', 
-        'hxml', 
-        'jsx', 
-        'latex', 
-        'livescript', 
-        'matlab', 
-        'perl', 
-        'rust', 
-        'swift', 
-        'tsx', 
-        'typescript', 
-        'verilog', 
-        'vhdl',
-        'vue'
-    ])
 
+    // gets the languages filtered by the search text
     const getFilteredLanguagesList = () => {
         let filteredLanguages = []
-
         if (searchText.length < 2) {
             filteredLanguages = languages.filter((val:string) => val.startsWith(searchText))
         }
@@ -81,11 +77,12 @@ const LanguagesPanel = (props: LanguagesPanelInterface) => {
         return filteredLanguages
     }
 
+    // returns the list of languages to be displayed
     const getLanguagesList = (search: string) => {
         return (<div className='languages-list'>
             {getFilteredLanguagesList().map((val:string) => {
+                // whether the language is supported or not
                 const isSupported = supportedLanguages.includes(val)
-                
                 return (<button 
                         onClick={isSupported ? () => props.onLanguageClick(val) : () => {console.log("Language Not Supported")}} 
                         className={`listed-language ${isSupported ? '' : 'unsupported-language'}`}>

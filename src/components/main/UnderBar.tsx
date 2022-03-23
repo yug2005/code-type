@@ -13,8 +13,9 @@ interface BarInterface {
     onFileSubmit: any
 }
 
+const fileTypes = ".c,.cs,.cpp,.h,.hpp,.css,.go,.html,.java,.js,.jsx,.ts,.tsx,.kt,.sql,.php,.py,.txt"
+
 const UnderBar = (props: BarInterface) => {
-    const fileTypes = ".c,.cs,.cpp,.h,.hpp,.css,.go,.html,.java,.js,.jsx,.ts,.tsx,.kt,.sql,.php,.py,.txt"
 
     const [fileName, setFileName]:any = useState()
     const [file, setFile]:any = useState()
