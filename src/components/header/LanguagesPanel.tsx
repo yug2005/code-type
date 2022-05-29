@@ -51,7 +51,6 @@ const languages = [
     'F#', 
     'flow', 
     'hxml', 
-    'jsx', 
     'latex', 
     'livescript', 
     'matlab', 

@@ -7,40 +7,7 @@
   margin: 0; 
   padding: 0;  
 }
-
-/* :root {
-  --background-color: #2e2d3a;
-  --placeholder-color: #323141; 
-  --header-background-color: var(--background-color);
-  --header-color: #a1aebb;
-  --header-hover-color: #c7d5e2; 
-  --languages-panel-background-color: var(--placeholder-color); 
-  --languages-panel-color: #6a687e;
-  --languages-panel-bar-color: #57546d9f; 
-  --practice-code-background-color: #2b2936; 
-  --pracitce-code-color: #7c7896; 
-  --practice-code-cursor: #d4ceff; 
-  --practice-code-correct-color: #ffffffb9; 
-  --practice-code-error-color: #ff7962; 
-  --practice-code-space-error-color: #ff796277; 
-  --practice-code-hover-color: #5f5b72; 
-  --underbar-background-color: #403e50;
-  --underbar-color: #a19fb9; 
-  --underbar-value-color: var(--practice-code-error-color);
-  --drop-down-button-color: #a19fb993;
-  --drop-down-button-hover-color: #363342;  
-  --finished-test-color: #8b949c; 
-  --finished-test-secondary-color: #606e7a; 
-  --close-settings-color: #a1aebb67; 
-  --toggle-status-bar: #454157;
-  --chart-color: #7d7d7d20; 
-  --chart-text-color: #60737ac0;
-  --chart-wpm-color: #8b949c; 
-  --chart-wpm-border-color: #606e7a;
-  --chart-error-color: #ff7962;
-  --chart-error-border-color: #795c58;
-} */
-
+ 
 :root {
   --background-color: #273138;
   --placeholder-color: #242c33; 
@@ -51,10 +18,10 @@
   --languages-panel-color: #88beb8;
   --languages-panel-button-color: #77a8a3;
   --languages-panel-search-bar-color: #77a8a3;
-  --languages-panel-bar-color: #455754; 
+  --languages-panel-bar-color: #77a8a3; 
   --languages-panel-hover-color: #1b2125; 
-  --languages-unsupported-primary-color: #455754;
-  --languages-unsupported-secondary-color: #455754;
+  --languages-unsupported-primary-color: #5b817b;
+  --languages-unsupported-secondary-color: var(--languages-unsupported-primary-color);
   --practice-code-background-color: #20272e; 
   --practice-code-color: #4D6772; 
   --practice-code-cursor: #d6d6d6; 
@@ -62,10 +29,11 @@
   --practice-code-error-color: #ff7962; 
   --practice-code-space-error-color: #ff796277; 
   --practice-code-hover-color: #ffffffc0; 
+  --practice-code-button-color: #77a8a3;
   --underbar-background-color: #33444d;
   --underbar-color: #dfdfdf; 
   --underbar-value-color: #80CBC4;
-  --drop-down-button-color: #eeeeee93;
+  --drop-down-button-color: #eeeeeeaa;
   --drop-down-button-hover-color: #28353b;  
   --finished-test-color: #88beb8; 
   --finished-test-secondary-color: #dfdfdf; 
@@ -79,7 +47,7 @@
   --chart-error-border-color: #795c58;
   --file-upload-preview-color: #656f74;
   --file-upload-preview-background-color: #20272e;
-}
+}  
 
 
 input:focus,

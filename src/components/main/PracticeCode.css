@@ -91,7 +91,7 @@
 
 .practice-code-text {
     background: inherit; 
-    font-size: 23px; 
+    font-size: 24px; 
 }
 
 .tab-space {
@@ -164,7 +164,7 @@ pre {
 }
 
 .practice-code-button {
-    color: var(--underbar-background-color); 
+    color: var(--practice-code-button-color); 
     background-color: inherit; 
     display: flex; 
     justify-content: center;
@@ -180,7 +180,12 @@ pre {
 
 .practice-code-button:hover {
     color: var(--practice-code-background-color);
-    background-color: var(--underbar-background-color);
+    background-color: var(--practice-code-button-color);
+}
+
+.practice-code-button-hover {
+    color: var(--practice-code-background-color);
+    background-color: var(--practice-code-button-color);
 }
 
 .practice-code-right-arrow {

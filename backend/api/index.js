@@ -65,5 +65,5 @@ app.get('/:language', (req, res) => {
 
 
 app.listen(3001, () => {
-    console.log('server running on port 3001')
+    console.log('Languages Server running on port 3001')
 })

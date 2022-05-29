@@ -31,26 +31,44 @@ interface propsInterface {
     testDetails: any
     limit: string
     limitValue: number
-    onNewTest: any
+    resetTest: any
     language: string
 }
 
 const FinishedTest = (props: propsInterface) => {
 
     useEffect(() => {
-        focusInput()
+        document.getElementById('finished-test-input')?.focus()
+        setUserInput('')
     }, [])
 
-    const [userInput, setUserInput] = useState('')
-
-    const focusInput = () => {
-        document.getElementById('finished-test-input')?.focus()
+    const map:any = {}
+    onkeydown = onkeyup = (e: any) => {
+        map[e.keyCode] = e.type == 'keydown'
+        // when the user is holding down the tab key
+        if (map[9]) {
+            console.log("Added to class list")
+            document.getElementById("next-test-button")?.classList.add("finished-test-buttons-hover")
+            console.log(document.getElementById("next-test-button")?.classList)
+        }
+        else {
+            console.log("Removed from class list")
+            document.getElementById("next-test-button")?.classList.remove("finished-test-buttons-hover")
+        }
+        // when the user presses tab and enter
+        if (map[9] && map[13]) {
+            // TODO: allow the user to hold down the tab to keep resetting the test
+            props.resetTest(true)
+            return false
+        }
     }
+
+    const [userInput, setUserInput] = useState('')
 
     const getWordInUserInput = (word: string) => {
         for (let i = word.length; i > 0; i--) {
             if (userInput.length - i !== -1 && userInput.lastIndexOf(word.substring(0, i)) === userInput.length - i) {
-                if (i === word.length) props.onNewTest(word)
+                if (i === word.length) props.resetTest(word === 'next')
                 return Array.from({length: word.length}, (val: any, index: number) => index < i ? 'typed' : '')
             }     
         }
@@ -212,7 +230,7 @@ const FinishedTest = (props: propsInterface) => {
     }
 
     return (
-        <div className='test-finished-container' onClick={() => focusInput()}>
+        <div className='test-finished-container'>
             <div className='test-finished-title'>
                 <h2>TEST SUMMARY</h2>
             </div>
@@ -264,31 +282,28 @@ const FinishedTest = (props: propsInterface) => {
                 </div>
             </div>
             <div className='finished-test-buttons'>
-                <button className='button' onClick={() => props.onNewTest('next')}>
-                    <div className='button-label'>
-                        {"next".split('').map((char, index) => {
-                            return <span id={getWordInUserInput('next')[index]}>{char}</span>
-                        })} 
-                    </div> 
-                    <MdNavigateNext id='add-some-margin'/>
-                </button>
-                <button className='button' onClick={() => props.onNewTest('again')}>
+                <button className="finished-test-button" onClick={() => props.resetTest(false)}>
                     <div className='button-label'>
                         {"again".split('').map((char, index) => {
                             return <span id={getWordInUserInput('again')[index]}>{char}</span>
                         })} 
                     </div>
-                    <IoRepeatOutline id='add-some-margin'/>
+                    <IoRepeatOutline id='prev-icon'/>
+                </button>
+                <button className="finished-test-button" id="next-test-button" onClick={() => props.resetTest(true)}>
+                    <div className='button-label'>
+                        {"next".split('').map((char, index) => {
+                            return <span id={getWordInUserInput('next')[index]}>{char}</span>
+                        })} 
+                    </div> 
+                    <MdNavigateNext id='next-icon'/>
                 </button>
             </div>
             {/* temporary text box */}
             <input 
-                className='temporary-input'
                 id='finished-test-input'
-                type='text' 
-                value={userInput} 
-                placeholder='type...'
-                onChange={(e) => setUserInput(e.target.value)} 
+                type='text'
+                onChange={e => setUserInput(e.target.value)} 
                 >
             </input>
             

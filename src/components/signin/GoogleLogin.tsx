@@ -1,4 +1,4 @@
-import React, {useState} from 'react'
+import React from 'react'
 import { useGoogleLogin } from 'react-google-login'
 import { CgGoogle } from 'react-icons/cg'
 import './GoogleLogin.css'

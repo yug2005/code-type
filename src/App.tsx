@@ -1,5 +1,6 @@
 import React, { useEffect, useState, useRef } from "react";
-import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
+import { BrowserRouter as Router, Route, Routes, useNavigate, useLocation } from "react-router-dom";
+import { UserContext } from "./context/UserContext";
 import Header from "./components//header/Header";
 import SignIn from "./components/signin/SignIn";
 import LanguagesPanel from "./components/header/LanguagesPanel";
@@ -7,6 +8,56 @@ import Main from "./components/main/Main";
 import Settings from "./components/settings/Settings"
 
 function App() {
+
+  onkeydown = (e:any) => {
+    if (e.keyCode === 27) {
+      if (languagesPanelOpen) {
+        setLanguagesPanelOpen(false)
+      }
+      return false
+    }
+    else if (e.keyCode === 9) return false
+  }
+
+  const [settings, setSettings] = useState(null)
+
+  // user settings server 
+  const fetchUser = async (id:number) => {
+    const res = await fetch(`http://localhost:5001/users/${id}`)
+    const user = await res.json()
+    return user
+  }
+
+  const getSettings = async () => {
+    const user = await fetchUser(0)
+    setSettings(user.settings); 
+  }
+
+  const updateSettings = async (id:number, settings:any) => {
+    const res = await fetch(`http://localhost:5001/users/${id}`)
+    const user = await res.json()
+    const newUser = {...user, name: "Joe", settings}
+    await fetch(`http://localhost:5001/users/${id}`, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(newUser)
+    })
+  }
+
+  useEffect(() => {
+    getSettings(); 
+  }, [])
+
+  useEffect(() => {
+    if (settings) {
+      console.log("updating settings...")
+      updateSettings(0, settings); 
+    }
+  }, [settings])
+
+  // passed in to Main component to reset the state of the test
   const [refresh, setRefresh] = useState(false)
   
   const [language, setLanguage] = useState('');
@@ -14,21 +65,24 @@ function App() {
   const [code, setCode] = useState([""])
   const [codeBlocks, setCodeBlocks]:any = useState([])
 
+  // if the user wants to upload a custom file for use
   const customFile = useRef({
     use: false,
     file: [], 
     index: 0
   })
   
+  // when the user changes the language through the language panel
   const updateLanguage = (newLanguage: any) => {
     setLanguage(newLanguage);
+    // parse the name of the language
     newLanguage = newLanguage.replaceAll('+', 'p')
     newLanguage = newLanguage.replaceAll('#', 's')
+    // if the language is already in use, just close the panel
     if (newLanguage === language) {
       setLanguagesPanelOpen(false)
       return
     }
-    // console.log("Getting code for language : " + newLanguage)
     getAllCodeBlocks(newLanguage, getNewCodeBlock); 
     setLanguagesPanelOpen(false);
     customFile.current = {
@@ -128,6 +182,7 @@ function App() {
     }
   }
 
+  // when the user submits a new custom file
   const onCustomFileSubmit = (file: any) => {
     customFile.current = {
       use: true, 
@@ -137,6 +192,7 @@ function App() {
     getCustomCodeBlock()
   }
 
+  // gets a new code block from the custom file
   const getCustomCodeBlock = (numLines = 50) => {
     if (!customFile.current.file) return
     const temp:any = []
@@ -150,6 +206,7 @@ function App() {
     setCode(temp)
   }
 
+  // if the current code block does not have enough lines, this function adds more lines
   const adjustCustomLines = (numLines: number) => {
     var index = customFile.current.index
     while (code.length > numLines) {
@@ -159,7 +216,7 @@ function App() {
     }
     customFile.current.index = index
     while (code.length < numLines) {
-      if (index == customFile.current.file.length) index = 0
+      if (index === customFile.current.file.length) index = 0
       code.push(customFile.current.file[index])
       index++; 
     }
@@ -176,25 +233,27 @@ function App() {
         {languagesPanelOpen && (
           <LanguagesPanel onLanguageClick={updateLanguage} />
         )}
-        <Header
-          language={customFile.current.use ? "custom" : language === "" ? "languages" : language}
-          onClickLanguages={() => setLanguagesPanelOpen(true)}
-        />
-        <Routes>
-          <Route path="/" element={
-            <Main 
-              language={customFile.current.use ? "custom" : language === "" ? 'javascript' : language} 
-              code={code} 
-              getCodeBlock={getNewCodeBlock} 
-              adjustCodeLines={adjustCodeLines}
-              onFileSubmit={onCustomFileSubmit}
-              usingCustom={customFile.current.use}
-              refresh={refresh}
-            />
-          }/>
-          <Route path="/signin" element={<SignIn />} />
-          <Route path='/settings' element={<Settings />}/>
-        </Routes>
+        <UserContext.Provider value={[settings, setSettings]}>
+          <Header
+            language={customFile.current.use ? "custom" : language === "" ? "languages" : language}
+            onClickLanguages={() => setLanguagesPanelOpen(true)}
+          />
+          <Routes>
+            <Route path="/" element={
+              <Main 
+                language={customFile.current.use ? "custom" : language === "" ? 'javascript' : language} 
+                code={code} 
+                getCodeBlock={getNewCodeBlock} 
+                adjustCodeLines={adjustCodeLines}
+                onFileSubmit={onCustomFileSubmit}
+                usingCustom={customFile.current.use}
+                refresh={refresh}
+              />
+            }/>
+            <Route path="/signin" element={<SignIn />} />
+            <Route path='/settings' element={<Settings />}/>
+          </Routes>
+        </UserContext.Provider>
       </div>
     </Router>
   );

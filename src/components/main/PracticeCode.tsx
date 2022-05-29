@@ -1,4 +1,5 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useContext } from 'react'
+import { UserContext } from '../../context/UserContext'
 import './PracticeCode.css'
 
 import { FiChevronRight } from 'react-icons/fi'
@@ -23,6 +24,8 @@ interface PropsInterface {
 }
 
 const PracticeCode = (props: PropsInterface) => {
+    const [settings, setSettings]:any = useContext(UserContext)
+    
     // whether the test is active
     const [active, setActive] = useState(false)
     
@@ -32,30 +35,53 @@ const PracticeCode = (props: PropsInterface) => {
     }
     
     useEffect(() => {
-        // setActive(document.activeElement === document.getElementById('practice-code-input'))
         enable()
-    })
+    }, [])
 
     // when the user types on keyboard
     const onUserInputChange = (e: any) => {
+        const input = e.target.value
         props.startTimer()
-        props.setUserInput(e.target.value)
+        props.setUserInput(input)
 
         const line = props.code[props.lineIndex].replace(/\s+/g, ' ').trim()
-        const input = (e.target.value).split('')
-        const lastChar = e.target.value.charAt(e.target.value.length - 1)
+        const numIncorrect = props.test.incorrectChars + (input[input.length - 1] !== line[input.length - 1])
+        
+        if (settings?.test.fails_on.use && settings?.test.fails_on.chars <= numIncorrect) {
+            console.log("Test Failed")
+            props.endTimer()
+        }
 
-        props.setTest({...props.test, lineChars: input.length, incorrectChars: 
-        (lastChar !== line[e.target.value.length - 1]) ? props.test.incorrectChars + 1 : props.test.incorrectChars})
+        props.setTest({...props.test, lineChars: input.length, incorrectChars: numIncorrect})
 
-        props.setCurrentLine(input.map((val: string, index: number) => (
+        props.setCurrentLine(input.split('').map((val: string, index: number) => (
             val === line[index] ? 'text-correct' : line[index] === ' ' ? 'text-space-wrong' : 'text-wrong'
         )))     
     }
-    
-    // when the user presses enter on the keyboard
-    const onUserEnter = (e: any) => {
-        if (e.key === 'Enter'){
+
+    const map:any = {}
+    const handleKeyPress = (e: any) => {
+        map[e.keyCode] = e.type == 'keydown'
+        // if the user presses the esc key
+        if (map[27]) {
+            setActive(false)
+            return false
+        }
+        // when the user is holding down the tab key
+        if (map[9]) {
+            document.getElementById("next-button")?.classList.add("practice-code-button-hover")
+        }
+        else {
+            document.getElementById("next-button")?.classList.remove("practice-code-button-hover")
+        }
+        // when the user presses tab and enter
+        if (map[9] && map[13]) {
+            // TODO: allow the user to hold down the tab to keep resetting the test
+            props.resetTest(true)
+            return false
+        }
+        // when the user presses enter only
+        else if (map[13]) {
             props.setUserInput('')
             props.setLineIndex(props.lineIndex + 1)
             props.setTest({...props.test, chars: (props.test.chars + props.test.lineChars), lineChars: 0})
@@ -130,10 +156,10 @@ const PracticeCode = (props: PropsInterface) => {
                 )}
                 {!props.usingCustom && <div className='practice-code-next-prev-buttons'>
                     <div className={`practice-code-button`} 
-                         onClick={() => props.resetTest("prev")}>
+                        onClick={() => props.resetTest(false)}>
                         <FiChevronLeft className="practice-code-left-arrow"/>
                     </div>
-                    <div className="practice-code-button" onClick={() => props.resetTest("next")}>
+                    <div className="practice-code-button" id="next-button" onClick={() => props.resetTest(true)}>
                         <FiChevronRight className="practice-code-right-arrow"/>
                     </div>
                 </div>}
@@ -141,8 +167,10 @@ const PracticeCode = (props: PropsInterface) => {
             {/* temporary input box (not displayed) */}
             <input type='text' id='practice-code-input' 
                 value={props.userInput} 
-                onChange={(e) => onUserInputChange(e)} 
-                onKeyPress={(e) => (onUserEnter(e))}>
+                onChange={e => onUserInputChange(e)} 
+                onKeyDown={e => handleKeyPress(e)}
+                onKeyUp={e => handleKeyPress(e)}
+            >
             </input>
         </div>
     )

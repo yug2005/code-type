@@ -7,7 +7,7 @@
     height: 70%; 
     margin-bottom: 2%; 
     overflow-y: scroll;
-    /* border: solid;  */
+    
 }
 
 .settings-container {
@@ -35,13 +35,25 @@
     /* border: solid;  */
 }
 
-.test-fails {
-    margin-bottom: 5px; 
+.test-fails-container {
+    display: flex; 
+}
+
+.test-fails-side-bar {
+    height: 140px; 
+    width: 4px; 
+    border-radius: 4px; 
+    background: var(--languages-panel-bar-color); 
+    margin-left: 3px; 
+    margin-top: 20px; 
+}
+
+.setting-padding {
+    margin-bottom: 25px; 
 }
 
 .test-fails-options {
-    /* border: solid;  */
-    width: 60%; 
+    width: 100%; 
 }
 
 .test-fails-setting {
@@ -121,4 +133,68 @@
 .close-settings:hover {
     color: var(--finished-test-color);
     transform: scale(1.05)
+}
+
+.slider-field {
+    color: var(--finished-test-secondary-color);
+    display: flex; 
+    justify-content: flex-start;
+    align-items: center; 
+    width: 385px; 
+}
+
+.slider-setting {
+    display: flex; 
+    justify-content: flex-start;
+    align-items: flex-start;
+    margin-top: 30px; 
+}
+
+.slider-setting .slider { 
+    margin-right: -15px; 
+}
+
+.slider-left-value {
+    margin: 0px 10px; 
+    color: #ccc;
+    text-align: right; 
+    width: 30px; 
+}
+.slider-right-value {
+    margin: 0px 10px; 
+    color: #ccc; 
+    text-align: left; 
+    width: 35px; 
+}
+
+.input-slider {
+    background: var(--practice-code-background-color); 
+    -webkit-appearance: none;
+    height: 5px; 
+    border-radius: 4px; 
+    width: 320px; 
+    appearance: none; 
+}
+
+.input-slider::-webkit-slider-thumb {
+    background: var(--finished-test-color);
+    -webkit-appearance: none; 
+    width: 15px; 
+    height: 15px; 
+    border-radius: 50%; 
+}
+
+.slider-value {
+    background: #00000030;
+    color: var(--finished-test-color);
+    border-radius: 25%;
+    width: 30px; 
+    height: 25px;
+    display: flex; 
+    justify-content: center;
+    align-items: center;
+    position: relative; 
+    font-weight: 500; 
+    font-size: 13px;
+    margin-top: 2px; 
 }

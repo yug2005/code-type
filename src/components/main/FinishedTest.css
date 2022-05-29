@@ -96,37 +96,54 @@
     align-items: center; 
 }
 
-.finished-test-buttons button {
+.finished-test-button {
     color: var(--finished-test-secondary-color);
-    background: var(--practice-code-background-color); 
-    display: flex; 
-    flex-direction: row;
-    width: clamp(200px, 15vw, 400px); 
-    height: 28px; 
-    margin: 8px; 
+    background: var(--practice-code-background-color);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: clamp(200px, 12vw, 400px); 
+    padding: 5px 20px;
+    margin: 5px;
+    cursor: pointer;
+    text-decoration: none;
+    font-size: 15px;
+    border: none;
     border-radius: 12px; 
-    transition: all 300ms ease; 
+    transition: all 300ms ease;
+    margin: 0px 5px;
 }
 
-.finished-test-buttons button:hover {
-    transform: scaleX(1.04)
+.finished-test-button:hover {
+    background: var(--finished-test-color);
+    color: var(--practice-code-background-color);
+}
+
+.finished-test-buttons-hover {
+    background: var(--finished-test-color);
+    color: var(--practice-code-background-color);
 }
 
 .finished-test-buttons button > * {
-    color: var(--finished-test-secondary-color);
     background: inherit;
 }
 
-#add-some-margin {
-    margin-top: 2px; 
+#next-icon {
+    margin-top: 1px; 
+    font-size: 18px; 
+}
+
+#prev-icon {
+    margin-top: 1px; 
+    font-size: 16px; 
+    margin-left: 2px; 
 }
 
 .button-label {
-    margin-right: 10px;
+    margin-right: 5px;
 }
 
 .button-label span {
-    color: var(--finished-test-secondary-color);
     background: inherit;
     font-weight: 600; 
 }
@@ -135,8 +152,9 @@
     color: var(--finished-test-color);
 }
 
-.temporary-input {
+#finished-test-input {
     opacity: 0; 
     width: 0px; 
     height: 0px; 
+    position: absolute;
 }

@@ -1,4 +1,5 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useContext } from 'react'
+import { UserContext } from '../../context/UserContext'
 import PracticeCode from './PracticeCode'
 import UnderBar from './UnderBar'
 import FinishedTest from './FinishedTest'
@@ -15,9 +16,10 @@ interface PropsInteface {
 }
 
 const Main = (props: PropsInteface) => {
+    const [settings, setSettings]:any = useContext(UserContext)
     
     useEffect(() => {
-        resetTest("none")
+        resetTest(false)
     }, [props.refresh])
 
     const [showStatusBar, setShowStatusBar] = useState(true)
@@ -45,7 +47,7 @@ const Main = (props: PropsInteface) => {
     
     // object for the timer
     const [timer, setTimer] = useState({
-        httime: 0,
+        hr_time: 0,
         time: 0, 
         started: false, 
         finished: false 
@@ -65,12 +67,12 @@ const Main = (props: PropsInteface) => {
             if (timer.started) {
                 interval = setInterval(() => {
                     setTempIncorrectChars(test.incorrectChars)
-                    // set timer
+                    // increment timer
                     setTimer({...timer, time: timer.time + 1})
                     // determine the wpm
                     if (timer.time > 0) {
-                        const currentwpm = Math.round(((test.chars + test.lineChars)/4.5)/(timer.time/60.0))
-                        wpm.push([currentwpm, timer.time])
+                        const currentWpm = Math.round((test.chars+test.lineChars)/4.5/(timer.time/60.0))
+                        wpm.push([currentWpm, timer.time])
                     }
                     // determine the number of errors
                     if (test.incorrectChars > tempIncorrectChars) {
@@ -106,10 +108,33 @@ const Main = (props: PropsInteface) => {
         incorrectChars: 0, 
     })
 
+    const [currentWpm, setCurrentWpm] = useState(0)
+    const [currentAccuracy, setCurrentAccuracy] = useState(100)
+
+    useEffect(() => {
+        if (timer.started && !timer.finished && (test.chars + test.lineChars) > 0) {
+            const totalChars = test.chars + test.lineChars
+            let currentWpm = Math.round((totalChars*60.0)/(timer.time*4.5))
+            let currentAccuracy = Math.max(Math.round((totalChars-test.incorrectChars)/totalChars*100),0)
+            // adjust for wpm being very high at the start
+            // TODO: find a better method for this
+            if (timer.time < 3) currentWpm = Math.floor(currentWpm / 2)
+            console.log("Current accuracy : " + currentAccuracy)
+            setCurrentWpm(currentWpm)
+            setCurrentAccuracy(currentAccuracy)
+            if (settings?.test.fails_on.use) {
+                if (currentWpm < settings?.test.fails_on.wpm || currentAccuracy < settings?.test.fails_on.accuracy) {
+                    console.log(`Test failed with wpm ${currentWpm} and accuracy ${currentAccuracy}`)
+                    endTimer()
+                }
+            }
+        }
+    }, [timer, test])
+
     // reset all the variables for new test
-    const resetTest = (command: string) => {
+    const resetTest = (newTest:boolean) => {
         setTimer({
-            httime: 0,
+            hr_time: 0,
             time: 0, 
             started: false, 
             finished: false
@@ -126,7 +151,7 @@ const Main = (props: PropsInteface) => {
         setLineIndex(0)
         setCurrentLine([''])
         setPreviousLines([[''], ['']])
-        if (command === 'next') {
+        if (newTest) {
             if (limit.type === 'line') props.getCodeBlock(limit.lineLimit)
             else props.getCodeBlock()
         }
@@ -149,38 +174,36 @@ const Main = (props: PropsInteface) => {
     // getting the test statistics for after the test
     const getTestDetails = () => {
         // wpm labels and data
-        const wpmLabels: any = []
-        const wpmData: any = []
-        let iterator = Math.ceil(wpm.length / 10)
-        for (let i = 0; i <= wpm.length + 1; i += iterator){
-            wpmLabels.push(i + 's')
-            if (wpm[i]) wpmData.push(wpm[i][0])
-            else wpmData.push(wpm[wpm.length - 1][0])
+        let wpmLabels: any = []
+        let wpmData: any = []
+        if (wpm.length > 0) {
+            let iterator = Math.ceil(wpm.length / 10)
+            for (let i = 0; i <= wpm.length + 1; i += iterator){
+                wpmLabels.push(i + 's')
+                if (wpm[i]) wpmData.push(wpm[i][0])
+                else wpmData.push(wpm[wpm.length - 1][0])
+            }
         }
+        else wpmLabels = ['0s', '1s', '2s', '3s']
         // errors labels  
-        const errorsLabels = errors.length === 0 ? 
-        ['0s', Math.ceil(wpm.length / 2) + 's', (wpm.length + 1) + 's'] : 
-        errors.length < 3 ? ['0s', ...errors.map((val:any) => (val[1] + 's')), (wpm.length + 1) + 's'] :
+        const errorsLabels = wpm.length === 0 ? ['0s', '3s'] : errors.length === 0 ? 
+        ['0s', Math.ceil(timer.time / 2) + 's', timer.time + 's'] : 
+        errors.length < 3 ? ['0s', ...errors.map((val:any) => (val[1] + 's')), timer.time + 's'] :
         errors.map((val:any) => (val[1] + 's'))
         // errors data
         const errorsData = errors.length === 0 ? 
-        [-1, -1, -1] : errors.length < 3 ? [-1, ...errors.map((val:any) => (val[0])), -1] 
+        [NaN, NaN, NaN] : errors.length < 3 ? [NaN, ...errors.map((val:any) => (val[0])), NaN] 
         : errors.map((val:any) => (val[0]))
         // average, best, and worst wpm
-        let sum = 0, max = 0, min = Infinity
+        let sum = 0, max = 0, min = wpm.length > 0 ? Infinity : 0
         for (let i = 0; i < wpm.length; i++){
             sum += wpm[i][0]
             if (wpm[i][0] > max) max = wpm[i][0]
             if (wpm[i][0] < min) min = wpm[i][0]
         }
-        const average = Math.round(sum / wpm.length)
-        // accuracy
-        const accuracy = Math.max(Math.round(((test.chars + test.lineChars - test.incorrectChars) / 
-        (test.chars + test.lineChars)) * 100), 0)
-
-        let totalChars = 0 
-        props.code.map((val:any) => totalChars += val.replace(/\s+/g, ' ').trim().length)
-
+        const average = wpm.length > 0 ? Math.round(sum / wpm.length) : 0
+        // total chars in the test
+        const totalChars = props.code.reduce((a:any, b:any) => a + b.replace(/\s+/g, ' ').trim().length, 0)
         // setting all properties
         setTestDetails({
             wpmLabels: wpmLabels, 
@@ -190,16 +213,15 @@ const Main = (props: PropsInteface) => {
             averageWpm: average, 
             maxWpm: max, 
             minWpm: min, 
-            accuracy: accuracy,
+            accuracy: currentAccuracy,
             totalChars: totalChars, 
             correctChars: Math.max(test.chars - test.incorrectChars, 0)
         })
-        document.getElementById('finished-test-input')?.focus()
     }
 
     // when the user submits a file, then reset the test
     const onFileSubmit = (file:any) => {
-        resetTest("none")
+        resetTest(false)
         props.onFileSubmit(file)
     }
 
@@ -207,7 +229,8 @@ const Main = (props: PropsInteface) => {
         (!timer.finished ? 
             <div className='main-container'>
                 {/* practice code block */}
-                <PracticeCode code={props.code} 
+                <PracticeCode 
+                    code={props.code} 
                     test={test} 
                     setTest={setTest} 
                     resetTest={resetTest}
@@ -225,13 +248,10 @@ const Main = (props: PropsInteface) => {
                 />
                 {/* status bar below the practice code */}
                 {showStatusBar && <UnderBar   
-                    wpm={(timer.time === 0 || test.chars + test.lineChars === 0) ? '' : 
-                    Math.round(((test.chars+test.lineChars)/4.5)/(timer.time/60))} 
-                    accuracy={test.chars + test.lineChars === 0 ? '' : 
-                    Math.max(Math.round(((test.chars+test.lineChars-test.incorrectChars)/(test.chars+test.lineChars))*100), 0)}
-                    time={limit.type === 'time' ? limit.timeLimit-timer.time : timer.started ? Math.min(timer.time, 300) : ''} 
-                    limit={limit.type}
-                    limitValue={limit.type === 'time' ? limit.timeLimit : limit.lineLimit}
+                    wpm={(timer.time === 0 || test.chars + test.lineChars === 0) ? '' : currentWpm} 
+                    accuracy={test.chars + test.lineChars === 0 ? '' : currentAccuracy}
+                    time={limit.type === 'time' ? limit.timeLimit-timer.time : timer.started ? timer.time : ''} 
+                    limit={limit.type} limitValue={limit.type === 'time' ? limit.timeLimit : limit.lineLimit}
                     onSetTimeLimit={setNewTimeLimit}
                     onSetLineLimit={setNewLineLimit}
                     onFileSubmit={onFileSubmit}
@@ -246,7 +266,7 @@ const Main = (props: PropsInteface) => {
                 testDetails={testDetails}
                 limit={limit.type} 
                 limitValue={limit.type === 'time' ? limit.timeLimit : limit.lineLimit}
-                onNewTest={resetTest}
+                resetTest={resetTest}
                 language={props.language}
             />
         )

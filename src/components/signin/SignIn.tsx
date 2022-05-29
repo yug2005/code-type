@@ -1,16 +1,51 @@
-import React from 'react'
-import { Link } from 'react-router-dom'
+import React, { useState, useContext } from 'react'
+import { UserContext } from '../../context/UserContext'
+import { Link, useNavigate } from 'react-router-dom'
 import GoogleLogin from './GoogleLogin'
 import { CgClose } from 'react-icons/cg'
 import './SignIn.css'
 
 const SignIn = () => {
-    const createAccount = () => {
-        console.log('Account created')
+    const navigate = useNavigate()
+    onkeydown = (e:any) => {
+        if (e.keyCode === 27) {
+            navigate('/')
+            return false
+        }
+    } 
+
+    const [settings, setSettings] = useState(useContext(UserContext))
+
+    const createAccount = async (user:any) => {
+        await fetch('http://localhost:5001/users', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(user)
+        })
     }
 
-    const signIn = () => {
-        console.log('Signed in')
+    const deleteAccount = async (id:number) => {
+        await fetch(`http://localhost:5001/users/${id}`, {
+            method: 'DELETE',
+        })
+        const res = await fetch(`http://localhost:5001/users/0`)
+        const user = await res.json()
+        const settings = user.settings
+        setSettings(settings)
+    }
+
+    const signIn = async (email:string, password:string) => {
+        const res = await fetch(`http://localhost:5001/users?email=${email}'&password=${password}`, {
+            method: 'GET',
+        })
+        if (!res.ok) {
+            throw new Error('Login Failed')
+        }
+        const user = await res.json()
+        const settings = user.settings
+        setSettings(settings)
     }
     
     return (
@@ -18,9 +53,9 @@ const SignIn = () => {
             <Link className='close-sign-in' to='/'><CgClose /></Link>
             <div className='register-container'>
                 <div className="sign-in-title">register</div>
-                <form className='register-form' onSubmit={createAccount}>
+                <form className='register-form' onSubmit={() => console.log("Creating Account")}>
                     <label>name</label>
-                    <input type='text' className='form-input' placeholder='name'></input>
+                    <input type='text' className='form-input' placeholder='name'></input> 
                     <label>email</label>
                     <input type='email' className='form-input' placeholder='email'></input>
                     <label>password</label>
@@ -30,7 +65,7 @@ const SignIn = () => {
             </div>
             <div className='log-in-container'>
             <div className="sign-in-title">sign in</div>
-                <form className='register-form' onSubmit={signIn}>
+                <form className='register-form' onSubmit={() => console.log("Signing In")}>
                     <label>email</label>
                     <input type='email' className='form-input' placeholder='email'></input>
                     <label>password</label>

@@ -1,0 +1,36 @@
+{
+  "users": [
+    {
+      "id": 0,
+      "name": "Joe",
+      "settings": {
+        "test": {
+          "difficulty": "normal",
+          "lines": 4,
+          "fails_on": {
+            "use": false,
+            "accuracy": 96,
+            "wpm": 60,
+            "chars": 0
+          },
+          "cpm": false
+        },
+        "status_bar": {
+          "show": true,
+          "hide": false,
+          "wpm": true,
+          "accuracy": true,
+          "time": true,
+          "limits": true
+        },
+        "appearance": {
+          "theme": "default",
+          "font": "default",
+          "f_size": 24,
+          "f_weight": "default",
+          "focus_mode": false
+        }
+      }
+    }
+  ]
+}
