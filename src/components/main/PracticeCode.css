@@ -20,32 +20,32 @@
     cursor: default; 
 }
 
-.practice-code-no-status-bar {
+.no-status-bar {
     border-bottom-left-radius: 20px;
     border-bottom-right-radius: 20px;
     padding-bottom: 50px; 
 }
 
-.practice-code-container:hover .practice-code-click-to-start p {
-    color: var(--practice-code-correct-color);
+.practice-code-container:hover .click-to-start p {
+    color: var(--practice-code-button-color);
 }
 
-.practice-code-click-to-start {
+.click-to-start {
     display: flex; 
     justify-content: center;
     align-items: center;
+    background-color: inherit; 
     width: 100%; 
     height: 100%; 
-    background-color: inherit; 
     margin-top: 20px; 
     cursor: pointer;
 }
 
-.practice-code-click-to-start p {
+.click-to-start p {
     color: var(--practice-code-color);
+    font-family: consolas; 
     font-size: 24px; 
     background-color: inherit;
-    font-family: consolas; 
     transition: all 300ms ease; 
 }
 
@@ -200,5 +200,10 @@ pre {
 .hide-button {
     opacity: 0; 
     z-index: -1; 
+}
 
+.practice-code-focus-mode {
+    background: inherit; 
+    color: var(--header-color);
+    margin-bottom: 50px; 
 }

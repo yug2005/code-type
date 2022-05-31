@@ -27,7 +27,7 @@ const PracticeCode = (props: PropsInterface) => {
     const [settings, setSettings]:any = useContext(UserContext)
     
     // whether the test is active
-    const [active, setActive] = useState(false)
+    const [active, setActive] = useState(settings?.appearance.focus_mode)
     
     const enable = () => {
         document.getElementById('practice-code-input')?.focus()
@@ -35,7 +35,7 @@ const PracticeCode = (props: PropsInterface) => {
     }
     
     useEffect(() => {
-        enable()
+        // enable()
     }, [])
 
     // when the user types on keyboard
@@ -61,7 +61,7 @@ const PracticeCode = (props: PropsInterface) => {
 
     const map:any = {}
     const handleKeyPress = (e: any) => {
-        map[e.keyCode] = e.type == 'keydown'
+        map[e.keyCode] = e.type === 'keydown'
         // if the user presses the esc key
         if (map[27]) {
             setActive(false)
@@ -147,14 +147,15 @@ const PracticeCode = (props: PropsInterface) => {
     return (
         <div>
             {/* main practice code container */}
-            <div className={`practice-code-container ${!props.showStatusBar ? 'practice-code-no-status-bar' : ''}`}
+            <div className={`practice-code-container ${!props.showStatusBar ? 'no-status-bar' : ''}
+                            ${settings?.appearance.focus_mode ? 'practice-code-focus-mode' : ''}`}
             onClick={enable} > 
                 {active ? getPreviewCode() : 
-                (<div className='practice-code-click-to-start' id={!props.showStatusBar ? 'add-margin' : ''}>
+                (<div className='click-to-start'>
                     <p>click or press enter to start...</p>
                 </div>
                 )}
-                {!props.usingCustom && <div className='practice-code-next-prev-buttons'>
+                {active && !props.usingCustom && <div className='practice-code-next-prev-buttons'>
                     <div className={`practice-code-button`} 
                         onClick={() => props.resetTest(false)}>
                         <FiChevronLeft className="practice-code-left-arrow"/>

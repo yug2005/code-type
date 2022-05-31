@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useRef } from "react";
-import { BrowserRouter as Router, Route, Routes, useNavigate, useLocation } from "react-router-dom";
+import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import { UserContext } from "./context/UserContext";
 import Header from "./components//header/Header";
 import SignIn from "./components/signin/SignIn";
@@ -19,7 +19,7 @@ function App() {
     else if (e.keyCode === 9) return false
   }
 
-  const [settings, setSettings] = useState(null)
+  const [settings, setSettings]:any = useState(null)
 
   // user settings server 
   const fetchUser = async (id:number) => {

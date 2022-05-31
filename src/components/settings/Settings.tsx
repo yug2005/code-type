@@ -93,7 +93,7 @@ const Settings = () => {
             <div className='settings-container status-bar-setting'>
                 <h2>STATUS BAR SETTINGS</h2>
                 <OnOffSetting 
-                    description="always show status bar"
+                    description="show status bar"
                     variable={settings?.status_bar.show}
                     setVariable={(val:boolean) => setSettings?.({...settings, status_bar: 
                         {...settings.status_bar, show: val}})}

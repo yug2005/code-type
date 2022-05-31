@@ -17,7 +17,7 @@
         },
         "status_bar": {
           "show": true,
-          "hide": false,
+          "hide": true,
           "wpm": true,
           "accuracy": true,
           "time": true,
@@ -28,7 +28,7 @@
           "font": "default",
           "f_size": 24,
           "f_weight": "default",
-          "focus_mode": false
+          "focus_mode": true
         }
       }
     }

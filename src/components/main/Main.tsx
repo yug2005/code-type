@@ -22,8 +22,6 @@ const Main = (props: PropsInteface) => {
         resetTest(false)
     }, [props.refresh])
 
-    const [showStatusBar, setShowStatusBar] = useState(true)
-
     const [userInput, setUserInput] = useState('')
     const [lineIndex, setLineIndex] = useState(0)
     const [currentLine, setCurrentLine] = useState([''])
@@ -65,6 +63,8 @@ const Main = (props: PropsInteface) => {
         } 
         else {        
             if (timer.started) {
+                if (settings?.status_bar.hide)
+                    setSettings?.({...settings, status_bar: {...settings.status_bar, show: false}})
                 interval = setInterval(() => {
                     setTempIncorrectChars(test.incorrectChars)
                     // increment timer
@@ -81,6 +81,9 @@ const Main = (props: PropsInteface) => {
                     }
                 }, 1000)
             } 
+            else if (settings?.status_bar.hide && !settings?.status_bar.show) {
+                setSettings?.({...settings, status_bar: {...settings.status_bar, show: true}})
+            }
             // when the timer limit is reached
             if (limit.type === 'time' && limit.timeLimit - timer.time === 0) {
                 endTimer()
@@ -236,7 +239,7 @@ const Main = (props: PropsInteface) => {
                     resetTest={resetTest}
                     startTimer={startTimer} 
                     endTimer={endTimer} 
-                    showStatusBar={showStatusBar}
+                    showStatusBar={settings?.status_bar.show && !settings?.appearance.focus_mode}
                     userInput={userInput}
                     setUserInput={setUserInput}
                     lineIndex={lineIndex}
@@ -247,7 +250,7 @@ const Main = (props: PropsInteface) => {
                     usingCustom={props.usingCustom}
                 />
                 {/* status bar below the practice code */}
-                {showStatusBar && <UnderBar   
+                {settings?.status_bar.show && !settings?.appearance.focus_mode && <UnderBar   
                     wpm={(timer.time === 0 || test.chars + test.lineChars === 0) ? '' : currentWpm} 
                     accuracy={test.chars + test.lineChars === 0 ? '' : currentAccuracy}
                     time={limit.type === 'time' ? limit.timeLimit-timer.time : timer.started ? timer.time : ''} 
@@ -257,10 +260,10 @@ const Main = (props: PropsInteface) => {
                     onFileSubmit={onFileSubmit}
                 />}
                 {/* show status bar button */}
-                <button className='toggle-status-bar' 
-                    onClick={() => setShowStatusBar(!showStatusBar)}>
-                    {showStatusBar ? 'HIDE STATUS BAR' : 'SHOW STATUS BAR'}
-                </button>
+                {!settings?.status_bar.hide && <button className='toggle-status-bar' 
+                    onClick={() => setSettings?.({...settings, status_bar: {...settings.status_bar, show: !settings?.status_bar.show}})}>
+                    {settings?.status_bar.show ? 'hide' : 'show'} status bar
+                </button>}
             </div> : 
             <FinishedTest 
                 testDetails={testDetails}

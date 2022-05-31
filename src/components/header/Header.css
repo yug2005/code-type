@@ -94,3 +94,22 @@
 .sign-up-link:hover {
   transform: scale(1.05);
 }
+
+.open-header-link {
+  display: flex; 
+  justify-content: center;
+  align-items: center;
+  color: var(--header-color); 
+  background: inherit; 
+  margin: 0px 25px;
+  cursor: pointer; 
+  font-size: 25px; 
+}
+
+.open-header-link > * {
+  transition: all 600ms ease;
+}
+
+.open-header-link:hover > * {
+ scale: 1.15;
+}
