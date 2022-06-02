@@ -35,7 +35,7 @@ const PracticeCode = (props: PropsInterface) => {
     }
     
     useEffect(() => {
-        // enable()
+        enable()
     }, [])
 
     // when the user types on keyboard
@@ -69,6 +69,7 @@ const PracticeCode = (props: PropsInterface) => {
         }
         // when the user is holding down the tab key
         if (map[9]) {
+            // TODO: allow the user to hold down the tab to keep resetting the test
             document.getElementById("next-button")?.classList.add("practice-code-button-hover")
         }
         else {
@@ -97,7 +98,7 @@ const PracticeCode = (props: PropsInterface) => {
         // the lines that the user has already typed out
         if (index < props.lineIndex) {
             return line.map((char: string, charIndex: number) => ( 
-                <span className='practice-code-text practice-code-line-blur'
+                <span className='practice-code-text'
                 id={props.previousLines[2 - props.lineIndex + index][charIndex]}>
                 <pre>{char}</pre></span> 
             ))
@@ -112,7 +113,7 @@ const PracticeCode = (props: PropsInterface) => {
             // index cursor 
             returnLine.splice(props.userInput.length, 0, 
             <div>
-                <span className={props.lineIndex === 0 && props.userInput.length === 0 ? 'cursor-blinking' : 'practice-code-cursor'}>
+                <span className={`practice-code-cursor ${props.lineIndex + props.userInput.length === 0 ? 'cursor-blinking' : ''}`}>
                     <pre> </pre>
                 </span>
             </div>)
@@ -121,7 +122,7 @@ const PracticeCode = (props: PropsInterface) => {
         // if the line is below where the user is currently
         else {
             return line.map((char: string) => (
-                <span className='practice-code-text practice-code-line-blur'><pre>{char}</pre></span> 
+                <span className='practice-code-text'><pre>{char}</pre></span> 
             ))
         }
     }
@@ -137,7 +138,7 @@ const PracticeCode = (props: PropsInterface) => {
     const getPreviewCode = (): any => {
         return props.code.map((line) => line.replace(/\s+/g, ' ').trim().split('')).map((line: any, index: number) =>
             ((props.lineIndex < 1 && index < 4) || (index >= props.lineIndex - 1 && index <= props.lineIndex + 2)) && 
-                <div className={`practice-code-line`} style={{opacity: 1 - 0.12 * Math.abs(index - props.lineIndex)}}>
+                <div className={`practice-code-line`} style={{opacity: 1 - 0.15 * Math.abs(index - props.lineIndex)}}>
                     {getTabSpace(index)}
                     {getLine(line, index)}
                 </div>
@@ -149,7 +150,8 @@ const PracticeCode = (props: PropsInterface) => {
             {/* main practice code container */}
             <div className={`practice-code-container ${!props.showStatusBar ? 'no-status-bar' : ''}
                             ${settings?.appearance.focus_mode ? 'practice-code-focus-mode' : ''}`}
-            onClick={enable} > 
+                style={{fontSize:settings?.appearance.f_size, fontWeight:settings?.appearance.f_weight}}
+                onClick={enable} > 
                 {active ? getPreviewCode() : 
                 (<div className='click-to-start'>
                     <p>click or press enter to start...</p>

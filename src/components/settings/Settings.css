@@ -16,13 +16,12 @@
     justify-content: center;
     width: 60%; 
     padding-top: 2%; 
-    /* overflow-y: scroll; */
 }
 
 .settings-container h2 {
     color: var(--finished-test-color); 
     margin-bottom: 15px; 
-    font-family: 'Quicksand';
+    font-family: 'Quicksand', sans-serif;
     word-spacing: 2px; 
 }
 
@@ -32,7 +31,6 @@
     justify-content: flex-start;
     align-items: center;
     margin-top: 5px; 
-    /* border: solid;  */
 }
 
 .test-fails-container {
@@ -67,11 +65,9 @@
     color: var(--finished-test-secondary-color); 
     word-spacing: -2px; 
     flex-grow: 3; 
-    /* border: solid;  */
 }
 
 .setting-description p {
-    /* background: white;  */
     width: 70%; 
 }
 
@@ -79,7 +75,6 @@
     display: flex; 
     max-width: 40%;
     align-items: center;
-    /* border: solid;  */
 }
 
 .setting-button {

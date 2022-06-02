@@ -111,7 +111,7 @@ const Settings = () => {
                         {...settings.status_bar, limits: val}})}
                 />
                 <OnOffSetting
-                    description="show live words per minute"
+                    description={`show live ${settings?.test.cpm ? 'characters' : 'words'} per minute`}
                     variable={settings?.status_bar.wpm}
                     setVariable={(val:boolean) => setSettings?.({...settings, status_bar: 
                         {...settings.status_bar, wpm: val}})}
@@ -156,14 +156,14 @@ const Settings = () => {
                         range={settings?.appearance.f_size}
                         setRange={(val:number) => setSettings?.({...settings, appearance:
                             {...settings.appearance, f_size: val}})}
-                        min={20} max={30} step={1}
+                        min={20} max={25} step={1}
                     />
                 </div>
                 <SettingOptions 
                     description="font weight"
                     value={settings?.appearance.f_weight}
                     setValue={(val:any) => setSettings?.({...settings, appearance: {...settings.appearance, f_weight: val}})}
-                    options={['light', 'default', 'bold']}
+                    options={['default', 'bold']}
                 />
             </div>
             <div className="setting-padding"></div>

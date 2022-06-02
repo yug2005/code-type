@@ -1,6 +1,5 @@
-@font-face {
-    font-family: 'consolas';
-    src: url('../../Consolas.ttf')
+:root {
+    --code-font: 'JetBrains Mono', monospace;
 }
 
 .practice-code-container {
@@ -16,6 +15,7 @@
     border-top-right-radius: 20px;
     transition: all 100ms ease; 
     padding: 50px 20px 40px 60px; 
+    font-size: 24px; 
     z-index: 1; 
     cursor: default; 
 }
@@ -43,8 +43,7 @@
 
 .click-to-start p {
     color: var(--practice-code-color);
-    font-family: consolas; 
-    font-size: 24px; 
+    font-family: var(--code-font); 
     background-color: inherit;
     transition: all 300ms ease; 
 }
@@ -74,24 +73,17 @@
     z-index: 5;  
 }
 
+.cursor-blinking {
+    animation: blink 1.5s steps(1) infinite;
+}
 @keyframes blink {
     0% {opacity: 0;}
     50% {opacity: 1;}
 }
 
-.cursor-blinking {
-    background: var(--practice-code-cursor); 
-    font-size: 4px; 
-    height: 32px; 
-    transform: translateY(-4px);
-    animation: blink 1.5s steps(1) infinite;
-    position: absolute; 
-    z-index: 5;
-}
 
 .practice-code-text {
     background: inherit; 
-    font-size: 24px; 
 }
 
 .tab-space {
@@ -114,7 +106,7 @@
 
 pre {
     background-color: inherit; 
-    font-family: consolas; 
+    font-family: var(--code-font); 
 }
 
 #practice-code-input {
@@ -126,8 +118,8 @@ pre {
 
 .toggle-status-bar {
     background: inherit;
-    border-style: none; 
     color: var(--toggle-status-bar);
+    border-style: none; 
     padding: 8px; 
     font-size: 18px; 
     font-family: consolas; 

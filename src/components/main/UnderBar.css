@@ -20,18 +20,6 @@
     font-size: 16px;   
 }
 
-#wpm {
-    width: 70px; 
-}
-
-#accuracy {
-    width: 150px; 
-}
-
-#time {
-    width: 100px;
-}
-
 .under-bar-setting {
     background: inherit;
     display: flex; 

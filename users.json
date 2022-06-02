@@ -13,22 +13,22 @@
             "wpm": 60,
             "chars": 0
           },
-          "cpm": false
+          "cpm": true
         },
         "status_bar": {
           "show": true,
-          "hide": true,
+          "hide": false,
           "wpm": true,
-          "accuracy": true,
-          "time": true,
-          "limits": true
+          "accuracy": false,
+          "time": false,
+          "limits": false
         },
         "appearance": {
           "theme": "default",
           "font": "default",
-          "f_size": 24,
+          "f_size": 23,
           "f_weight": "default",
-          "focus_mode": true
+          "focus_mode": false
         }
       }
     }

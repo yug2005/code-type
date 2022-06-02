@@ -1,9 +1,11 @@
-import React, { useState } from 'react'
+import React, { useState, useContext } from 'react'
 import { FiCheck } from 'react-icons/fi'
+import { UserContext } from '../../context/UserContext';
 import './UnderBar.css';
 
 interface BarInterface {
     wpm: number | string
+    cpm: number | string
     accuracy: number | string
     time: number | string
     limit: string
@@ -16,6 +18,8 @@ interface BarInterface {
 const fileTypes = ".c,.cs,.cpp,.h,.hpp,.css,.go,.html,.java,.js,.jsx,.ts,.tsx,.kt,.sql,.php,.py,.txt"
 
 const UnderBar = (props: BarInterface) => {
+
+    const [settings, setSettings]:any = useContext(UserContext)
 
     const [fileName, setFileName]:any = useState()
     const [file, setFile]:any = useState()
@@ -70,19 +74,20 @@ const UnderBar = (props: BarInterface) => {
                 />
             }
             {/* wpm, accuracy, and time display */}
-            <div className='under-bar-item' id='wpm'>
-                <label className='under-bar-label'>wpm</label>
-                <p className='under-bar-value'>{props.wpm}</p>
-            </div>
-            <div className='under-bar-item' id='accuracy'>
+            {settings?.status_bar.wpm && <div className='under-bar-item' style={{width:"70px"}}>
+                <label className='under-bar-label'>{settings?.test.cpm ? "cpm" : "wpm"}</label>
+                <p className='under-bar-value'>{settings?.test.cpm ? props.cpm : props.wpm}</p>
+            </div>}
+            {settings?.status_bar.accuracy && <div className='under-bar-item' style={{width:"150px"}}>
                 <label className='under-bar-label'>accuracy</label>
                 {props.accuracy !== '' && <p className='under-bar-value'>{props.accuracy}%</p>}
-            </div>
-            <div className='under-bar-item' id='time'>
+            </div>}
+            <div className='under-bar-item' style={{width:"100px"}}>
                 <label className='under-bar-label'>time</label>
                 {props.time !== '' && <p className='under-bar-value'>{props.time}s</p>}
             </div>
-            {/* timed setting */}
+            {/* test limit settings */}
+            {settings?.status_bar.limits && <>
             <div className='under-bar-setting'>
                 <label className={`under-bar-label ${props.limit === 'time' ? 'selected-setting' : ''}`}>timed</label>
                 <div className='under-bar-drop-down'>
@@ -104,7 +109,6 @@ const UnderBar = (props: BarInterface) => {
                     </button>
                 </div>
             </div>
-            {/* lines setting */}
             <div className='under-bar-setting'>
                 <label className={`under-bar-label ${props.limit === 'line' ? 'selected-setting' : ''}`}>lines</label>
                 <div className="under-bar-drop-down">
@@ -126,7 +130,6 @@ const UnderBar = (props: BarInterface) => {
                     </button>
                 </div>
             </div>
-            {/* custom setting */}
             <div className='under-bar-setting'>
                 <label className='under-bar-label'>custom</label>
                 <div className="under-bar-drop-down" id='custom-drop-down'>
@@ -136,6 +139,7 @@ const UnderBar = (props: BarInterface) => {
                     onChange={(e) => onFileUpload(e)} hidden/>
                 </div>
             </div>
+            </>}
         </div>
     )
 }

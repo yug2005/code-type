@@ -1,7 +1,8 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useContext } from 'react'
 import { Line } from 'react-chartjs-2'
 import { MdNavigateNext } from 'react-icons/md'
 import { IoRepeatOutline } from 'react-icons/io5'
+import { UserContext } from '../../context/UserContext'
 import "./FinishedTest.css"
 
 import {
@@ -15,7 +16,6 @@ import {
     Tooltip,
     Legend,
   } from 'chart.js';
-import { FiAlignJustify } from 'react-icons/fi'
   
 ChartJS.register(
     CategoryScale,
@@ -27,15 +27,14 @@ ChartJS.register(
     Legend
 );
 
-interface propsInterface {
+const FinishedTest = (props: {
     testDetails: any
     limit: string
     limitValue: number
     resetTest: any
     language: string
-}
-
-const FinishedTest = (props: propsInterface) => {
+}) => {
+    const [settings, setSettings]:any = useContext(UserContext)
 
     useEffect(() => {
         document.getElementById('finished-test-input')?.focus()
@@ -47,17 +46,13 @@ const FinishedTest = (props: propsInterface) => {
         map[e.keyCode] = e.type == 'keydown'
         // when the user is holding down the tab key
         if (map[9]) {
-            console.log("Added to class list")
             document.getElementById("next-test-button")?.classList.add("finished-test-buttons-hover")
-            console.log(document.getElementById("next-test-button")?.classList)
         }
         else {
-            console.log("Removed from class list")
             document.getElementById("next-test-button")?.classList.remove("finished-test-buttons-hover")
         }
         // when the user presses tab and enter
         if (map[9] && map[13]) {
-            // TODO: allow the user to hold down the tab to keep resetting the test
             props.resetTest(true)
             return false
         }
@@ -84,11 +79,11 @@ const FinishedTest = (props: propsInterface) => {
     const error_border_color =  style.getPropertyValue('--chart-error-border-color')
 
     const wpm = {
-        labels: props.testDetails.wpmLabels,
+        labels: props.testDetails.labels,
         datasets: [
             {
-                label: 'words per minute', 
-                data: props.testDetails.wpmData,
+                label: `${settings?.test.cpm ? "characters" : "words"} per minute`, 
+                data: props.testDetails.data,
                 backgroundColor: wpm_color,
                 borderColor: wpm_border_color
             }
@@ -122,7 +117,12 @@ const FinishedTest = (props: propsInterface) => {
             },
             title: {
                 display: false,
-                text: 'words per minute'
+                text: `${settings?.test.cpm ? "characters" : "words"} per minute`
+            },
+            tooltip: {
+                callbacks: {
+                    label: (item:any) => `${item.formattedValue} ${settings?.test.cpm ? "cpm" : "wpm"}`
+                }
             },
         },
         scales: {
@@ -146,7 +146,7 @@ const FinishedTest = (props: propsInterface) => {
             yAxes: {
                 title: {
                     display: false, 
-                    text: 'words per minute'
+                    text: `${settings?.test.cpm ? "characters" : "words"} per minute`
                 },
                 grid: {
                     display: true, 
@@ -160,11 +160,11 @@ const FinishedTest = (props: propsInterface) => {
                     color: chart_text_color
                 },
                 min: 0, 
-                suggestedMax: 120
+                suggestedMax: (settings?.test.cpm ? 540 : 120)
             }
         }, 
         radius: 4, 
-        hoverRadius: 8
+        hoverRadius: 6
     }
 
     const errors_options = {
@@ -184,6 +184,11 @@ const FinishedTest = (props: propsInterface) => {
             title: {
                 display: false,
                 text: 'number of errors',
+            },
+            tooltip: {
+                callbacks: {
+                    label: (item:any) => `${item.formattedValue} error${item.formattedValue === '1' ? '' : 's'}`
+                }
             },
         },
         scales: {
@@ -226,7 +231,7 @@ const FinishedTest = (props: propsInterface) => {
             }
         }, 
         radius: 4, 
-        hoverRadius: 8
+        hoverRadius: 6
     }
 
     return (
@@ -261,16 +266,16 @@ const FinishedTest = (props: propsInterface) => {
                     <p id='test-type'>{props.limitValue} lines</p>}
                 </div>
                 <div className='other-stat'>
-                    <h3>average wpm</h3>
-                    <div>{props.testDetails.averageWpm}</div>
+                    <h3>average {settings?.test.cpm ? "cpm" : "wpm"}</h3>
+                    <div>{props.testDetails.average}</div>
                 </div>
                 <div className='other-stat'>
-                    <h3>fastest wpm</h3>
-                    <div>{props.testDetails.maxWpm}</div>
+                    <h3>fastest {settings?.test.cpm ? "cpm" : "wpm"}</h3>
+                    <div>{props.testDetails.max}</div>
                 </div>
                 <div className='other-stat'>
-                    <h3>slowest wpm</h3>
-                    <div>{props.testDetails.minWpm}</div>
+                    <h3>slowest {settings?.test.cpm ? "cpm" : "wpm"}</h3>
+                    <div>{props.testDetails.min}</div>
                 </div>
                 <div className='other-stat'>
                     <h3>accuracy</h3>

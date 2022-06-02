@@ -50,10 +50,24 @@ const Main = (props: PropsInteface) => {
         started: false, 
         finished: false 
     })
-    
-    const [wpm, setWpm]:any = useState([])
-    const [errors, setErrors]:any = useState([])
-    const [tempIncorrectChars, setTempIncorrectChars] = useState(0)
+
+    // stores the test details
+    const [test, setTest] = useState({
+        chars: 0, 
+        lineChars: 0,
+        incorrectChars: 0, 
+    })
+
+    const [wpm, setWpm] = useState(0)
+    const [cpm, setCpm] = useState(0)
+    const [accuracy, setAccuracy] = useState(100)
+
+    const [trackers, setTrackers]:any = useState({
+        wpm: [], 
+        cpm: [],
+        errors: [],
+        temp: 0
+    })
 
     // timer 
     useEffect(() => {
@@ -66,18 +80,21 @@ const Main = (props: PropsInteface) => {
                 if (settings?.status_bar.hide)
                     setSettings?.({...settings, status_bar: {...settings.status_bar, show: false}})
                 interval = setInterval(() => {
-                    setTempIncorrectChars(test.incorrectChars)
+                    setTrackers({...trackers, temp: test.incorrectChars})
                     // increment timer
                     setTimer({...timer, time: timer.time + 1})
                     // determine the wpm
                     if (timer.time > 0) {
-                        const currentWpm = Math.round((test.chars+test.lineChars)/4.5/(timer.time/60.0))
-                        wpm.push([currentWpm, timer.time])
+                        const {wpm, cpm, accuracy} = computeStats()
+                        trackers.wpm.push([wpm, timer.time])
+                        trackers.cpm.push([cpm, timer.time])
+                        console.log(trackers.wpm)
+                        console.log(trackers.cpm)
                     }
                     // determine the number of errors
-                    if (test.incorrectChars > tempIncorrectChars) {
-                        const numErrors = test.incorrectChars - tempIncorrectChars
-                        errors.push([numErrors, timer.time])
+                    if (test.incorrectChars > trackers.temp) {
+                        const numErrors = test.incorrectChars - trackers.temp
+                        trackers.errors.push([numErrors, timer.time])
                     }
                 }, 1000)
             } 
@@ -92,6 +109,37 @@ const Main = (props: PropsInteface) => {
         }
         return () => clearInterval(interval)
     }, [timer]) 
+
+    useEffect(() => {
+        if (timer.started && !timer.finished && (test.chars + test.lineChars) > 0) {
+            const {wpm, cpm, accuracy} = computeStats(); 
+            console.log(`Set wpm to ${wpm} with time ${timer.time}`)
+            setWpm(wpm)
+            console.log(`Set cpm to ${cpm} with time ${timer.time}`)
+            setCpm(cpm)
+            setAccuracy(accuracy)
+            if (settings?.test.fails_on.use) {
+                if (wpm < settings?.test.fails_on.wpm || accuracy < settings?.test.fails_on.accuracy) {
+                    console.log(`Test failed with wpm ${wpm} and accuracy ${accuracy}`)
+                    endTimer()
+                }
+            }
+        }
+    }, [timer, test])
+
+    const computeStats = () => {
+        const totalChars = test.chars + test.lineChars
+        let wpm = Math.round(totalChars * 60.0 / (timer.time * 4.5))
+        let cpm = Math.round(totalChars * 60.0 / timer.time)
+        let accuracy = Math.max(Math.round((totalChars-test.incorrectChars)/totalChars*100),0)
+        // adjust for wpm being very high at the start
+        // TODO: find a better method for this
+        if (timer.time < 3) {
+            wpm = Math.floor(wpm / 2)
+            cpm = Math.floor(cpm / 2)
+        }
+        return {wpm, cpm, accuracy}
+    }
     
     // starts the timer
     const startTimer = () => {
@@ -104,36 +152,6 @@ const Main = (props: PropsInteface) => {
         getTestDetails()
     }
 
-    // stores the test details
-    const [test, setTest] = useState({
-        chars: 0, 
-        lineChars: 0,
-        incorrectChars: 0, 
-    })
-
-    const [currentWpm, setCurrentWpm] = useState(0)
-    const [currentAccuracy, setCurrentAccuracy] = useState(100)
-
-    useEffect(() => {
-        if (timer.started && !timer.finished && (test.chars + test.lineChars) > 0) {
-            const totalChars = test.chars + test.lineChars
-            let currentWpm = Math.round((totalChars*60.0)/(timer.time*4.5))
-            let currentAccuracy = Math.max(Math.round((totalChars-test.incorrectChars)/totalChars*100),0)
-            // adjust for wpm being very high at the start
-            // TODO: find a better method for this
-            if (timer.time < 3) currentWpm = Math.floor(currentWpm / 2)
-            console.log("Current accuracy : " + currentAccuracy)
-            setCurrentWpm(currentWpm)
-            setCurrentAccuracy(currentAccuracy)
-            if (settings?.test.fails_on.use) {
-                if (currentWpm < settings?.test.fails_on.wpm || currentAccuracy < settings?.test.fails_on.accuracy) {
-                    console.log(`Test failed with wpm ${currentWpm} and accuracy ${currentAccuracy}`)
-                    endTimer()
-                }
-            }
-        }
-    }, [timer, test])
-
     // reset all the variables for new test
     const resetTest = (newTest:boolean) => {
         setTimer({
@@ -142,13 +160,16 @@ const Main = (props: PropsInteface) => {
             started: false, 
             finished: false
         })
-        setWpm([])
-        setErrors([])
-        setTempIncorrectChars(0)
         setTest({
             chars: 0, 
             lineChars: 0, 
             incorrectChars: 0
+        })
+        setTrackers({
+            wpm: [],
+            cpm: [],
+            errors: [],
+            temp: 0
         })
         setUserInput('')
         setLineIndex(0)
@@ -162,13 +183,13 @@ const Main = (props: PropsInteface) => {
 
     // object for storing the test statistics
     const [testDetails, setTestDetails] = useState({
-        wpmLabels: [], 
-        wpmData: [], 
+        labels: [], 
+        data: [], 
         errorsLabels: [], 
         errorsData: [], 
-        averageWpm: 0, 
-        maxWpm: 0, 
-        minWpm: Infinity, 
+        average: 0, 
+        max: 0, 
+        min: Infinity, 
         accuracy: 100, 
         totalChars: 0, 
         correctChars: 0
@@ -177,19 +198,21 @@ const Main = (props: PropsInteface) => {
     // getting the test statistics for after the test
     const getTestDetails = () => {
         // wpm labels and data
-        let wpmLabels: any = []
-        let wpmData: any = []
-        if (wpm.length > 0) {
-            let iterator = Math.ceil(wpm.length / 10)
-            for (let i = 0; i <= wpm.length + 1; i += iterator){
-                wpmLabels.push(i + 's')
-                if (wpm[i]) wpmData.push(wpm[i][0])
-                else wpmData.push(wpm[wpm.length - 1][0])
+        let labels: any = []
+        let data: any = []
+        const tracker = settings?.test.cpm ? trackers.cpm : trackers.wpm
+        if (tracker.length > 0) {
+            let iterator = Math.ceil(tracker.length / 10)
+            for (let i = 0; i <= tracker.length + 1; i += iterator){
+                labels.push(i + 's')
+                if (tracker[i]) data.push(tracker[i][0])
+                else data.push(tracker[tracker.length - 1][0])
             }
         }
-        else wpmLabels = ['0s', '1s', '2s', '3s']
+        else labels = ['0s', '1s', '2s', '3s']
         // errors labels  
-        const errorsLabels = wpm.length === 0 ? ['0s', '3s'] : errors.length === 0 ? 
+        const errors = trackers.errors
+        const errorsLabels = tracker.length === 0 ? ['0s', '3s'] : errors.length === 0 ? 
         ['0s', Math.ceil(timer.time / 2) + 's', timer.time + 's'] : 
         errors.length < 3 ? ['0s', ...errors.map((val:any) => (val[1] + 's')), timer.time + 's'] :
         errors.map((val:any) => (val[1] + 's'))
@@ -198,25 +221,25 @@ const Main = (props: PropsInteface) => {
         [NaN, NaN, NaN] : errors.length < 3 ? [NaN, ...errors.map((val:any) => (val[0])), NaN] 
         : errors.map((val:any) => (val[0]))
         // average, best, and worst wpm
-        let sum = 0, max = 0, min = wpm.length > 0 ? Infinity : 0
-        for (let i = 0; i < wpm.length; i++){
-            sum += wpm[i][0]
-            if (wpm[i][0] > max) max = wpm[i][0]
-            if (wpm[i][0] < min) min = wpm[i][0]
+        let sum = 0, max = 0, min = tracker.length > 0 ? Infinity : 0
+        for (let i = 0; i < tracker.length; i++){
+            sum += tracker[i][0]
+            if (tracker[i][0] > max) max = tracker[i][0]
+            if (tracker[i][0] < min) min = tracker[i][0]
         }
-        const average = wpm.length > 0 ? Math.round(sum / wpm.length) : 0
+        const average = tracker.length > 0 ? Math.round(sum / tracker.length) : 0
         // total chars in the test
         const totalChars = props.code.reduce((a:any, b:any) => a + b.replace(/\s+/g, ' ').trim().length, 0)
         // setting all properties
         setTestDetails({
-            wpmLabels: wpmLabels, 
-            wpmData: wpmData, 
+            labels: labels, 
+            data: data, 
             errorsLabels: errorsLabels, 
             errorsData: errorsData, 
-            averageWpm: average, 
-            maxWpm: max, 
-            minWpm: min, 
-            accuracy: currentAccuracy,
+            average: average, 
+            max: max, 
+            min: min, 
+            accuracy: accuracy,
             totalChars: totalChars, 
             correctChars: Math.max(test.chars - test.incorrectChars, 0)
         })
@@ -251,8 +274,9 @@ const Main = (props: PropsInteface) => {
                 />
                 {/* status bar below the practice code */}
                 {settings?.status_bar.show && !settings?.appearance.focus_mode && <UnderBar   
-                    wpm={(timer.time === 0 || test.chars + test.lineChars === 0) ? '' : currentWpm} 
-                    accuracy={test.chars + test.lineChars === 0 ? '' : currentAccuracy}
+                    wpm={(timer.time === 0 || test.chars + test.lineChars === 0) ? '' : wpm} 
+                    cpm={(timer.time === 0 || test.chars + test.lineChars === 0) ? '' : cpm}
+                    accuracy={test.chars + test.lineChars === 0 ? '' : accuracy}
                     time={limit.type === 'time' ? limit.timeLimit-timer.time : timer.started ? timer.time : ''} 
                     limit={limit.type} limitValue={limit.type === 'time' ? limit.timeLimit : limit.lineLimit}
                     onSetTimeLimit={setNewTimeLimit}
