@@ -4,13 +4,8 @@
   "private": true,
   "dependencies": {
     "@react-native-community/slider": "^4.2.2",
-    "@testing-library/jest-dom": "^5.16.1",
     "@testing-library/react": "^12.1.2",
     "@testing-library/user-event": "^13.5.0",
-    "@types/jest": "^27.4.0",
-    "@types/node": "^16.11.18",
-    "@types/react": "^17.0.38",
-    "@types/react-dom": "^17.0.11",
     "chart.js": "^3.7.0",
     "concurrently": "^7.0.0",
     "cors": "^2.8.5",
@@ -29,6 +24,11 @@
     "web-vitals": "^2.1.2"
   },
   "devDependencies": {
+    "@testing-library/jest-dom": "^5.16.4",
+    "@types/jest": "^28.1.6",
+    "@types/node": "^18.6.1",
+    "@types/react": "^18.0.15",
+    "@types/react-dom": "^18.0.6",
     "react-scripts": "^5.0.1"
   },
   "scripts": {
@@ -36,7 +36,7 @@
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "dev": "concurrently \"npm start\" \"node backend/api/index\" \"npm run server\"",
+    "dev": "concurrently \"npm start\" \"node src/hooks/index\" \"npm run server\"",
     "server": "json-server --watch users.json --port 5001"
   },
   "eslintConfig": {

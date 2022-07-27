@@ -1,10 +1,10 @@
 .main-container {
-    display: flex; 
-    height: 86%; 
-    width: max(1200px, 100%); 
-    min-height: 600px; 
-    flex-flow: column; 
-    flex-direction: column; 
-    justify-content: center;
-    align-items: center; 
+  display: flex;
+  height: 86%;
+  width: max(1200px, 100%);
+  min-height: 600px;
+  flex-flow: column;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 }

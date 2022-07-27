@@ -1,201 +1,204 @@
 :root {
-    --code-font: 'JetBrains Mono', monospace;
+  --code-font: "JetBrains Mono", monospace;
 }
 
 .practice-code-container {
-    color: var(--practice-code-color); 
-    background: var(--practice-code-background-color); 
-    display: flex; 
-    flex-direction: column;
-    justify-content: center;
-    align-items: flex-start;
-    width: 1000px; 
-    height: 200px; 
-    border-top-left-radius: 20px;
-    border-top-right-radius: 20px;
-    transition: all 100ms ease; 
-    padding: 50px 20px 40px 60px; 
-    font-size: 24px; 
-    z-index: 1; 
-    cursor: default; 
+  color: var(--practice-code-color);
+  background: var(--practice-code-background-color);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+  width: 1000px;
+  height: 200px;
+  border-top-left-radius: 20px;
+  border-top-right-radius: 20px;
+  transition: all 100ms ease;
+  padding: 50px 20px 40px 60px;
+  font-size: 24px;
+  z-index: 1;
+  cursor: default;
 }
 
 .no-status-bar {
-    border-bottom-left-radius: 20px;
-    border-bottom-right-radius: 20px;
-    padding-bottom: 50px; 
+  border-bottom-left-radius: 20px;
+  border-bottom-right-radius: 20px;
+  padding-bottom: 50px;
 }
 
 .practice-code-container:hover .click-to-start p {
-    color: var(--practice-code-button-color);
+  color: var(--practice-code-button-color);
 }
 
 .click-to-start {
-    display: flex; 
-    justify-content: center;
-    align-items: center;
-    background-color: inherit; 
-    width: 100%; 
-    height: 100%; 
-    margin-top: 20px; 
-    cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: inherit;
+  width: 100%;
+  height: 100%;
+  margin-top: 20px;
+  cursor: pointer;
 }
 
 .click-to-start p {
-    color: var(--practice-code-color);
-    font-family: var(--code-font); 
-    background-color: inherit;
-    transition: all 300ms ease; 
+  color: var(--practice-code-color);
+  font-family: var(--code-font);
+  background-color: inherit;
+  transition: all 300ms ease;
 }
 
 #add-margin {
-    margin-top: 80px; 
+  margin-top: 80px;
 }
 
 .practice-code-line {
-    display: flex; 
-    flex-direction: row; 
-    background-color: inherit;
-    margin: 10px; 
+  display: flex;
+  flex-direction: row;
+  background-color: inherit;
+  margin: 10px;
 }
 
 .practice-code-container:focus {
-    color: transparent; 
-    text-shadow: 0 0 8px rgba(255, 255, 255, 0.5);
+  color: transparent;
+  text-shadow: 0 0 8px rgba(255, 255, 255, 0.5);
 }
 
 .practice-code-cursor {
-    background: var(--practice-code-cursor); 
-    font-size: 4px; 
-    height: 32px; 
-    transform: translateY(-4px);
-    position: absolute; 
-    z-index: 5;  
+  background: var(--practice-code-cursor);
+  font-size: 4px;
+  height: 32px;
+  transform: translateY(-4px);
+  position: absolute;
+  z-index: 5;
 }
 
 .cursor-blinking {
-    animation: blink 1.5s steps(1) infinite;
+  animation: blink 1.5s steps(1) infinite;
 }
 @keyframes blink {
-    0% {opacity: 0;}
-    50% {opacity: 1;}
+  0% {
+    opacity: 0;
+  }
+  50% {
+    opacity: 1;
+  }
 }
 
-
 .practice-code-text {
-    background: inherit; 
+  background: inherit;
 }
 
 .tab-space {
-    word-spacing: 10px; 
+  word-spacing: 10px;
 }
 
 #text-correct {
-    color: var(--practice-code-correct-color); 
+  color: var(--practice-code-correct-color);
 }
 
 #text-wrong {
-    color: var(--practice-code-error-color); 
+  color: var(--practice-code-error-color);
 }
 
 #text-space-wrong {
-    background: var(--practice-code-space-error-color); 
-    transform: scale(1, 0.7);
-    transform: translateY(-3px);
+  background: var(--practice-code-space-error-color);
+  transform: scale(1, 0.7);
+  transform: translateY(-3px);
 }
 
 pre {
-    background-color: inherit; 
-    font-family: var(--code-font); 
+  background-color: inherit;
+  font-family: var(--code-font);
 }
 
 #practice-code-input {
-    height: 0; 
-    width: 0; 
-    opacity: 0;
-    position: absolute; 
+  height: 0;
+  width: 0;
+  opacity: 0;
+  position: absolute;
 }
 
 .toggle-status-bar {
-    background: inherit;
-    color: var(--toggle-status-bar);
-    border-style: none; 
-    padding: 8px; 
-    font-size: 18px; 
-    font-family: consolas; 
-    word-spacing: -4px; 
-    transform: translateX(-450px);
-    cursor: pointer; 
-    transition: all 200ms ease; 
+  background: inherit;
+  color: var(--toggle-status-bar);
+  border-style: none;
+  padding: 8px;
+  font-size: 18px;
+  font-family: consolas;
+  word-spacing: -4px;
+  transform: translateX(-450px);
+  cursor: pointer;
+  transition: all 200ms ease;
 }
 
 .toggle-status-bar:hover {
-    color: var(--practice-code-hover-color);
+  color: var(--practice-code-hover-color);
 }
 
 .placeholder-status-bar {
-    background: var(--practice-code-background-color); 
-    width: 920px; 
-    height: 60px; 
-    border-bottom-left-radius: 20px;
-    border-bottom-right-radius: 20px;
-    padding: 0px 80px; 
-    padding-top: 1px; 
-    display: none; 
+  background: var(--practice-code-background-color);
+  width: 920px;
+  height: 60px;
+  border-bottom-left-radius: 20px;
+  border-bottom-right-radius: 20px;
+  padding: 0px 80px;
+  padding-top: 1px;
+  display: none;
 }
 
 .practice-code-next-prev-buttons {
-    height: 40px; 
-    margin-bottom: 220px; 
-    width: inherit; 
-    display: flex;
-    justify-content: flex-end; 
-    position: absolute; 
-    background: none; 
-    margin-left: 6px; 
+  height: 40px;
+  margin-bottom: 220px;
+  width: inherit;
+  display: flex;
+  justify-content: flex-end;
+  position: absolute;
+  background: none;
+  margin-left: 6px;
 }
 
 .practice-code-button {
-    color: var(--practice-code-button-color); 
-    background-color: inherit; 
-    display: flex; 
-    justify-content: center;
-    align-items: center;
-    font-size: 28px; 
-    width: 50px; 
-    height: 50px; 
-    border-radius: 10px;
-    margin-right: 8px; 
-    cursor: pointer; 
-    transition: all 400ms ease; 
+  color: var(--practice-code-button-color);
+  background-color: inherit;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 28px;
+  width: 50px;
+  height: 50px;
+  border-radius: 10px;
+  margin-right: 8px;
+  cursor: pointer;
+  transition: all 400ms ease;
 }
 
 .practice-code-button:hover {
-    color: var(--practice-code-background-color);
-    background-color: var(--practice-code-button-color);
+  color: var(--practice-code-background-color);
+  background-color: var(--practice-code-button-color);
 }
 
 .practice-code-button-hover {
-    color: var(--practice-code-background-color);
-    background-color: var(--practice-code-button-color);
+  color: var(--practice-code-background-color);
+  background-color: var(--practice-code-button-color);
 }
 
 .practice-code-right-arrow {
-    background: none; 
-    margin-left: 2px; 
+  background: none;
+  margin-left: 2px;
 }
 .practice-code-left-arrow {
-    background: none; 
-    margin-right: 2px; 
+  background: none;
+  margin-right: 2px;
 }
 
 .hide-button {
-    opacity: 0; 
-    z-index: -1; 
+  opacity: 0;
+  z-index: -1;
 }
 
 .practice-code-focus-mode {
-    background: inherit; 
-    color: var(--header-color);
-    margin-bottom: 50px; 
+  background: inherit;
+  color: var(--header-color);
+  margin-bottom: 50px;
 }

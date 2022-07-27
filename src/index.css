@@ -1,82 +1,83 @@
-@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600&family=Red+Hat+Mono:wght@400;600&family=Roboto+Mono:wght@400;600&family=Source+Code+Pro:wght@400;600&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Red+Hat+Mono:wght@300;400;600&display=swap&family=Quicksand&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600&family=Red+Hat+Mono:wght@400;600&family=Roboto+Mono:wght@400;600&family=Source+Code+Pro:wght@400;600&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Red+Hat+Mono:wght@300;400;600&display=swap&family=Quicksand&display=swap");
 
 @font-face {
-  font-family: 'consolas';
-  src: url('../assets/fonts/consolas.ttf');
+  font-family: "consolas";
+  src: url("../assets/fonts/consolas.ttf");
 }
 @font-face {
-  font-family: 'segoe-ui';
-  src: url('../assets/fonts/segoe-ui.ttf');
+  font-family: "segoe-ui";
+  src: url("../assets/fonts/segoe-ui.ttf");
 }
 @font-face {
-  font-family: 'menlo';
-  src: url('../assets/fonts/menlo.ttf');
+  font-family: "menlo";
+  src: url("../assets/fonts/menlo.ttf");
 }
 @font-face {
-  font-family: 'minimal-mono';
-  src: url('../assets/fonts/minimal-mono.otf');
+  font-family: "minimal-mono";
+  src: url("../assets/fonts/minimal-mono.otf");
 }
 
 * {
   background: var(--background-color);
-  font-family: 'Red Hat Mono', monospace;
-  margin: 0; 
-  padding: 0;  
+  font-family: "Red Hat Mono", monospace;
+  margin: 0;
+  padding: 0;
 }
- 
+
 :root {
   --background-color: #273138;
-  --placeholder-color: #242c33; 
+  --placeholder-color: #242c33;
   --header-background-color: var(--background-color);
   --header-color: #88beb8;
-  --header-hover-color: #94d8d0; 
-  --languages-panel-background-color: var(--placeholder-color); 
+  --header-hover-color: #94d8d0;
+  --languages-panel-background-color: var(--placeholder-color);
   --languages-panel-color: #88beb8;
   --languages-panel-button-color: #77a8a3;
   --languages-panel-search-bar-color: #77a8a3;
-  --languages-panel-bar-color: #77a8a3; 
-  --languages-panel-hover-color: #1b2125; 
+  --languages-panel-bar-color: #77a8a3;
+  --languages-panel-hover-color: #1b2125;
   --languages-unsupported-primary-color: #5b817b;
-  --languages-unsupported-secondary-color: var(--languages-unsupported-primary-color);
-  --practice-code-background-color: #20272e; 
-  --practice-code-color: #4D6772; 
-  --practice-code-cursor: #d6d6d6; 
-  --practice-code-correct-color: #ffffffe0; 
-  --practice-code-error-color: #ff7962; 
-  --practice-code-space-error-color: #ff796277; 
-  --practice-code-hover-color: #4D6772; 
+  --languages-unsupported-secondary-color: var(
+    --languages-unsupported-primary-color
+  );
+  --practice-code-background-color: #20272e;
+  --practice-code-color: #4d6772;
+  --practice-code-cursor: #d6d6d6;
+  --practice-code-correct-color: #ffffffe0;
+  --practice-code-error-color: #ff7962;
+  --practice-code-space-error-color: #ff796277;
+  --practice-code-hover-color: #4d6772;
   --practice-code-button-color: #77a8a3;
   --underbar-background-color: #33444d;
-  --underbar-color: #dfdfdf; 
-  --underbar-value-color: #80CBC4;
+  --underbar-color: #dfdfdf;
+  --underbar-value-color: #80cbc4;
   --drop-down-button-color: #eeeeeeaa;
-  --drop-down-button-hover-color: #28353b;  
-  --finished-test-color: #88beb8; 
-  --finished-test-secondary-color: #dfdfdf; 
-  --close-settings-color: #dfdfdfbb; 
-  --toggle-status-bar:  var(--underbar-background-color); 
-  --chart-color: #7d7d7d20; 
+  --drop-down-button-hover-color: #28353b;
+  --finished-test-color: #88beb8;
+  --finished-test-secondary-color: #dfdfdf;
+  --close-settings-color: #dfdfdfbb;
+  --toggle-status-bar: var(--underbar-background-color);
+  --chart-color: #7d7d7d20;
   --chart-text-color: #60737ac0;
-  --chart-wpm-color: #88beb8; 
+  --chart-wpm-color: #88beb8;
   --chart-wpm-border-color: #677c7a;
   --chart-error-color: #ff7962;
   --chart-error-border-color: #795c58;
   --file-upload-preview-color: #656f74;
   --file-upload-preview-background-color: #20272e;
-}  
-
+}
 
 input:focus,
 select:focus,
 textarea:focus,
 button:focus {
-    outline: none;
+  outline: none;
 }
 
-html, 
-body, 
+html,
+body,
 #root,
 .App {
-  height: 100%; 
+  height: 100%;
 }

@@ -1,20 +1,20 @@
 .header {
-  background: var(--header-background-color); 
+  background: var(--header-background-color);
   display: flex;
   justify-content: flex-start;
   align-items: center;
   min-height: 70px;
-  min-width: 1200px; 
+  min-width: 1200px;
   height: 9%;
-  padding-top: 1%; 
+  padding-top: 1%;
 }
 
 .title {
-  display: flex; 
-  background: inherit; 
-  margin-left: 100px; 
-  flex-grow: 3; 
-  font-size: 20px; 
+  display: flex;
+  background: inherit;
+  margin-left: 100px;
+  flex-grow: 3;
+  font-size: 20px;
 }
 
 .title-text {
@@ -25,11 +25,11 @@
 }
 
 .title-text:hover {
-  color: var(--header-hover-color)
+  color: var(--header-hover-color);
 }
 
 .title-text h2 {
-  background-color: inherit; 
+  background-color: inherit;
 }
 
 .button {
@@ -57,17 +57,18 @@
 .navbar-button {
   display: flex;
   height: 100%;
-  transition: all 300ms ease; 
+  transition: all 300ms ease;
 }
 
 .navbar-link {
   display: flex;
-  padding: 0px 20px; 
+  padding: 0px 20px;
   height: 92%;
   transition: all 200ms ease;
 }
 
-.navbar-button:hover, .navbar-link:hover {
+.navbar-button:hover,
+.navbar-link:hover {
   color: var(--header-hover-color);
   border-bottom: solid var(--header-hover-color) 4px;
 }
@@ -79,11 +80,11 @@
 .sign-up-link {
   background-color: var(--header-color);
   color: var(--background-color);
-  display: flex; 
+  display: flex;
   align-items: center;
-  padding: 0 25px; 
+  padding: 0 25px;
   height: min(55%, 45px);
-  min-width: 80px; 
+  min-width: 80px;
   margin-right: 100px;
   margin-left: 30px;
   border-radius: 10px;
@@ -96,14 +97,14 @@
 }
 
 .open-header-link {
-  display: flex; 
+  display: flex;
   justify-content: center;
   align-items: center;
-  color: var(--header-color); 
-  background: inherit; 
+  color: var(--header-color);
+  background: inherit;
   margin: 0px 25px;
-  cursor: pointer; 
-  font-size: 25px; 
+  cursor: pointer;
+  font-size: 25px;
 }
 
 .open-header-link > * {
@@ -111,5 +112,5 @@
 }
 
 .open-header-link:hover > * {
- scale: 1.15;
+  scale: 1.15;
 }

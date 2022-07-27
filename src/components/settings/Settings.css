@@ -1,195 +1,192 @@
 .settings {
-    display: flex;  
-    flex-direction: column; 
-    justify-content: flex-start;
-    align-items: center; 
-    margin-top: 5%; 
-    height: 70%; 
-    margin-bottom: 2%; 
-    overflow-y: scroll;
-    
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+  margin-top: 5%;
+  height: 70%;
+  margin-bottom: 2%;
+  overflow-y: scroll;
 }
 
 .settings-container {
-    display: flex; 
-    flex-direction: column;
-    justify-content: center;
-    width: 60%; 
-    padding-top: 2%; 
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  width: 60%;
+  padding-top: 2%;
 }
 
 .settings-container h2 {
-    color: var(--finished-test-color); 
-    margin-bottom: 15px; 
-    font-family: 'Quicksand', sans-serif;
-    word-spacing: 2px; 
+  color: var(--finished-test-color);
+  margin-bottom: 15px;
+  font-family: "Quicksand", sans-serif;
+  word-spacing: 2px;
 }
 
 .setting {
-    display: flex; 
-    flex-direction: row;
-    justify-content: flex-start;
-    align-items: center;
-    margin-top: 5px; 
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: center;
+  margin-top: 5px;
 }
 
 .test-fails-container {
-    display: flex; 
+  display: flex;
 }
 
 .test-fails-side-bar {
-    height: 140px; 
-    width: 4px; 
-    border-radius: 4px; 
-    background: var(--languages-panel-bar-color); 
-    margin-left: 3px; 
-    margin-top: 20px; 
+  height: 140px;
+  width: 4px;
+  border-radius: 4px;
+  background: var(--languages-panel-bar-color);
+  margin-left: 3px;
+  margin-top: 20px;
 }
 
 .setting-padding {
-    margin-bottom: 25px; 
+  margin-bottom: 25px;
 }
 
 .test-fails-options {
-    width: 100%; 
+  width: 100%;
 }
 
 .test-fails-setting {
-    display: flex;
-    margin-top: 5px; 
-    margin-left: 15px; 
+  display: flex;
+  margin-top: 5px;
+  margin-left: 15px;
 }
 
-
 .setting-description {
-    color: var(--finished-test-secondary-color); 
-    word-spacing: -2px; 
-    flex-grow: 3; 
+  color: var(--finished-test-secondary-color);
+  word-spacing: -2px;
+  flex-grow: 3;
 }
 
 .setting-description p {
-    width: 70%; 
+  width: 70%;
 }
 
 .button-container {
-    display: flex; 
-    max-width: 40%;
-    align-items: center;
+  display: flex;
+  max-width: 40%;
+  align-items: center;
 }
 
 .setting-button {
-    background: var(--practice-code-background-color);
-    color: var(--finished-test-secondary-color); 
-    height: 25px; 
-    min-width: 120px;
-    padding: 0px 25px; 
-    border-radius: 8px; 
-    margin-left: 10px; 
-    word-spacing: -3px;
-    border-style: none; 
-    cursor: pointer; 
-    transition: all 300ms ease; 
-    font-size: 14px; 
-    line-height: 1.4;
+  background: var(--practice-code-background-color);
+  color: var(--finished-test-secondary-color);
+  height: 25px;
+  min-width: 120px;
+  padding: 0px 25px;
+  border-radius: 8px;
+  margin-left: 10px;
+  word-spacing: -3px;
+  border-style: none;
+  cursor: pointer;
+  transition: all 300ms ease;
+  font-size: 14px;
+  line-height: 1.4;
 }
 
 .setting-selected {
-    color: var(--practice-code-background-color);
-    background: var(--finished-test-color);
-    min-width: 120px;
-    height: 25px; 
-    padding: 0px 25px; 
-    border-radius: 8px; 
-    border-style: none; 
-    margin-left: 10px; 
-    word-spacing: -3px;
-    cursor: pointer;  
-    font-size: 14px; 
-    line-height: 1.4;
+  color: var(--practice-code-background-color);
+  background: var(--finished-test-color);
+  min-width: 120px;
+  height: 25px;
+  padding: 0px 25px;
+  border-radius: 8px;
+  border-style: none;
+  margin-left: 10px;
+  word-spacing: -3px;
+  cursor: pointer;
+  font-size: 14px;
+  line-height: 1.4;
 }
 
 .setting-button:hover {
-    color: var(--practice-code-background-color); 
-    background: var(--finished-test-secondary-color);
+  color: var(--practice-code-background-color);
+  background: var(--finished-test-secondary-color);
 }
 
-
 .close-settings {
-    height: 40px; 
-    color: var(--close-settings-color); 
-    position: absolute;
-    font-size: 40px; 
-    top: 16%; 
-    right: 15%; 
-    cursor: pointer; 
-    transition: all 300ms ease;;
+  height: 40px;
+  color: var(--close-settings-color);
+  position: absolute;
+  font-size: 40px;
+  top: 16%;
+  right: 15%;
+  cursor: pointer;
+  transition: all 300ms ease;
 }
 
 .close-settings:hover {
-    color: var(--finished-test-color);
-    transform: scale(1.05)
+  color: var(--finished-test-color);
+  transform: scale(1.05);
 }
 
 .slider-field {
-    color: var(--finished-test-secondary-color);
-    display: flex; 
-    justify-content: flex-start;
-    align-items: center; 
-    width: 385px; 
+  color: var(--finished-test-secondary-color);
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  width: 385px;
 }
 
 .slider-setting {
-    display: flex; 
-    justify-content: flex-start;
-    align-items: flex-start;
-    margin-top: 30px; 
+  display: flex;
+  justify-content: flex-start;
+  align-items: flex-start;
+  margin-top: 30px;
 }
 
-.slider-setting .slider { 
-    margin-right: -15px; 
+.slider-setting .slider {
+  margin-right: -15px;
 }
 
 .slider-left-value {
-    margin: 0px 10px; 
-    color: #ccc;
-    text-align: right; 
-    width: 30px; 
+  margin: 0px 10px;
+  color: #ccc;
+  text-align: right;
+  width: 30px;
 }
 .slider-right-value {
-    margin: 0px 10px; 
-    color: #ccc; 
-    text-align: left; 
-    width: 35px; 
+  margin: 0px 10px;
+  color: #ccc;
+  text-align: left;
+  width: 35px;
 }
 
 .input-slider {
-    background: var(--practice-code-background-color); 
-    -webkit-appearance: none;
-    height: 5px; 
-    border-radius: 4px; 
-    width: 320px; 
-    appearance: none; 
+  background: var(--practice-code-background-color);
+  -webkit-appearance: none;
+  height: 5px;
+  border-radius: 4px;
+  width: 320px;
+  appearance: none;
 }
 
 .input-slider::-webkit-slider-thumb {
-    background: var(--finished-test-color);
-    -webkit-appearance: none; 
-    width: 15px; 
-    height: 15px; 
-    border-radius: 50%; 
+  background: var(--finished-test-color);
+  -webkit-appearance: none;
+  width: 15px;
+  height: 15px;
+  border-radius: 50%;
 }
 
 .slider-value {
-    background: #00000030;
-    color: var(--finished-test-color);
-    border-radius: 25%;
-    width: 30px; 
-    height: 25px;
-    display: flex; 
-    justify-content: center;
-    align-items: center;
-    position: relative; 
-    font-weight: 500; 
-    font-size: 13px;
-    margin-top: 2px; 
+  background: #00000030;
+  color: var(--finished-test-color);
+  border-radius: 25%;
+  width: 30px;
+  height: 25px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  font-weight: 500;
+  font-size: 13px;
+  margin-top: 2px;
 }

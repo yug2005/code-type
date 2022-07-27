@@ -13,14 +13,14 @@
             "wpm": 60,
             "chars": 0
           },
-          "cpm": true
+          "cpm": false
         },
         "status_bar": {
           "show": true,
           "hide": false,
           "wpm": true,
-          "accuracy": false,
-          "time": false,
+          "accuracy": true,
+          "time": true,
           "limits": false
         },
         "appearance": {
