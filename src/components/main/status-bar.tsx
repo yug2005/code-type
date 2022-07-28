@@ -1,7 +1,7 @@
 import React, { useState, useContext } from "react";
 import { FiCheck } from "react-icons/fi";
-import { UserContext } from "../../context/UserContext";
-import "./UnderBar.css";
+import { UserContext } from "../../context/user-context";
+import "../../css/main/status-bar.css";
 
 interface BarInterface {
   wpm: number | string;
@@ -18,7 +18,7 @@ interface BarInterface {
 const fileTypes =
   ".c,.cs,.cpp,.h,.hpp,.css,.go,.html,.java,.js,.jsx,.ts,.tsx,.kt,.sql,.php,.py,.txt";
 
-const UnderBar = (props: BarInterface) => {
+const StatusBar = (props: BarInterface) => {
   const [settings, setSettings]: any = useContext(UserContext);
 
   const [fileName, setFileName]: any = useState();
@@ -76,17 +76,17 @@ const UnderBar = (props: BarInterface) => {
         />
       )}
       {/* wpm, accuracy, and time display */}
-      {settings?.status_bar.wpm && (
+      {settings?.show_wpm && (
         <div className="under-bar-item" style={{ width: "70px" }}>
           <label className="under-bar-label">
-            {settings?.test.cpm ? "cpm" : "wpm"}
+            {settings?.use_cpm ? "cpm" : "wpm"}
           </label>
           <p className="under-bar-value">
-            {settings?.test.cpm ? props.cpm : props.wpm}
+            {settings?.use_cpm ? props.cpm : props.wpm}
           </p>
         </div>
       )}
-      {settings?.status_bar.accuracy && (
+      {settings?.show_accuracy && (
         <div className="under-bar-item" style={{ width: "150px" }}>
           <label className="under-bar-label">accuracy</label>
           {props.accuracy !== "" && (
@@ -99,7 +99,7 @@ const UnderBar = (props: BarInterface) => {
         {props.time !== "" && <p className="under-bar-value">{props.time}s</p>}
       </div>
       {/* test limit settings */}
-      {settings?.status_bar.limits && (
+      {settings?.show_limits && (
         <>
           <div className="under-bar-setting">
             <label
@@ -367,8 +367,8 @@ const FileUploadWindow = ({
 //     )
 // }
 
-UnderBar.defaultProps = {
+StatusBar.defaultProps = {
   wpm: "",
 };
 
-export default UnderBar;
+export default StatusBar;

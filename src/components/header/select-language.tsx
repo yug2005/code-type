@@ -1,6 +1,6 @@
 import React, { useState } from "react";
-import Button from "../Button";
-import "./LanguagesPanel.css";
+import Button from "../button";
+import "../../css/header/select-language.css";
 
 interface LanguagesPanelInterface {
   onLanguageClick(language: string): void;
@@ -63,7 +63,7 @@ const languages = [
   "vue",
 ];
 
-const LanguagesPanel = (props: LanguagesPanelInterface) => {
+const SelectLanguage = (props: LanguagesPanelInterface) => {
   const [searchText, setSearchText] = useState("");
 
   // gets the languages filtered by the search text
@@ -149,4 +149,4 @@ const LanguagesPanel = (props: LanguagesPanelInterface) => {
   );
 };
 
-export default LanguagesPanel;
+export default SelectLanguage;

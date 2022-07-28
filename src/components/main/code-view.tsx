@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useContext } from "react";
-import { UserContext } from "../../context/UserContext";
-import "./PracticeCode.css";
+import { UserContext } from "../../context/user-context";
+import "../../css/main/code-view.css";
 
 import { FiChevronRight } from "react-icons/fi";
 import { FiChevronLeft } from "react-icons/fi";
@@ -23,11 +23,11 @@ interface PropsInterface {
   usingCustom: any;
 }
 
-const PracticeCode = (props: PropsInterface) => {
+const CodeView = (props: PropsInterface) => {
   const [settings, setSettings]: any = useContext(UserContext);
 
   // whether the test is active
-  const [active, setActive] = useState(settings?.appearance.focus_mode);
+  const [active, setActive] = useState(settings?.focus_mode);
 
   const enable = () => {
     document.getElementById("practice-code-input")?.focus();
@@ -50,8 +50,8 @@ const PracticeCode = (props: PropsInterface) => {
       (input[input.length - 1] !== line[input.length - 1]);
 
     if (
-      settings?.test.fails_on.use &&
-      settings?.test.fails_on.chars <= numIncorrect
+      settings?.fails_on.use &&
+      settings?.fails_on.chars <= numIncorrect
     ) {
       console.log("Test Failed");
       props.endTimer();
@@ -207,13 +207,13 @@ const PracticeCode = (props: PropsInterface) => {
           !props.showStatusBar ? "no-status-bar" : ""
         }
                             ${
-                              settings?.appearance.focus_mode
+                              settings?.focus_mode
                                 ? "practice-code-focus-mode"
                                 : ""
                             }`}
         style={{
-          fontSize: settings?.appearance.f_size,
-          fontWeight: settings?.appearance.f_weight,
+          fontSize: settings?.font_size,
+          fontWeight: settings?.font_weight,
         }}
         onClick={enable}
       >
@@ -255,4 +255,4 @@ const PracticeCode = (props: PropsInterface) => {
   );
 };
 
-export default PracticeCode;
+export default CodeView;

@@ -42,7 +42,7 @@ export const Slider = (props: SliderInterface) => {
           max={props.max}
           value={props.range}
           step={props.step}
-          onChange={(e) => props.setRange(parseInt(e.target.value))}
+          onChange={(e: any) => props.setRange(parseInt(e.target.value))}
         />
         <div className="slider-right-value">{props.max}</div>
       </div>

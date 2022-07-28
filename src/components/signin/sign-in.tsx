@@ -1,9 +1,9 @@
 import React, { useState, useContext } from "react";
-import { UserContext } from "../../context/UserContext";
+import { UserContext } from "../../context/user-context";
 import { Link, useNavigate } from "react-router-dom";
-import GoogleLogin from "./GoogleLogin";
+import GoogleSignIn from "./google";
 import { CgClose } from "react-icons/cg";
-import "./SignIn.css";
+import "../../css/signin/sign-in.css";
 
 const SignIn = () => {
   const navigate = useNavigate();
@@ -14,7 +14,7 @@ const SignIn = () => {
     }
   };
 
-  const [settings, setSettings] = useState(useContext(UserContext));
+  const [settings, setSettings] = useContext(UserContext);
 
   const createAccount = async (user: any) => {
     await fetch("http://localhost:5001/users", {
@@ -32,8 +32,7 @@ const SignIn = () => {
     });
     const res = await fetch(`http://localhost:5001/users/0`);
     const user = await res.json();
-    const settings = user.settings;
-    setSettings(settings);
+    setSettings(user.settings);
   };
 
   const signIn = async (email: string, password: string) => {
@@ -47,8 +46,7 @@ const SignIn = () => {
       throw new Error("Login Failed");
     }
     const user = await res.json();
-    const settings = user.settings;
-    setSettings(settings);
+    setSettings(user.settings);
   };
 
   return (
@@ -99,7 +97,7 @@ const SignIn = () => {
           ></input>
           <input value="sign in" type="submit" className="form-submit"></input>
           <h3 className="register-or">or</h3>
-          <GoogleLogin />
+          <GoogleSignIn />
         </form>
       </div>
     </div>

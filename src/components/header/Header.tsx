@@ -1,8 +1,8 @@
 import React, { useState, useContext, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { TbArrowBarToLeft, TbArrowBarToRight } from "react-icons/tb";
-import { UserContext } from "../../context/UserContext";
-import "./Header.css";
+import { UserContext } from "../../context/user-context";
+import "../../css/header/header.css";
 
 interface HeaderInterface {
   text: string;
@@ -15,7 +15,7 @@ const Header = (props: HeaderInterface) => {
   const [showLinks, setShowLinks] = useState(true);
 
   useEffect(() => {
-    if (settings?.appearance.focus_mode) {
+    if (settings?.focus_mode) {
       setShowLinks(false);
     } else {
       setShowLinks(true);
@@ -29,7 +29,7 @@ const Header = (props: HeaderInterface) => {
           <h2>{props.text}</h2>
         </Link>
       </div>
-      {settings?.appearance.focus_mode && (
+      {settings?.focus_mode && (
         <div
           className="open-header-link"
           style={!showLinks ? { margin: "0px 75px" } : {}}

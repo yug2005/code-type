@@ -2,8 +2,8 @@ import React, { useState, useEffect, useContext } from "react";
 import { Line } from "react-chartjs-2";
 import { MdNavigateNext } from "react-icons/md";
 import { IoRepeatOutline } from "react-icons/io5";
-import { UserContext } from "../../context/UserContext";
-import "./FinishedTest.css";
+import { UserContext } from "../../context/user-context";
+import "../../css/main/test-stats.css";
 
 import {
   Chart as ChartJS,
@@ -27,7 +27,7 @@ ChartJS.register(
   Legend
 );
 
-const FinishedTest = (props: {
+const TestStats = (props: {
   testDetails: any;
   limit: string;
   limitValue: number;
@@ -334,4 +334,4 @@ const FinishedTest = (props: {
   );
 };
 
-export default FinishedTest;
+export default TestStats;

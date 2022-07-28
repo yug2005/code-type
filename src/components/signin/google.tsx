@@ -1,9 +1,9 @@
 import React from "react";
 import { useGoogleLogin } from "react-google-login";
 import { CgGoogle } from "react-icons/cg";
-import "./GoogleLogin.css";
+import "../../css/signin/google.css";
 
-const GoogleLogin = () => {
+const GoogleSignIn = () => {
   const clientId =
     "409567789187-nmg3icdotj9updd5npvtl4f2a5evqmnd.apps.googleusercontent.com";
 
@@ -33,4 +33,4 @@ const GoogleLogin = () => {
   );
 };
 
-export default GoogleLogin;
+export default GoogleSignIn;

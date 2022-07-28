@@ -1,11 +1,11 @@
 import React, { useEffect, useState, useRef } from "react";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
-import { UserContext } from "./context/UserContext";
-import Header from "./components//header/Header";
-import SignIn from "./components/signin/SignIn";
-import LanguagesPanel from "./components/header/LanguagesPanel";
-import Main from "./components/main/Main";
-import Settings from "./components/settings/Settings";
+import { UserContext } from "./context/user-context";
+import Main from "./components/main/main";
+import Header from "./components/header/header";
+import SignIn from "./components/signin/sign-in";
+import Settings from "./components/settings/settings";
+import SelectLanguage from "./components/header/select-language";
 
 function App() {
   onkeydown = (e: any) => {
@@ -235,7 +235,7 @@ function App() {
     <Router>
       <div className="App">
         {languagesPanelOpen && (
-          <LanguagesPanel onLanguageClick={updateLanguage} />
+          <SelectLanguage onLanguageClick={updateLanguage} />
         )}
         <UserContext.Provider value={[settings, setSettings]}>
           <Header

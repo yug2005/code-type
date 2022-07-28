@@ -1,9 +1,9 @@
 import React, { useState, useEffect, useContext } from "react";
-import { UserContext } from "../../context/UserContext";
-import PracticeCode from "./PracticeCode";
-import UnderBar from "./UnderBar";
-import FinishedTest from "./FinishedTest";
-import "./Main.css";
+import { UserContext } from "../../context/user-context";
+import CodeView from "./code-view";
+import StatusBar from "./status-bar";
+import TestStats from "./test-stats";
+import "../../css/main/main.css";
 
 interface PropsInteface {
   language: string;
@@ -76,11 +76,10 @@ const Main = (props: PropsInteface) => {
       clearInterval(interval);
     } else {
       if (timer.started) {
-        if (settings?.status_bar.hide)
+        if (settings?.hide_status)
           setSettings?.({
-            ...settings,
-            status_bar: { ...settings.status_bar, show: false },
-          });
+            ...settings, show_status: false },
+          );
         interval = setInterval(() => {
           setTrackers({ ...trackers, temp: test.incorrectChars });
           // increment timer
@@ -90,8 +89,6 @@ const Main = (props: PropsInteface) => {
             const { wpm, cpm, accuracy } = computeStats();
             trackers.wpm.push([wpm, timer.time]);
             trackers.cpm.push([cpm, timer.time]);
-            console.log(trackers.wpm);
-            console.log(trackers.cpm);
           }
           // determine the number of errors
           if (test.incorrectChars > trackers.temp) {
@@ -99,11 +96,10 @@ const Main = (props: PropsInteface) => {
             trackers.errors.push([numErrors, timer.time]);
           }
         }, 1000);
-      } else if (settings?.status_bar.hide && !settings?.status_bar.show) {
+      } else if (settings && settings.hide_status && !settings.show_status) {
         setSettings?.({
-          ...settings,
-          status_bar: { ...settings.status_bar, show: true },
-        });
+          ...settings, show_status: true },
+        );
       }
       // when the timer limit is reached
       if (limit.type === "time" && limit.timeLimit - timer.time === 0) {
@@ -122,10 +118,10 @@ const Main = (props: PropsInteface) => {
       console.log(`Set cpm to ${cpm} with time ${timer.time}`);
       setCpm(cpm);
       setAccuracy(accuracy);
-      if (settings?.test.fails_on.use) {
+      if (settings?.fails_on.use) {
         if (
-          wpm < settings?.test.fails_on.wpm ||
-          accuracy < settings?.test.fails_on.accuracy
+          wpm < settings?.fails_on.wpm ||
+          accuracy < settings?.fails_on.accuracy
         ) {
           console.log(`Test failed with wpm ${wpm} and accuracy ${accuracy}`);
           endTimer();
@@ -210,7 +206,7 @@ const Main = (props: PropsInteface) => {
     // wpm labels and data
     let labels: any = [];
     let data: any = [];
-    const tracker = settings?.test.cpm ? trackers.cpm : trackers.wpm;
+    const tracker = settings?.use_cpm ? trackers.cpm : trackers.wpm;
     if (tracker.length > 0) {
       let iterator = Math.ceil(tracker.length / 10);
       for (let i = 0; i <= tracker.length + 1; i += iterator) {
@@ -275,7 +271,7 @@ const Main = (props: PropsInteface) => {
   return !timer.finished ? (
     <div className="main-container">
       {/* practice code block */}
-      <PracticeCode
+      <CodeView
         code={props.code}
         test={test}
         setTest={setTest}
@@ -283,7 +279,7 @@ const Main = (props: PropsInteface) => {
         startTimer={startTimer}
         endTimer={endTimer}
         showStatusBar={
-          settings?.status_bar.show && !settings?.appearance.focus_mode
+          settings?.show_status && !settings?.focus_mode
         }
         userInput={userInput}
         setUserInput={setUserInput}
@@ -295,8 +291,8 @@ const Main = (props: PropsInteface) => {
         usingCustom={props.usingCustom}
       />
       {/* status bar below the practice code */}
-      {settings?.status_bar.show && !settings?.appearance.focus_mode && (
-        <UnderBar
+      {settings?.show_status && !settings?.focus_mode && (
+        <StatusBar
           wpm={timer.time === 0 || test.chars + test.lineChars === 0 ? "" : wpm}
           cpm={timer.time === 0 || test.chars + test.lineChars === 0 ? "" : cpm}
           accuracy={test.chars + test.lineChars === 0 ? "" : accuracy}
@@ -315,25 +311,21 @@ const Main = (props: PropsInteface) => {
         />
       )}
       {/* show status bar button */}
-      {!settings?.status_bar.hide && (
+      {!settings?.hide_status && (
         <button
           className="toggle-status-bar"
           onClick={() =>
             setSettings?.({
-              ...settings,
-              status_bar: {
-                ...settings.status_bar,
-                show: !settings?.status_bar.show,
-              },
+              ...settings, show_status: !settings.show_status,
             })
           }
         >
-          {settings?.status_bar.show ? "hide" : "show"} status bar
+          {settings?.show_status ? "hide" : "show"} status bar
         </button>
       )}
     </div>
   ) : (
-    <FinishedTest
+    <TestStats
       testDetails={testDetails}
       limit={limit.type}
       limitValue={limit.type === "time" ? limit.timeLimit : limit.lineLimit}

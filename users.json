@@ -4,32 +4,28 @@
       "id": 0,
       "name": "Joe",
       "settings": {
-        "test": {
-          "difficulty": "normal",
-          "lines": 4,
-          "fails_on": {
-            "use": false,
-            "accuracy": 96,
-            "wpm": 60,
-            "chars": 0
-          },
-          "cpm": false
+        "difficulty": "normal",
+        "num_lines": 4,
+        "fails_on": {
+          "use": false,
+          "accuracy": 96,
+          "wpm": 60,
+          "chars": 0
         },
-        "status_bar": {
-          "show": true,
-          "hide": false,
-          "wpm": true,
-          "accuracy": true,
-          "time": true,
-          "limits": false
-        },
-        "appearance": {
-          "theme": "default",
-          "font": "default",
-          "f_size": 23,
-          "f_weight": "default",
-          "focus_mode": false
-        }
+        "use_cpm": false,
+        "show_status": true,
+        "hide_status": false,
+        "min_wpm": true,
+        "min_accuracy": true,
+        "time_limit": true,
+        "show_limits": true,
+        "website_theme": "default",
+        "font_family": "default",
+        "font_size": 23,
+        "font_weight": "default",
+        "focus_mode": false,
+        "show_wpm": true,
+        "show_accuracy": true
       }
     }
   ]
