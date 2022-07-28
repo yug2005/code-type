@@ -92,7 +92,7 @@ const TestStats = (props: {
     labels: props.testDetails.labels,
     datasets: [
       {
-        label: `${settings?.test.cpm ? "characters" : "words"} per minute`,
+        label: `${settings?.use_cpm ? "characters" : "words"} per minute`,
         data: props.testDetails.data,
         backgroundColor: wpm_color,
         borderColor: wpm_border_color,
@@ -127,12 +127,12 @@ const TestStats = (props: {
       },
       title: {
         display: false,
-        text: `${settings?.test.cpm ? "characters" : "words"} per minute`,
+        text: `${settings?.use_cpm ? "characters" : "words"} per minute`,
       },
       tooltip: {
         callbacks: {
           label: (item: any) =>
-            `${item.formattedValue} ${settings?.test.cpm ? "cpm" : "wpm"}`,
+            `${item.formattedValue} ${settings?.use_cpm ? "cpm" : "wpm"}`,
         },
       },
     },
@@ -157,7 +157,7 @@ const TestStats = (props: {
       yAxes: {
         title: {
           display: false,
-          text: `${settings?.test.cpm ? "characters" : "words"} per minute`,
+          text: `${settings?.use_cpm ? "characters" : "words"} per minute`,
         },
         grid: {
           display: true,
@@ -171,7 +171,7 @@ const TestStats = (props: {
           color: chart_text_color,
         },
         min: 0,
-        suggestedMax: settings?.test.cpm ? 540 : 120,
+        suggestedMax: settings?.use_cpm ? 540 : 120,
       },
     },
     radius: 4,
@@ -277,15 +277,15 @@ const TestStats = (props: {
           )}
         </div>
         <div className="other-stat">
-          <h3>average {settings?.test.cpm ? "cpm" : "wpm"}</h3>
+          <h3>average {settings?.use_cpm ? "cpm" : "wpm"}</h3>
           <div>{props.testDetails.average}</div>
         </div>
         <div className="other-stat">
-          <h3>fastest {settings?.test.cpm ? "cpm" : "wpm"}</h3>
+          <h3>fastest {settings?.use_cpm ? "cpm" : "wpm"}</h3>
           <div>{props.testDetails.max}</div>
         </div>
         <div className="other-stat">
-          <h3>slowest {settings?.test.cpm ? "cpm" : "wpm"}</h3>
+          <h3>slowest {settings?.use_cpm ? "cpm" : "wpm"}</h3>
           <div>{props.testDetails.min}</div>
         </div>
         <div className="other-stat">

@@ -100,7 +100,7 @@ const StatusBar = (props: BarInterface) => {
       </div>
       {/* test limit settings */}
       {settings?.show_limits && (
-        <>
+        <React.Fragment>
           <div className="under-bar-setting">
             <label
               className={`under-bar-label ${
@@ -212,7 +212,7 @@ const StatusBar = (props: BarInterface) => {
               />
             </div>
           </div>
-        </>
+        </React.Fragment>
       )}
     </div>
   );

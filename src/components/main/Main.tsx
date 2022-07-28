@@ -78,8 +78,9 @@ const Main = (props: PropsInteface) => {
       if (timer.started) {
         if (settings?.hide_status)
           setSettings?.({
-            ...settings, show_status: false },
-          );
+            ...settings,
+            show_status: false,
+          });
         interval = setInterval(() => {
           setTrackers({ ...trackers, temp: test.incorrectChars });
           // increment timer
@@ -98,8 +99,9 @@ const Main = (props: PropsInteface) => {
         }, 1000);
       } else if (settings && settings.hide_status && !settings.show_status) {
         setSettings?.({
-          ...settings, show_status: true },
-        );
+          ...settings,
+          show_status: true,
+        });
       }
       // when the timer limit is reached
       if (limit.type === "time" && limit.timeLimit - timer.time === 0) {
@@ -113,9 +115,7 @@ const Main = (props: PropsInteface) => {
   useEffect(() => {
     if (timer.started && !timer.finished && test.chars + test.lineChars > 0) {
       const { wpm, cpm, accuracy } = computeStats();
-      console.log(`Set wpm to ${wpm} with time ${timer.time}`);
       setWpm(wpm);
-      console.log(`Set cpm to ${cpm} with time ${timer.time}`);
       setCpm(cpm);
       setAccuracy(accuracy);
       if (settings?.fails_on.use) {
@@ -123,7 +123,6 @@ const Main = (props: PropsInteface) => {
           wpm < settings?.fails_on.wpm ||
           accuracy < settings?.fails_on.accuracy
         ) {
-          console.log(`Test failed with wpm ${wpm} and accuracy ${accuracy}`);
           endTimer();
         }
       }
@@ -139,7 +138,6 @@ const Main = (props: PropsInteface) => {
       0
     );
     // adjust for wpm being very high at the start
-    // TODO: find a better method for this
     if (timer.time < 3) {
       wpm = Math.floor(wpm / 2);
       cpm = Math.floor(cpm / 2);
@@ -278,9 +276,7 @@ const Main = (props: PropsInteface) => {
         resetTest={resetTest}
         startTimer={startTimer}
         endTimer={endTimer}
-        showStatusBar={
-          settings?.show_status && !settings?.focus_mode
-        }
+        showStatusBar={settings?.show_status && !settings?.focus_mode}
         userInput={userInput}
         setUserInput={setUserInput}
         lineIndex={lineIndex}
@@ -316,7 +312,8 @@ const Main = (props: PropsInteface) => {
           className="toggle-status-bar"
           onClick={() =>
             setSettings?.({
-              ...settings, show_status: !settings.show_status,
+              ...settings,
+              show_status: !settings.show_status,
             })
           }
         >
