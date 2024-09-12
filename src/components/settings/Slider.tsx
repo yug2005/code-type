@@ -1,12 +1,12 @@
-import React, { useEffect } from "react";
+import React, { ChangeEvent, useEffect } from "react";
 
 interface SliderInterface {
-  id: any;
-  range: any;
-  setRange: any;
-  min: any;
-  max: any;
-  step: any;
+  id: string;
+  range: number;
+  setRange(value: number): void;
+  min: number;
+  max: number;
+  step: number;
 }
 
 export const Slider = (props: SliderInterface) => {
@@ -42,7 +42,9 @@ export const Slider = (props: SliderInterface) => {
           max={props.max}
           value={props.range}
           step={props.step}
-          onChange={(e: any) => props.setRange(parseInt(e.target.value))}
+          onChange={(e: ChangeEvent<HTMLInputElement>) =>
+            props.setRange(parseInt(e.target.value))
+          }
         />
         <div className="slider-right-value">{props.max}</div>
       </div>

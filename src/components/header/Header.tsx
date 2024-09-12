@@ -1,21 +1,20 @@
 import React, { useState, useContext, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { TbArrowBarToLeft, TbArrowBarToRight } from "react-icons/tb";
-import { UserContext } from "../../context/user-context";
+import { SettingContext } from "../../context/setting-context";
 import "../../css/header/header.css";
 
 interface HeaderInterface {
-  text: string;
   language: string;
-  onClickLanguages: () => void;
+  onClickLanguages(): void;
 }
 
 const Header = (props: HeaderInterface) => {
-  const [settings, setSettings]: any = useContext(UserContext);
-  const [showLinks, setShowLinks] = useState(true);
+  const { settings } = useContext(SettingContext);
+  const [showLinks, setShowLinks] = useState<boolean>(true);
 
   useEffect(() => {
-    if (settings?.focus_mode) {
+    if (settings.focus_mode) {
       setShowLinks(false);
     } else {
       setShowLinks(true);
@@ -26,10 +25,10 @@ const Header = (props: HeaderInterface) => {
     <header className="header">
       <div className="title">
         <Link className="title-text" to="/">
-          <h2>{props.text}</h2>
+          <h2>code type</h2>
         </Link>
       </div>
-      {settings?.focus_mode && (
+      {settings.focus_mode && (
         <div
           className="open-header-link"
           style={!showLinks ? { margin: "0px 75px" } : {}}
@@ -53,17 +52,13 @@ const Header = (props: HeaderInterface) => {
           <Link className="button navbar-link" to="/settings">
             <h3 className="button-text">settings</h3>
           </Link>
-          <Link className="button sign-up-link" to={"/signin"}>
+          {/* <Link className="button sign-up-link" to="/signin">
             <h3 className="button-text">sign in</h3>
-          </Link>
+          </Link> */}
         </>
       )}
     </header>
   );
-};
-
-Header.defaultProps = {
-  text: "code type",
 };
 
 export default Header;

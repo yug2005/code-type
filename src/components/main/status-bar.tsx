@@ -1,38 +1,38 @@
 import React, { useState, useContext } from "react";
 import { FiCheck } from "react-icons/fi";
-import { UserContext } from "../../context/user-context";
+import { SettingContext } from "../../context/setting-context";
+import { Limit } from "../../interfaces/interfaces";
 import "../../css/main/status-bar.css";
 
-interface BarInterface {
+interface StatusBarInterface {
   wpm: number | string;
   cpm: number | string;
   accuracy: number | string;
   time: number | string;
-  limit: string;
-  limitValue: number;
-  onSetTimeLimit: (newTimeLimit: number) => void;
-  onSetLineLimit: (newLineLimit: number) => void;
-  onFileSubmit: any;
+  limit: Limit;
+  setLimit(limit: Limit): void;
+  onFileSubmit(file: string): void;
 }
 
 const fileTypes =
   ".c,.cs,.cpp,.h,.hpp,.css,.go,.html,.java,.js,.jsx,.ts,.tsx,.kt,.sql,.php,.py,.txt";
 
-const StatusBar = (props: BarInterface) => {
-  const [settings, setSettings]: any = useContext(UserContext);
+const StatusBar = (props: StatusBarInterface) => {
+  const { settings } = useContext(SettingContext);
 
-  const [fileName, setFileName]: any = useState();
-  const [file, setFile]: any = useState();
-  const [formattedFile, setFormattedFile]: any = useState();
-  const [fileUploadWindowOpen, setFileUploadWindowOpen] = useState(false);
+  const [fileName, setFileName] = useState<string>("");
+  const [file, setFile] = useState<string>("");
+  const [formattedFile, setFormattedFile] = useState<string>("");
+  const [fileUploadWindowOpen, setFileUploadWindowOpen] =
+    useState<boolean>(false);
 
   const onUpload = () => {
     document.getElementById("file-upload-input")?.click();
   };
 
-  const onFileUpload = (e: any) => {
-    const files = e.target.files;
-    if (!files[0]) return;
+  const onFileUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const files: FileList | null = e.target.files;
+    if (files === null || files.length === 0) return;
     if (files[0].size > 10000000) {
       alert("The file size exceeds 10 MB.");
       return;
@@ -40,21 +40,19 @@ const StatusBar = (props: BarInterface) => {
     const reader = new FileReader();
     reader.readAsText(files[0]);
     reader.onload = () => {
-      const file = reader.result?.toString();
+      const file: string | undefined = reader.result?.toString();
       if (!file) return;
-      const numLines = file.split("\n").length;
+      let numLines: number = file.split("\n").length;
       if (numLines > 500) {
         alert("This file is too large.");
-        setFile("");
         return;
       }
       setFile(file);
-      var temp = file.replaceAll(/\s*$/g, "");
+      let temp: string = file.replaceAll(/\s*$/g, "");
       temp = temp.replaceAll(/\n\s*\n/g, "\n");
       setFormattedFile(temp);
       setFileName(files[0].name);
       setFileUploadWindowOpen(true);
-      e.target.value = null;
     };
   };
 
@@ -76,17 +74,17 @@ const StatusBar = (props: BarInterface) => {
         />
       )}
       {/* wpm, accuracy, and time display */}
-      {settings?.show_wpm && (
+      {settings.show_wpm && (
         <div className="under-bar-item" style={{ width: "70px" }}>
           <label className="under-bar-label">
-            {settings?.use_cpm ? "cpm" : "wpm"}
+            {settings.use_cpm ? "cpm" : "wpm"}
           </label>
           <p className="under-bar-value">
-            {settings?.use_cpm ? props.cpm : props.wpm}
+            {settings.use_cpm ? props.cpm : props.wpm}
           </p>
         </div>
       )}
-      {settings?.show_accuracy && (
+      {settings.show_accuracy && (
         <div className="under-bar-item" style={{ width: "150px" }}>
           <label className="under-bar-label">accuracy</label>
           {props.accuracy !== "" && (
@@ -99,107 +97,56 @@ const StatusBar = (props: BarInterface) => {
         {props.time !== "" && <p className="under-bar-value">{props.time}s</p>}
       </div>
       {/* test limit settings */}
-      {settings?.show_limits && (
+      {settings.show_limits && (
         <React.Fragment>
           <div className="under-bar-setting">
             <label
               className={`under-bar-label ${
-                props.limit === "time" ? "selected-setting" : ""
+                props.limit.type === "time" ? "selected-setting" : ""
               }`}
             >
               timed
             </label>
             <div className="under-bar-drop-down">
-              <button
-                className="drop-down-button"
-                onClick={() => props.onSetTimeLimit(15)}
-              >
-                {props.limit === "time" && props.limitValue === 15 && (
-                  <FiCheck className="drop-down-check" />
-                )}
-                <p>15 sec</p>
-              </button>
-              <button
-                className="drop-down-button"
-                onClick={() => props.onSetTimeLimit(30)}
-              >
-                {props.limit === "time" && props.limitValue === 30 && (
-                  <FiCheck className="drop-down-check" />
-                )}
-                <p>30 sec</p>
-              </button>
-              <button
-                className="drop-down-button"
-                onClick={() => props.onSetTimeLimit(45)}
-              >
-                {props.limit === "time" && props.limitValue === 45 && (
-                  <FiCheck className="drop-down-check" />
-                )}
-                <p>45 sec</p>
-              </button>
-              <button
-                className="drop-down-button"
-                onClick={() => props.onSetTimeLimit(60)}
-              >
-                {props.limit === "time" && props.limitValue === 60 && (
-                  <FiCheck className="drop-down-check" />
-                )}
-                <p>60 sec</p>
-              </button>
+              {[15, 30, 45, 60].map((time_limit: number) => (
+                <button
+                  className="drop-down-button"
+                  onClick={() => props.setLimit({ type: "time", value: time_limit })}
+                >
+                  <p>{time_limit} sec</p>
+                  {props.limit.type === "time" && props.limit.value === time_limit && (
+                    <FiCheck className="drop-down-check" />
+                  )}
+                </button>
+              ))}
             </div>
           </div>
           <div className="under-bar-setting">
             <label
               className={`under-bar-label ${
-                props.limit === "line" ? "selected-setting" : ""
+                props.limit.type === "line" ? "selected-setting" : ""
               }`}
             >
               lines
             </label>
             <div className="under-bar-drop-down">
-              <button
-                className="drop-down-button"
-                onClick={() => props.onSetLineLimit(5)}
-              >
-                {props.limit === "line" && props.limitValue === 5 && (
-                  <FiCheck className="drop-down-check" />
-                )}
-                <p>5 lines</p>
-              </button>
-              <button
-                className="drop-down-button"
-                onClick={() => props.onSetLineLimit(10)}
-              >
-                {props.limit === "line" && props.limitValue === 10 && (
-                  <FiCheck className="drop-down-check" />
-                )}
-                <p>10 lines</p>
-              </button>
-              <button
-                className="drop-down-button"
-                onClick={() => props.onSetLineLimit(15)}
-              >
-                {props.limit === "line" && props.limitValue === 15 && (
-                  <FiCheck className="drop-down-check" />
-                )}
-                <p>15 lines</p>
-              </button>
-              <button
-                className="drop-down-button"
-                onClick={() => props.onSetLineLimit(20)}
-              >
-                {props.limit === "line" && props.limitValue === 20 && (
-                  <FiCheck className="drop-down-check" />
-                )}
-                <p>20 lines</p>
-              </button>
+              {[5, 10, 15, 20].map((num_lines: number) => (
+                <button
+                  className="drop-down-button"
+                  onClick={() => props.setLimit({ type: "line", value: num_lines })}
+                >
+                  <p>{num_lines} lines</p>
+                  {props.limit.type === "line" && props.limit.value === num_lines && (
+                    <FiCheck className="drop-down-check" />
+                  )}
+                </button>
+              ))}
             </div>
           </div>
           <div className="under-bar-setting">
             <label className="under-bar-label">custom</label>
-            <div className="under-bar-drop-down" id="custom-drop-down">
-              <button className="drop-down-button">full file</button>
-              <button className="drop-down-button" onClick={() => onUpload()}>
+            <div className="under-bar-drop-down" style={{translate: "0 -45px"}}>
+              <button className="drop-down-button" onClick={onUpload}>
                 upload
               </button>
               <input
@@ -218,6 +165,15 @@ const StatusBar = (props: BarInterface) => {
   );
 };
 
+interface FileUploadWindowInterface {
+  file: string;
+  fileName: string;
+  formattedFile: string;
+  setFormattedFile(file: string): void;
+  onCancel(): void;
+  onFileSubmit(file: string): void;
+}
+
 const FileUploadWindow = ({
   file,
   fileName,
@@ -225,10 +181,10 @@ const FileUploadWindow = ({
   setFormattedFile,
   onCancel,
   onFileSubmit,
-}: any) => {
-  const [removeLines, setRemoveLines] = useState(true);
-  const [removeComments, setRemoveComments] = useState(false);
-  const [formatFile, setFormatFile] = useState(false);
+}: FileUploadWindowInterface) => {
+  const [removeLines, setRemoveLines] = useState<boolean>(true);
+  const [removeComments, setRemoveComments] = useState<boolean>(false);
+  const [formatFile, setFormatFile] = useState<boolean>(false);
 
   const getFormattedFile = (
     removeLines: Boolean,
@@ -238,7 +194,7 @@ const FileUploadWindow = ({
     var temp = file;
     temp = temp.replaceAll(/\s*$/g, "");
 
-    const fileExtension = fileName?.split(".").pop();
+    const fileExtension: string = fileName.split(".").pop()!;
 
     if (removeComments) {
       if (
@@ -333,42 +289,6 @@ const FileUploadWindow = ({
       <div className="close-file-upload" onClick={onCancel}></div>
     </div>
   );
-};
-
-// const DropDown = ({label, limitVariable, limitValueVariable, limitType, options, onClick}:any) => {
-//     const underlineLabel = limitVariable === limitType ? 'selected-setting' : ''
-
-//     return (
-//         <div className='under-bar-setting'>
-//             <label className={`under-bar-label ${underlineLabel}`}>{label}</label>
-//             <div className="under-bar-drop-down">
-//                 {options.map((option:any) => {
-//                     <DropDownButton
-//                         limitVariable={limitVariable}
-//                         limitValueVariable={limitValueVariable}
-//                         limit={limitType}
-//                         limitValue={option}
-//                         onClick={onClick}
-//                     />
-//                 })}
-//             </div>
-//         </div>
-//     )
-// }
-
-// const DropDownButton = ({limitVariable, limitValueVariable, limit, limitValue, onClick}:any) => {
-//     const showCheck = limitVariable === limit && limitValueVariable === limitValue
-
-//     return (
-//         <button className='drop-down-button' onClick={onClick(limitValue)}>
-//             {showCheck && <FiCheck className='drop-down-check'/>}
-//             <p>{limitValue} lines</p>
-//         </button>
-//     )
-// }
-
-StatusBar.defaultProps = {
-  wpm: "",
 };
 
 export default StatusBar;

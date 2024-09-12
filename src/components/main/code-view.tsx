@@ -1,33 +1,34 @@
 import React, { useState, useEffect, useContext } from "react";
-import { UserContext } from "../../context/user-context";
+import { SettingContext } from "../../context/setting-context";
 import "../../css/main/code-view.css";
 
 import { FiChevronRight } from "react-icons/fi";
 import { FiChevronLeft } from "react-icons/fi";
+import { Test } from "../../interfaces/interfaces";
 
 interface PropsInterface {
-  code: string[];
-  test: any;
-  setTest: any;
-  resetTest: any;
+  code: Array<string>;
+  test: Test;
+  setTest(test: Test): void;
+  resetTest(newTest: boolean): void;
   startTimer: () => void;
   endTimer: () => void;
   showStatusBar: boolean;
-  userInput: any;
-  setUserInput: any;
-  lineIndex: any;
-  setLineIndex: any;
-  currentLine: any;
-  setCurrentLine: any;
-  previousLines: any;
-  usingCustom: any;
+  userInput: string;
+  setUserInput(input: string): void;
+  lineIndex: number;
+  setLineIndex(index: number): void;
+  currentLine: Array<string>;
+  setCurrentLine(line: Array<string>): void;
+  previousLines: Array<Array<string>>;
+  usingCustom: boolean;
 }
 
 const CodeView = (props: PropsInterface) => {
-  const [settings, setSettings]: any = useContext(UserContext);
+  const { settings } = useContext(SettingContext);
 
   // whether the test is active
-  const [active, setActive] = useState(settings?.focus_mode);
+  const [active, setActive] = useState<boolean>(settings?.focus_mode);
 
   const enable = () => {
     document.getElementById("practice-code-input")?.focus();
@@ -38,21 +39,22 @@ const CodeView = (props: PropsInterface) => {
     enable();
   }, []);
 
+  useEffect(() => {
+    props.resetTest(false);
+  }, [active]);
+
   // when the user types on keyboard
-  const onUserInputChange = (e: any) => {
-    const input = e.target.value;
+  const onUserInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const input: string = e.target.value;
     props.startTimer();
     props.setUserInput(input);
 
     const line = props.code[props.lineIndex].replace(/\s+/g, " ").trim();
     const numIncorrect =
       props.test.incorrectChars +
-      (input[input.length - 1] !== line[input.length - 1]);
+      Number(input[input.length - 1] !== line[input.length - 1]);
 
-    if (
-      settings?.fails_on.use &&
-      settings?.fails_on.chars <= numIncorrect
-    ) {
+    if (settings.early_fail_settings.use && settings.early_fail_settings.chars <= numIncorrect) {
       console.log("Test Failed");
       props.endTimer();
     }
@@ -76,17 +78,16 @@ const CodeView = (props: PropsInterface) => {
     );
   };
 
-  const map: any = {};
-  const handleKeyPress = (e: any) => {
-    map[e.keyCode] = e.type === "keydown";
+  const keyEventMap = new Map<string, boolean>();
+  const handleKeyPress = (e: React.KeyboardEvent) => {
+    keyEventMap.set(e.code, e.type === "keydown");
     // if the user presses the esc key
-    if (map[27]) {
+    if (keyEventMap.get("Escape")) {
       setActive(false);
       return false;
     }
     // when the user is holding down the tab key
-    if (map[9]) {
-      // TODO: allow the user to hold down the tab to keep resetting the test
+    if (keyEventMap.get("Tab")) {
       document
         .getElementById("next-button")
         ?.classList.add("practice-code-button-hover");
@@ -96,13 +97,12 @@ const CodeView = (props: PropsInterface) => {
         ?.classList.remove("practice-code-button-hover");
     }
     // when the user presses tab and enter
-    if (map[9] && map[13]) {
-      // TODO: allow the user to hold down the tab to keep resetting the test
+    if (keyEventMap.get("Tab") && keyEventMap.get("Enter")) {
       props.resetTest(true);
       return false;
     }
     // when the user presses enter only
-    else if (map[13]) {
+    else if (keyEventMap.get("Enter")) {
       props.setUserInput("");
       props.setLineIndex(props.lineIndex + 1);
       props.setTest({
@@ -118,11 +118,12 @@ const CodeView = (props: PropsInterface) => {
   };
 
   // get the line such that they are formatted correctly
-  const getLine = (line: any, index: number) => {
+  const getLine = (line: Array<string>, index: number) => {
     // the lines that the user has already typed out
     if (index < props.lineIndex) {
       return line.map((char: string, charIndex: number) => (
         <span
+          key={charIndex}
           className="practice-code-text"
           id={props.previousLines[2 - props.lineIndex + index][charIndex]}
         >
@@ -134,6 +135,7 @@ const CodeView = (props: PropsInterface) => {
     else if (props.lineIndex === index) {
       const returnLine = line.map((char: string, charIndex: number) => (
         <span
+          key={charIndex}
           className="practice-code-text"
           id={
             charIndex < props.userInput.length
@@ -164,8 +166,8 @@ const CodeView = (props: PropsInterface) => {
     }
     // if the line is below where the user is currently
     else {
-      return line.map((char: string) => (
-        <span className="practice-code-text">
+      return line.map((char: string, charIndex: number) => (
+        <span key={charIndex} className="practice-code-text">
           <pre>{char}</pre>
         </span>
       ));
@@ -175,82 +177,89 @@ const CodeView = (props: PropsInterface) => {
   // get tab space for lines of code that have space at the start
   const getTabSpace = (index: number) => {
     return props.code[index]
-      .split("  ")
+      .split(/\s{4}/)
       .splice(1)
-      .map(() => <pre className="practice-code-text tab-space"> </pre>);
+      .map((_, i) => (
+        <pre key={i} className="practice-code-text">
+          {"    "}
+        </pre>
+      ));
   };
 
   // get the preview code that is going to be displayed
-  const getPreviewCode = (): any => {
-    return props.code
-      .map((line) => line.replace(/\s+/g, " ").trim().split(""))
-      .map(
-        (line: any, index: number) =>
-          ((props.lineIndex < 1 && index < 4) ||
-            (index >= props.lineIndex - 1 && index <= props.lineIndex + 2)) && (
-            <div
-              className={`practice-code-line`}
-              style={{ opacity: 1 - 0.15 * Math.abs(index - props.lineIndex) }}
-            >
-              {getTabSpace(index)}
-              {getLine(line, index)}
-            </div>
-          )
-      );
-  };
+  const codeLines = (
+    <div className="code-container">
+      {props.code
+        .map((line: string) => line.replace(/\s+/g, " ").trim().split(""))
+        .map(
+          (line: Array<string>, index: number) =>
+            ((props.lineIndex < 1 && index < 4) ||
+              (index >= props.lineIndex - 1 &&
+                index <= props.lineIndex + 2)) && (
+              <div
+                key={index}
+                className="practice-code-line"
+                style={{
+                  opacity: 1 - 0.15 * Math.abs(index - props.lineIndex),
+                }}
+              >
+                {getTabSpace(index)}
+                {getLine(line, index)}
+              </div>
+            )
+        )}
+    </div>
+  );
+
+  const clickToStart = (
+    <div className="click-to-start">
+      <p>click or press enter to start...</p>
+    </div>
+  );
+
+  const nextPrevButtons = (
+    <div className="practice-code-next-prev-buttons">
+      <div
+        className="practice-code-button"
+        onClick={() => props.resetTest(false)}
+      >
+        <FiChevronLeft className="practice-code-left-arrow" />
+      </div>
+      <div
+        id="next-button"
+        className="practice-code-button"
+        onClick={() => props.resetTest(true)}
+      >
+        <FiChevronRight className="practice-code-right-arrow" />
+      </div>
+    </div>
+  );
+
+  const emptyInput = (
+    <input
+      type="text"
+      id="practice-code-input"
+      value={props.userInput}
+      onChange={onUserInputChange}
+      onKeyDown={handleKeyPress}
+      onKeyUp={handleKeyPress}
+    ></input>
+  );
 
   return (
-    <div>
-      {/* main practice code container */}
-      <div
-        className={`practice-code-container ${
-          !props.showStatusBar ? "no-status-bar" : ""
-        }
-                            ${
-                              settings?.focus_mode
-                                ? "practice-code-focus-mode"
-                                : ""
-                            }`}
-        style={{
-          fontSize: settings?.font_size,
-          fontWeight: settings?.font_weight,
-        }}
-        onClick={enable}
-      >
-        {active ? (
-          getPreviewCode()
-        ) : (
-          <div className="click-to-start">
-            <p>click or press enter to start...</p>
-          </div>
-        )}
-        {active && !props.usingCustom && (
-          <div className="practice-code-next-prev-buttons">
-            <div
-              className={`practice-code-button`}
-              onClick={() => props.resetTest(false)}
-            >
-              <FiChevronLeft className="practice-code-left-arrow" />
-            </div>
-            <div
-              className="practice-code-button"
-              id="next-button"
-              onClick={() => props.resetTest(true)}
-            >
-              <FiChevronRight className="practice-code-right-arrow" />
-            </div>
-          </div>
-        )}
-      </div>
-      {/* temporary input box (not displayed) */}
-      <input
-        type="text"
-        id="practice-code-input"
-        value={props.userInput}
-        onChange={(e) => onUserInputChange(e)}
-        onKeyDown={(e) => handleKeyPress(e)}
-        onKeyUp={(e) => handleKeyPress(e)}
-      ></input>
+    <div
+      className={`practice-code-container ${
+        !props.showStatusBar ? "no-status-bar" : ""
+      } ${settings?.focus_mode ? "practice-code-focus-mode" : ""}`}
+      style={{
+        fontSize: settings?.font_size,
+        fontWeight: settings?.font_weight,
+      }}
+      onClick={enable}
+    >
+      {active ? codeLines : clickToStart}
+      {active && !props.usingCustom && nextPrevButtons}
+      {emptyInput}
     </div>
   );
 };

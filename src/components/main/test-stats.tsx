@@ -2,12 +2,11 @@ import React, { useState, useEffect, useContext } from "react";
 import { Line } from "react-chartjs-2";
 import { MdNavigateNext } from "react-icons/md";
 import { IoRepeatOutline } from "react-icons/io5";
-import { UserContext } from "../../context/user-context";
+import { SettingContext } from "../../context/setting-context";
 import "../../css/main/test-stats.css";
 
 import {
   Chart as ChartJS,
-  ChartType,
   CategoryScale,
   LinearScale,
   PointElement,
@@ -16,6 +15,7 @@ import {
   Tooltip,
   Legend,
 } from "chart.js";
+import { Limit } from "../../interfaces/interfaces";
 
 ChartJS.register(
   CategoryScale,
@@ -29,23 +29,22 @@ ChartJS.register(
 
 const TestStats = (props: {
   testDetails: any;
-  limit: string;
-  limitValue: number;
-  resetTest: any;
+  limit: Limit;
+  resetTest(newTest: boolean): void;
   language: string;
 }) => {
-  const [settings, setSettings]: any = useContext(UserContext);
+  const { settings } = useContext(SettingContext);
 
   useEffect(() => {
     document.getElementById("finished-test-input")?.focus();
     setUserInput("");
   }, []);
 
-  const map: any = {};
-  onkeydown = onkeyup = (e: any) => {
-    map[e.keyCode] = e.type == "keydown";
+  const map = new Map<string, boolean>();
+  onkeydown = onkeyup = (e: KeyboardEvent) => {
+    map.set(e.code, e.type === "keydown");
     // when the user is holding down the tab key
-    if (map[9]) {
+    if (map.get("Tab")) {
       document
         .getElementById("next-test-button")
         ?.classList.add("finished-test-buttons-hover");
@@ -55,7 +54,7 @@ const TestStats = (props: {
         ?.classList.remove("finished-test-buttons-hover");
     }
     // when the user presses tab and enter
-    if (map[9] && map[13]) {
+    if (map.get("Tab") && map.get("Enter")) {
       props.resetTest(true);
       return false;
     }
@@ -92,7 +91,7 @@ const TestStats = (props: {
     labels: props.testDetails.labels,
     datasets: [
       {
-        label: `${settings?.use_cpm ? "characters" : "words"} per minute`,
+        label: `${settings.use_cpm ? "characters" : "words"} per minute`,
         data: props.testDetails.data,
         backgroundColor: wpm_color,
         borderColor: wpm_border_color,
@@ -127,12 +126,12 @@ const TestStats = (props: {
       },
       title: {
         display: false,
-        text: `${settings?.use_cpm ? "characters" : "words"} per minute`,
+        text: `${settings.use_cpm ? "characters" : "words"} per minute`,
       },
       tooltip: {
         callbacks: {
           label: (item: any) =>
-            `${item.formattedValue} ${settings?.use_cpm ? "cpm" : "wpm"}`,
+            `${item.formattedValue} ${settings.use_cpm ? "cpm" : "wpm"}`,
         },
       },
     },
@@ -157,7 +156,7 @@ const TestStats = (props: {
       yAxes: {
         title: {
           display: false,
-          text: `${settings?.use_cpm ? "characters" : "words"} per minute`,
+          text: `${settings.use_cpm ? "characters" : "words"} per minute`,
         },
         grid: {
           display: true,
@@ -171,7 +170,7 @@ const TestStats = (props: {
           color: chart_text_color,
         },
         min: 0,
-        suggestedMax: settings?.use_cpm ? 540 : 120,
+        suggestedMax: settings.use_cpm ? 540 : 120,
       },
     },
     radius: 4,
@@ -270,22 +269,22 @@ const TestStats = (props: {
         <div className="other-stat">
           <h3 id="test-details">test details</h3>
           <p>language: {props.language}</p>
-          {props.limit === "time" ? (
-            <p id="test-type">timed {props.limitValue}s</p>
+          {props.limit.type === "time" ? (
+            <p id="test-type">timed {props.limit.value}s</p>
           ) : (
-            <p id="test-type">{props.limitValue} lines</p>
+            <p id="test-type">{props.limit.value} lines</p>
           )}
         </div>
         <div className="other-stat">
-          <h3>average {settings?.use_cpm ? "cpm" : "wpm"}</h3>
+          <h3>average {settings.use_cpm ? "cpm" : "wpm"}</h3>
           <div>{props.testDetails.average}</div>
         </div>
         <div className="other-stat">
-          <h3>fastest {settings?.use_cpm ? "cpm" : "wpm"}</h3>
+          <h3>fastest {settings.use_cpm ? "cpm" : "wpm"}</h3>
           <div>{props.testDetails.max}</div>
         </div>
         <div className="other-stat">
-          <h3>slowest {settings?.use_cpm ? "cpm" : "wpm"}</h3>
+          <h3>slowest {settings.use_cpm ? "cpm" : "wpm"}</h3>
           <div>{props.testDetails.min}</div>
         </div>
         <div className="other-stat">

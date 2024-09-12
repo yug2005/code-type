@@ -1,87 +1,54 @@
 import React, { useEffect, useState, useRef } from "react";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
-import { UserContext } from "./context/user-context";
+import { SettingContext, defaultSettings } from "./context/setting-context";
 import Main from "./components/main/main";
 import Header from "./components/header/header";
 import SignIn from "./components/signin/sign-in";
 import Settings from "./components/settings/settings";
 import SelectLanguage from "./components/header/select-language";
+import { CustomFile, UserSettings } from "./interfaces/interfaces";
 
 function App() {
-  onkeydown = (e: any) => {
-    if (e.keyCode === 27) {
+  const [settings, setSettings] = useState<UserSettings>(defaultSettings);
+
+  // passed in to Main component to reset the state of the test
+  const [refresh, setRefresh] = useState<boolean>(false);
+
+  const [language, setLanguage] = useState<string>("javascript");
+  const [languagesPanelOpen, setLanguagesPanelOpen] = useState<boolean>(false);
+  const [code, setCode] = useState<Array<string>>([]);
+  const [codeBlocks, setCodeBlocks] = useState<Array<Array<string>>>([]);
+
+  onkeydown = (e: KeyboardEvent) => {
+    if (e.code === "Escape") {
       if (languagesPanelOpen) {
         setLanguagesPanelOpen(false);
       }
       return false;
-    } else if (e.keyCode === 9) return false;
-  };
-
-  const [settings, setSettings]: any = useState(null);
-
-  // user settings server
-  const fetchUser = async (id: number) => {
-    const res = await fetch(`http://localhost:5001/users/${id}`);
-    const user = await res.json();
-    return user;
-  };
-
-  const getSettings = async () => {
-    const user = await fetchUser(0);
-    setSettings(user.settings);
-  };
-
-  const updateSettings = async (id: number, settings: any) => {
-    const res = await fetch(`http://localhost:5001/users/${id}`);
-    const user = await res.json();
-    const newUser = { ...user, name: "Joe", settings };
-    await fetch(`http://localhost:5001/users/${id}`, {
-      method: "PUT",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(newUser),
-    });
-  };
-
-  useEffect(() => {
-    getSettings();
-  }, []);
-
-  useEffect(() => {
-    if (settings) {
-      console.log("updating settings...");
-      updateSettings(0, settings);
+    } else if (e.code === "Tab") {
+      return false;
     }
-  }, [settings]);
-
-  // passed in to Main component to reset the state of the test
-  const [refresh, setRefresh] = useState(false);
-
-  const [language, setLanguage] = useState("");
-  const [languagesPanelOpen, setLanguagesPanelOpen] = useState(false);
-  const [code, setCode] = useState([""]);
-  const [codeBlocks, setCodeBlocks]: any = useState([]);
+  };
 
   // if the user wants to upload a custom file for use
-  const customFile = useRef({
+  const customFile = useRef<CustomFile>({
     use: false,
     file: [],
     index: 0,
   });
 
   // when the user changes the language through the language panel
-  const updateLanguage = (newLanguage: any) => {
-    setLanguage(newLanguage);
+  const updateLanguage = (newLanguage: string) => {
+    if (newLanguage === "") return;
     // parse the name of the language
-    newLanguage = newLanguage.replaceAll("+", "p");
-    newLanguage = newLanguage.replaceAll("#", "s");
+    if (newLanguage === "c++") newLanguage = "cpp";
+    if (newLanguage === "c#") newLanguage = "csharp";
     // if the language is already in use, just close the panel
     if (newLanguage === language) {
       setLanguagesPanelOpen(false);
       return;
     }
-    getAllCodeBlocks(newLanguage, getNewCodeBlock);
+    setLanguage(newLanguage);
     setLanguagesPanelOpen(false);
     customFile.current = {
       use: false,
@@ -90,59 +57,51 @@ function App() {
     };
   };
 
+  useEffect(() => {
+    getAllCodeBlocks();
+  }, [language]);
+
+  useEffect(() => {
+    getNewCodeBlock();
+  }, [codeBlocks]);
+
   // Gets all the code block for a specified language from the mysql database
   // Callback to the function that gets the starting code block
-  const getAllCodeBlocks = async (
-    language: string,
-    callback: any = () => {
-      return;
-    }
-  ) => {
-    codeBlocks.length = 0;
-    const code_res = await fetch(`http://localhost:3001/${language}/all`);
-    const code_data = await code_res.json();
-    for (let index = 0; index < code_data.length; index++) {
-      const code: string[] = code_data[index].body.split(/\n/);
-      for (let line = 0; line < code.length; line++) {
-        code[line] = code[line].replaceAll("newline", String.raw`\n`);
-      }
-      codeBlocks.push([code, code_data[index].numLines]);
-    }
-    callback();
+  const getAllCodeBlocks = () => {
+    fetch(`http://54.164.131.36:3000/${language}`).then((response) => {
+      response.json().then((data: Array<{ id: number, code: string }>) => {
+        let blocks: Array<Array<string>> = [];
+        data.forEach(({ code }: { code: string }) => {
+          blocks.push(code.split(/\n/));
+        });
+        setCodeBlocks(blocks);
+      });
+    });
   };
 
   // Gets a new code block with the number of lines specified
-  const getNewCodeBlock = (numLines = 50) => {
-    setRefresh(!refresh);
+  const getNewCodeBlock = (numLines: number = 50) => {
     if (customFile.current.use) {
       getCustomCodeBlock(numLines);
       return;
     }
-
-    const numCodeBlocks = codeBlocks.length;
-    setCodeBlocks(codeBlocks);
-    // If there are no code blocks, alert the user and return
-    if (numCodeBlocks === 0) {
-      alert("There are no code blocks available for this language.");
+    if (codeBlocks.length === 0) {
       return;
     }
-    const temp = [];
-    const usedIndices = new Set();
-    while (temp.length < numLines) {
+    let block: Array<string> = [];
+    let used = new Set<number>();
+    while (block.length < numLines) {
       // find a new random code block that has not already been used
-      var index = Math.floor(Math.random() * numCodeBlocks + 1);
-      while (usedIndices.has(index)) {
-        index = Math.floor(Math.random() * numCodeBlocks + 1);
+      let index = Math.floor(Math.random() * codeBlocks.length);
+      while (used.has(index)) {
+        index = Math.floor(Math.random() * codeBlocks.length);
       }
-      usedIndices.add(index);
-      // add lines from the code block to the test until you enough lines
-      const codeBlock = codeBlocks[index][0];
-      for (let line of codeBlock) {
-        temp.push(line);
-        if (temp.length === numLines) break;
-      }
+      used.add(index);
+      codeBlocks[index].forEach((line: string) => {
+        if (block.length < numLines) block.push(line);
+      });
     }
-    setCode(temp);
+    setCode(block);
   };
 
   // if the current code block does not have enough lines, this function adds more lines
@@ -184,7 +143,7 @@ function App() {
   };
 
   // when the user submits a new custom file
-  const onCustomFileSubmit = (file: any) => {
+  const onCustomFileSubmit = (file: string) => {
     customFile.current = {
       use: true,
       file: file.split("\n"),
@@ -194,7 +153,7 @@ function App() {
   };
 
   // gets a new code block from the custom file
-  const getCustomCodeBlock = (numLines = 50) => {
+  const getCustomCodeBlock = (numLines: number = 50) => {
     if (!customFile.current.file) return;
     const temp: any = [];
     var index = customFile.current.index;
@@ -224,28 +183,15 @@ function App() {
     customFile.current.index = index;
   };
 
-  useEffect(() => {
-    getAllCodeBlocks(
-      language === "" ? "javascript" : language,
-      getNewCodeBlock
-    );
-  }, []);
-
   return (
     <Router>
       <div className="App">
         {languagesPanelOpen && (
           <SelectLanguage onLanguageClick={updateLanguage} />
         )}
-        <UserContext.Provider value={[settings, setSettings]}>
+        <SettingContext.Provider value={{ settings, setSettings }}>
           <Header
-            language={
-              customFile.current.use
-                ? "custom"
-                : language === ""
-                ? "languages"
-                : language
-            }
+            language={customFile.current.use ? "custom" : language}
             onClickLanguages={() => setLanguagesPanelOpen(true)}
           />
           <Routes>
@@ -253,13 +199,7 @@ function App() {
               path="/"
               element={
                 <Main
-                  language={
-                    customFile.current.use
-                      ? "custom"
-                      : language === ""
-                      ? "javascript"
-                      : language
-                  }
+                  language={customFile.current.use ? "custom" : language}
                   code={code}
                   getCodeBlock={getNewCodeBlock}
                   adjustCodeLines={adjustCodeLines}
@@ -270,9 +210,9 @@ function App() {
               }
             />
             <Route path="/signin" element={<SignIn />} />
-            <Route path="/settings" element={<Settings />} />
+            {/* <Route path="/settings" element={<Settings />} /> */}
           </Routes>
-        </UserContext.Provider>
+        </SettingContext.Provider>
       </div>
     </Router>
   );

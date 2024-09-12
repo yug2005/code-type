@@ -1,112 +1,50 @@
 import React, { useState } from "react";
-import Button from "../button";
 import "../../css/header/select-language.css";
 
 interface LanguagesPanelInterface {
   onLanguageClick(language: string): void;
 }
 
-const supportedLanguages = [
-  "c",
-  "c#",
-  "c++",
-  "css",
-  "go",
-  "html",
-  "java",
-  "javascript",
-  "kotlin",
-  "mysql",
-  "php",
-  "python",
-  "xml",
-];
-
-const preferredLanguages = [
-  "c++",
-  "javascript",
-  "java",
-  "python",
-  "mysql",
-  "html",
-];
-
 const languages = [
   "c",
-  "c#",
   "c++",
-  "css",
-  "go",
-  "html",
+  "c#",
   "java",
   "javascript",
-  "kotlin",
-  "mysql",
-  "php",
+  "typescript",
   "python",
-  "xml",
-  "assembly",
-  "dart",
-  "django",
-  "F#",
-  "flow",
-  "hxml",
-  "latex",
-  "livescript",
-  "matlab",
-  "perl",
+  "go",
   "rust",
   "swift",
+];
+
+const recentLanguages = [
+  "c++",
+  "javascript",
+  "java",
   "typescript",
-  "verilog",
-  "vhdl",
-  "vue",
+  "python",
+  "c#",
 ];
 
 const SelectLanguage = (props: LanguagesPanelInterface) => {
-  const [searchText, setSearchText] = useState("");
+  const [searchText, setSearchText] = useState<string>("");
 
   // gets the languages filtered by the search text
   const getFilteredLanguagesList = () => {
-    let filteredLanguages = [];
-    if (searchText.length < 2) {
-      filteredLanguages = languages.filter((val: string) =>
-        val.startsWith(searchText)
+    if (searchText.length === 0) {
+      return languages.filter(
+        (language: string) => !recentLanguages.includes(language)
       );
-    } else
-      filteredLanguages = languages.filter((val) => val.includes(searchText));
-    return filteredLanguages;
-  };
-
-  // returns the list of languages to be displayed
-  const getLanguagesList = (search: string) => {
-    return (
-      <div className="languages-list">
-        {getFilteredLanguagesList().map((val: string) => {
-          // whether the language is supported or not
-          const isSupported = supportedLanguages.includes(val);
-          return (
-            <button
-              onClick={
-                isSupported
-                  ? () => props.onLanguageClick(val)
-                  : () => {
-                      console.log("Language Not Supported");
-                    }
-              }
-              className={`listed-language ${
-                isSupported ? "" : "unsupported-language"
-              }`}
-            >
-              {val}
-              {!isSupported && (
-                <p className="unsupported-message">Coming Soon</p>
-              )}
-            </button>
-          );
-        })}
-      </div>
-    );
+    } else if (searchText.length < 2) {
+      return languages.filter((language: string) =>
+        language.startsWith(searchText)
+      );
+    } else {
+      return languages.filter((language: string) =>
+        language.includes(searchText)
+      );
+    }
   };
 
   return (
@@ -114,9 +52,7 @@ const SelectLanguage = (props: LanguagesPanelInterface) => {
       <div className="languages-panel">
         <form
           className="form"
-          onSubmit={() => {
-            props.onLanguageClick(getFilteredLanguagesList()[0]);
-          }}
+          onSubmit={() => props.onLanguageClick(getFilteredLanguagesList()[0])}
         >
           <input
             className="search-bar"
@@ -127,19 +63,30 @@ const SelectLanguage = (props: LanguagesPanelInterface) => {
         </form>
         {searchText === "" && (
           <div className="search-suggestions">
-            {preferredLanguages.map((language) => (
-              <Button
-                text={language}
-                button_id="preferred-language-btn"
+            {recentLanguages.map((language) => (
+              <button
+                className="button preferred-language-btn"
                 onClick={() => props.onLanguageClick(language)}
-              />
+              >
+                <h3 className="button-text">{language}</h3>
+              </button>
             ))}
           </div>
         )}
         {searchText === "" && (
           <div className="search-suggestions-bottom-bar"></div>
         )}
-        {getLanguagesList(searchText)}
+        <div className="languages-list">
+          {getFilteredLanguagesList().map((language: string) => (
+            <button
+              key={language}
+              onClick={() => props.onLanguageClick(language)}
+              className={"listed-language"}
+            >
+              {language}
+            </button>
+          ))}
+        </div>
       </div>
       <div
         className="close-panel"

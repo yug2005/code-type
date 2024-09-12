@@ -1,52 +1,23 @@
-import React, { useEffect, useContext } from "react";
+import React, { useContext } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { UserContext } from "../../context/user-context";
+import { SettingContext } from "../../context/setting-context";
 import { Slider } from "./slider";
 import { CgClose } from "react-icons/cg";
 import "../../css/settings/settings.css";
 
-const ESC = 27;
 const SELECTED = "setting-selected";
 const UNSELECTED = "setting-button";
 
-interface Setting {
-  difficulty: string;
-  num_lines: number;
-  use_cpm: boolean;
-  fails_on: Object[];
-  show_status: boolean;
-  hide_status: boolean;
-  show_wpm: boolean;
-  show_accuracy: boolean;
-  show_time: boolean;
-  show_limits: boolean;
-  website_theme: string;
-  font_family: string;
-  font_size: number;
-  font_weight: string;
-  focus_mode: boolean;
-}
-
 const Settings = (): JSX.Element => {
   const navigate = useNavigate();
-  onkeydown = (e: any) => {
-    if (e.keyCode === ESC) {
+  onkeydown = (e: KeyboardEvent) => {
+    if (e.code === "Escape") {
       navigate("/");
       return false;
     }
   };
 
-  const [settings, setSettings] = useContext(UserContext);
-
-  const getSettings = async () => {
-    const res = await fetch(`http://localhost:5001/users/0`);
-    const user = await res.json();
-    setSettings(user.settings);
-  };
-
-  useEffect(() => {
-    getSettings();
-  }, []);
+  const { settings, setSettings } = useContext(SettingContext);
 
   return (
     <div className="settings">
@@ -56,45 +27,42 @@ const Settings = (): JSX.Element => {
       <div className="settings-container test-settings">
         <h2>TEST SETTINGS</h2>
         <SettingOptions
-          description="test difficulty"
-          value={settings?.difficulty}
-          setValue={(val: string) =>
-            setSettings?.({ ...settings, difficulty: val })
-          }
-          options={["easy", "normal", "hard"]}
-        />
-        <SettingOptions
           description="number of lines shown"
-          value={settings?.num_lines}
-          setValue={(val: number) =>
-            setSettings?.({ ...settings, num_lines: val })
+          value={settings.num_lines}
+          setValue={(num_lines: number) =>
+            setSettings({ ...settings, num_lines })
           }
           options={[3, 4, 5]}
         />
         <OnOffSetting
-          description="test fails on"
-          value={settings?.fails_on.use}
+          description="test early fail settings"
+          value={settings.early_fail_settings.use}
           setValue={(val: boolean) =>
-            setSettings?.({
+            setSettings({
               ...settings,
-              fails_on: { ...settings.fails_on, use: val },
+              early_fail_settings: {
+                ...settings.early_fail_settings,
+                use: val,
+              },
             })
           }
         />
-        {settings?.fails_on.use && (
+        {settings.early_fail_settings.use && (
           <div className="test-fails-container">
             <div className="test-fails-side-bar"></div>
             <div className="test-fails-options">
-              <div className="setting-padding"></div>
               <div className="test-fails-setting">
                 <div className="setting-description">minimum accuracy</div>
                 <Slider
                   id="min-acc"
-                  range={settings?.fails_on.accuracy}
-                  setRange={(val: boolean) =>
-                    setSettings?.({
+                  range={settings.early_fail_settings.accuracy}
+                  setRange={(accuracy: number) =>
+                    setSettings({
                       ...settings,
-                      fails_on: { ...settings.fails_on, accuracy: val },
+                      early_fail_settings: {
+                        ...settings.early_fail_settings,
+                        accuracy,
+                      },
                     })
                   }
                   min={80}
@@ -108,13 +76,13 @@ const Settings = (): JSX.Element => {
                 </div>
                 <Slider
                   id="min-words"
-                  range={settings?.fails_on.show_wpm}
-                  setRange={(val: boolean) =>
-                    setSettings?.({
+                  range={settings.early_fail_settings.wpm}
+                  setRange={(wpm: number) =>
+                    setSettings({
                       ...settings,
-                      test: {
-                        ...settings.test,
-                        fails_on: { ...settings.fails_on, wpm: val },
+                      early_fail_settings: {
+                        ...settings.early_fail_settings,
+                        wpm,
                       },
                     })
                   }
@@ -129,13 +97,13 @@ const Settings = (): JSX.Element => {
                 </div>
                 <Slider
                   id="max-chars"
-                  range={settings?.fails_on.chars}
-                  setRange={(val: boolean) =>
-                    setSettings?.({
+                  range={settings.early_fail_settings.chars}
+                  setRange={(chars: number) =>
+                    setSettings({
                       ...settings,
-                      test: {
-                        ...settings.test,
-                        fails_on: { ...settings.fails_on, chars: val },
+                      early_fail_settings: {
+                        ...settings.early_fail_settings,
+                        chars,
                       },
                     })
                   }
@@ -149,9 +117,9 @@ const Settings = (): JSX.Element => {
         )}
         <OnOffSetting
           description="use characters per minute"
-          value={settings?.use_cpm}
-          setValue={(val: boolean) =>
-            setSettings?.({ ...settings, use_cpm: val })
+          value={settings.use_cpm}
+          setValue={(use_cpm: boolean) =>
+            setSettings?.({ ...settings, use_cpm })
           }
         />
       </div>
@@ -159,129 +127,73 @@ const Settings = (): JSX.Element => {
         <h2>STATUS BAR SETTINGS</h2>
         <OnOffSetting
           description="show status bar"
-          value={settings?.show_status}
-          setValue={(val: boolean) =>
-            setSettings?.({
-              ...settings,
-              show_status: val,
-            })
+          value={settings.show_status}
+          setValue={(show_status: boolean) =>
+            setSettings({ ...settings, show_status })
           }
         />
         <OnOffSetting
           description="hide status bar when typing"
-          value={settings?.hide_status}
-          setValue={(val: boolean) =>
-            setSettings?.({
-              ...settings,
-              hide_status: val,
-            })
+          value={settings.hide_status}
+          setValue={(hide_status: boolean) =>
+            setSettings({ ...settings, hide_status })
           }
         />
         <OnOffSetting
           description="show limit settings for tests"
-          value={settings?.show_limits}
-          setValue={(val: boolean) =>
-            setSettings?.({
-              ...settings,
-              show_limits: val,
-            })
+          value={settings.show_limits}
+          setValue={(show_limits: boolean) =>
+            setSettings({ ...settings, show_limits })
           }
         />
         <OnOffSetting
           description={`show live ${
-            settings?.cpm ? "characters" : "words"
+            settings.use_cpm ? "characters" : "words"
           } per minute`}
-          value={settings?.show_wpm}
-          setValue={(val: boolean) =>
-            setSettings?.({
-              ...settings,
-              show_wpm: val,
-            })
+          value={settings.show_wpm}
+          setValue={(show_wpm: boolean) =>
+            setSettings({ ...settings, show_wpm })
           }
         />
         <OnOffSetting
           description="show live accuracy"
-          value={settings?.show_accuracy}
-          setValue={(val: boolean) =>
-            setSettings?.({
-              ...settings,
-              show_accuracy: val,
-            })
+          value={settings.show_accuracy}
+          setValue={(show_accuracy: boolean) =>
+            setSettings({ ...settings, show_accuracy })
           }
         />
         <OnOffSetting
           description="always show time"
-          value={settings?.show_time}
-          setValue={(val: boolean) =>
-            setSettings?.({
-              ...settings,
-              show_time: val,
-            })
+          value={settings.show_time}
+          setValue={(show_time: boolean) =>
+            setSettings({ ...settings, show_time })
           }
         />
       </div>
       <div className="settings-container appearance-settings">
         <h2>APPEARANCE SETTINGS</h2>
-        <OnOffSetting
-          description="enable focus mode"
-          value={settings?.focus_mode}
-          setValue={(val: boolean) =>
-            setSettings?.({
-              ...settings,
-              focus_mode: val,
-            })
-          }
-        />
         <SettingOptions
-          description="theme"
-          value={settings?.website_theme}
-          setValue={(val: string) =>
-            setSettings?.({
-              ...settings,
-              website_theme: val,
-            })
+          description="font size"
+          value={settings.font_size}
+          setValue={(font_size: "small" | "default" | "large") =>
+            setSettings({ ...settings, font_size })
           }
-          options={["default", "custom"]}
+          options={["small", "default", "large"]}
         />
-        <SettingOptions
-          description="code font"
-          value={settings?.font_family}
-          setValue={(val: string) =>
-            setSettings?.({
-              ...settings,
-              font_family: val,
-            })
-          }
-          options={["default", "custom"]}
-        />
-        <div className="setting slider-setting">
-          <div className="setting-description">
-            <p>font size</p>
-          </div>
-          <Slider
-            id="font-size"
-            range={settings?.font_size}
-            setRange={(val: number) =>
-              setSettings?.({
-                ...settings,
-                font_size: val,
-              })
-            }
-            min={20}
-            max={25}
-            step={1}
-          />
-        </div>
         <SettingOptions
           description="font weight"
-          value={settings?.font_weight}
-          setValue={(val: string) =>
-            setSettings?.({
-              ...settings,
-              font_weight: val,
-            })
+          value={settings.font_weight}
+          setValue={(font_weight: "default" | "bold") =>
+            setSettings({ ...settings, font_weight })
           }
           options={["default", "bold"]}
+        />
+        <OnOffSetting
+          description="enable focus mode"
+          value={settings.focus_mode}
+          setValue={(focus_mode: boolean) =>
+            setSettings({ ...settings, focus_mode })
+          }
         />
       </div>
       <div className="setting-padding"></div>
@@ -292,8 +204,8 @@ const Settings = (): JSX.Element => {
 const SettingOptions = (props: {
   description: string;
   value: any;
-  setValue: (val: any) => void;
-  options: any[];
+  setValue(value: any): void;
+  options: Array<any>;
 }) => {
   return (
     <div className="setting">
@@ -301,12 +213,7 @@ const SettingOptions = (props: {
         <p>{props.description}</p>
       </div>
       {props.options.map((option: any, index: number) => (
-        <SettingButton
-          key={index}
-          {...props}
-          text={option}
-          option={option}
-        />
+        <SettingButton key={index} {...props} text={option} option={option} />
       ))}
     </div>
   );
@@ -314,7 +221,7 @@ const SettingOptions = (props: {
 
 const SettingButton = (props: {
   value: any;
-  setValue: (val: any) => void;
+  setValue(value: any): void;
   text: string;
   option: any;
 }) => {
@@ -330,21 +237,19 @@ const SettingButton = (props: {
 
 const OnOffSetting = (props: {
   description: string;
-  value: any;
-  setValue: any;
+  value: boolean;
+  setValue(value: boolean): void;
 }) => {
-  const on = props.value ? SELECTED : UNSELECTED;
-  const off = props.value ? UNSELECTED : SELECTED;
   return (
     <div className="setting">
       <div className="setting-description">
         <p>{props.description}</p>
       </div>
       <div className="button-container">
-        <button className={on} onClick={() => props.setValue(true)}>
+        <button className={props.value ? "setting-selected" : "setting-button"} onClick={() => props.setValue(true)}>
           on
         </button>
-        <button className={off} onClick={() => props.setValue(false)}>
+        <button className={props.value ? "setting-button" : "setting-selected"} onClick={() => props.setValue(false)}>
           off
         </button>
       </div>

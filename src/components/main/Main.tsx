@@ -1,50 +1,45 @@
 import React, { useState, useEffect, useContext } from "react";
-import { UserContext } from "../../context/user-context";
+import { SettingContext } from "../../context/setting-context";
 import CodeView from "./code-view";
 import StatusBar from "./status-bar";
 import TestStats from "./test-stats";
+import {
+  Limit,
+  Test,
+  Timer,
+  TestDetails,
+  Tracker,
+} from "../../interfaces/interfaces";
 import "../../css/main/main.css";
 
 interface PropsInteface {
   language: string;
-  code: any;
-  getCodeBlock: any;
-  adjustCodeLines: any;
-  onFileSubmit: any;
-  usingCustom: any;
-  refresh: any;
+  code: Array<string>;
+  getCodeBlock(numLines?: number): void;
+  adjustCodeLines(numLines: number): void;
+  onFileSubmit(file: string): void;
+  usingCustom: boolean;
+  refresh: boolean;
 }
 
 const Main = (props: PropsInteface) => {
-  const [settings, setSettings]: any = useContext(UserContext);
+  const { settings, setSettings } = useContext(SettingContext);
 
-  useEffect(() => {
-    resetTest(false);
-  }, [props.refresh]);
+  const [userInput, setUserInput] = useState<string>("");
+  const [lineIndex, setLineIndex] = useState<number>(0);
+  const [currentLine, setCurrentLine] = useState<Array<string>>([""]);
+  const [previousLines, setPreviousLines] = useState<Array<Array<string>>>([
+    [""],
+    [""],
+  ]);
 
-  const [userInput, setUserInput] = useState("");
-  const [lineIndex, setLineIndex] = useState(0);
-  const [currentLine, setCurrentLine] = useState([""]);
-  const [previousLines, setPreviousLines] = useState([[""], [""]]);
-
-  const [limit, setLimit] = useState({
+  const [limit, setLimit] = useState<Limit>({
     type: "time",
-    timeLimit: 30,
-    lineLimit: 15,
+    value: 30,
   });
 
-  const setNewTimeLimit = (newTimeLimit: number) => {
-    setLimit({ ...limit, type: "time", timeLimit: newTimeLimit });
-    props.adjustCodeLines(50);
-  };
-
-  const setNewLineLimit = (newLineLimit: number) => {
-    setLimit({ ...limit, type: "line", lineLimit: newLineLimit });
-    props.adjustCodeLines(newLineLimit);
-  };
-
   // object for the timer
-  const [timer, setTimer] = useState({
+  const [timer, setTimer] = useState<Timer>({
     hr_time: 0,
     time: 0,
     started: false,
@@ -52,22 +47,30 @@ const Main = (props: PropsInteface) => {
   });
 
   // stores the test details
-  const [test, setTest] = useState({
+  const [test, setTest] = useState<Test>({
     chars: 0,
     lineChars: 0,
     incorrectChars: 0,
   });
 
-  const [wpm, setWpm] = useState(0);
-  const [cpm, setCpm] = useState(0);
-  const [accuracy, setAccuracy] = useState(100);
+  const [wpm, setWpm] = useState<number>(0);
+  const [cpm, setCpm] = useState<number>(0);
+  const [accuracy, setAccuracy] = useState<number>(100);
 
-  const [trackers, setTrackers]: any = useState({
+  const [trackers, setTrackers] = useState<Tracker>({
     wpm: [],
     cpm: [],
     errors: [],
     temp: 0,
   });
+
+  useEffect(() => {
+    resetTest(false);
+  }, [props.refresh]);
+
+  useEffect(() => {
+    resetTest(limit.type === "line");
+  }, [limit]);
 
   // timer
   useEffect(() => {
@@ -76,18 +79,15 @@ const Main = (props: PropsInteface) => {
       clearInterval(interval);
     } else {
       if (timer.started) {
-        if (settings?.hide_status)
-          setSettings?.({
-            ...settings,
-            show_status: false,
-          });
+        if (settings.hide_status) {
+          setSettings({ ...settings, show_status: false });
+        }
         interval = setInterval(() => {
           setTrackers({ ...trackers, temp: test.incorrectChars });
-          // increment timer
           setTimer({ ...timer, time: timer.time + 1 });
-          // determine the wpm
+          // determine the wpm/cpm
           if (timer.time > 0) {
-            const { wpm, cpm, accuracy } = computeStats();
+            const { wpm, cpm } = computeStats();
             trackers.wpm.push([wpm, timer.time]);
             trackers.cpm.push([cpm, timer.time]);
           }
@@ -98,13 +98,10 @@ const Main = (props: PropsInteface) => {
           }
         }, 1000);
       } else if (settings && settings.hide_status && !settings.show_status) {
-        setSettings?.({
-          ...settings,
-          show_status: true,
-        });
+        setSettings({ ...settings, show_status: true });
       }
       // when the timer limit is reached
-      if (limit.type === "time" && limit.timeLimit - timer.time === 0) {
+      if (limit.type === "time" && limit.value - timer.time === 0) {
         endTimer();
         clearInterval(interval);
       }
@@ -118,13 +115,12 @@ const Main = (props: PropsInteface) => {
       setWpm(wpm);
       setCpm(cpm);
       setAccuracy(accuracy);
-      if (settings?.fails_on.use) {
-        if (
-          wpm < settings?.fails_on.wpm ||
-          accuracy < settings?.fails_on.accuracy
-        ) {
-          endTimer();
-        }
+      if (
+        settings.early_fail_settings.use &&
+        (wpm < settings.early_fail_settings.wpm ||
+          accuracy < settings.early_fail_settings.accuracy)
+      ) {
+        endTimer();
       }
     }
   }, [timer, test]);
@@ -145,12 +141,10 @@ const Main = (props: PropsInteface) => {
     return { wpm, cpm, accuracy };
   };
 
-  // starts the timer
   const startTimer = () => {
     if (!timer.started) setTimer({ ...timer, started: true });
   };
 
-  // ends the timer
   const endTimer = () => {
     setTimer({ ...timer, finished: true });
     getTestDetails();
@@ -180,13 +174,13 @@ const Main = (props: PropsInteface) => {
     setCurrentLine([""]);
     setPreviousLines([[""], [""]]);
     if (newTest) {
-      if (limit.type === "line") props.getCodeBlock(limit.lineLimit);
+      if (limit.type === "line") props.getCodeBlock(limit.value);
       else props.getCodeBlock();
     }
   };
 
   // object for storing the test statistics
-  const [testDetails, setTestDetails] = useState({
+  const [testDetails, setTestDetails] = useState<TestDetails>({
     labels: [],
     data: [],
     errorsLabels: [],
@@ -204,7 +198,7 @@ const Main = (props: PropsInteface) => {
     // wpm labels and data
     let labels: any = [];
     let data: any = [];
-    const tracker = settings?.use_cpm ? trackers.cpm : trackers.wpm;
+    const tracker = settings.use_cpm ? trackers.cpm : trackers.wpm;
     if (tracker.length > 0) {
       let iterator = Math.ceil(tracker.length / 10);
       for (let i = 0; i <= tracker.length + 1; i += iterator) {
@@ -261,7 +255,7 @@ const Main = (props: PropsInteface) => {
   };
 
   // when the user submits a file, then reset the test
-  const onFileSubmit = (file: any) => {
+  const onFileSubmit = (file: string) => {
     resetTest(false);
     props.onFileSubmit(file);
   };
@@ -276,7 +270,7 @@ const Main = (props: PropsInteface) => {
         resetTest={resetTest}
         startTimer={startTimer}
         endTimer={endTimer}
-        showStatusBar={settings?.show_status && !settings?.focus_mode}
+        showStatusBar={settings.show_status && !settings.focus_mode}
         userInput={userInput}
         setUserInput={setUserInput}
         lineIndex={lineIndex}
@@ -287,45 +281,42 @@ const Main = (props: PropsInteface) => {
         usingCustom={props.usingCustom}
       />
       {/* status bar below the practice code */}
-      {settings?.show_status && !settings?.focus_mode && (
+      {settings.show_status && !settings.focus_mode && (
         <StatusBar
           wpm={timer.time === 0 || test.chars + test.lineChars === 0 ? "" : wpm}
           cpm={timer.time === 0 || test.chars + test.lineChars === 0 ? "" : cpm}
           accuracy={test.chars + test.lineChars === 0 ? "" : accuracy}
           time={
             limit.type === "time"
-              ? limit.timeLimit - timer.time
+              ? limit.value - timer.time
               : timer.started
               ? timer.time
               : ""
           }
-          limit={limit.type}
-          limitValue={limit.type === "time" ? limit.timeLimit : limit.lineLimit}
-          onSetTimeLimit={setNewTimeLimit}
-          onSetLineLimit={setNewLineLimit}
+          limit={limit}
+          setLimit={setLimit}
           onFileSubmit={onFileSubmit}
         />
       )}
       {/* show status bar button */}
-      {!settings?.hide_status && (
+      {!settings.hide_status && !settings.focus_mode && (
         <button
           className="toggle-status-bar"
           onClick={() =>
-            setSettings?.({
+            setSettings({
               ...settings,
               show_status: !settings.show_status,
             })
           }
         >
-          {settings?.show_status ? "hide" : "show"} status bar
+          {settings.show_status ? "hide" : "show"} status bar
         </button>
       )}
     </div>
   ) : (
     <TestStats
       testDetails={testDetails}
-      limit={limit.type}
-      limitValue={limit.type === "time" ? limit.timeLimit : limit.lineLimit}
+      limit={limit}
       resetTest={resetTest}
       language={props.language}
     />
