@@ -12,7 +12,7 @@ const Settings = (): JSX.Element => {
   const navigate = useNavigate();
   onkeydown = (e: KeyboardEvent) => {
     if (e.code === "Escape") {
-      navigate("/");
+      navigate("/code-type");
       return false;
     }
   };

@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useRef } from "react";
-import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
+import { BrowserRouter as Router, Route, Routes, Navigate } from "react-router-dom";
 import { SettingContext, defaultSettings } from "./context/setting-context";
 import Main from "./components/main/main";
 import Header from "./components/header/header";
@@ -39,12 +39,11 @@ function App() {
 
   // when the user changes the language through the language panel
   const updateLanguage = (newLanguage: string) => {
-    if (newLanguage === "") return;
     // parse the name of the language
     if (newLanguage === "c++") newLanguage = "cpp";
     if (newLanguage === "c#") newLanguage = "csharp";
     // if the language is already in use, just close the panel
-    if (newLanguage === language) {
+    if (newLanguage === "" || newLanguage === language) {
       setLanguagesPanelOpen(false);
       return;
     }
@@ -196,7 +195,7 @@ function App() {
           />
           <Routes>
             <Route
-              path="/"
+              path="/code-type"
               element={
                 <Main
                   language={customFile.current.use ? "custom" : language}
@@ -209,8 +208,9 @@ function App() {
                 />
               }
             />
-            <Route path="/signin" element={<SignIn />} />
-            {/* <Route path="/settings" element={<Settings />} /> */}
+            {/* <Route path="/signin" element={<SignIn />} /> */}
+            <Route path="/code-type/settings" element={<Settings />} />
+            <Route path="*" element={<Navigate to="/code-type" replace />} />
           </Routes>
         </SettingContext.Provider>
       </div>

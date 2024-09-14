@@ -26,9 +26,9 @@
   justify-content: flex-start;
   align-items: center;
   border-radius: 15px;
-  width: 600px;
-  height: 550px;
-  padding: 10px;
+  width: 40%;
+  height: 60%;
+  padding: 1.5rem;
   font-family: "Space Mono", monospace;
   z-index: 1;
 }
@@ -36,12 +36,9 @@
 .form {
   font-family: "Space Mono", monospace;
   background-color: var(--languages-panel-search-bar-color);
-  width: 90%;
-  margin-top: 20px;
-  margin-bottom: 26px;
+  margin-bottom: 1.5rem;
+  width: 100%;
   border-radius: 8px;
-  padding: 5px;
-  padding-left: 20px;
   transition: all 300ms ease;
 }
 
@@ -59,24 +56,25 @@
   font-size: 16px;
   color: var(--placeholder-color);
   display: flex;
-  width: 100%;
+  width: 90%;
   height: 30px;
+  margin: 5px 20px;
 }
 
 .search-suggestions {
   background-color: inherit;
   width: 100%;
-  margin-bottom: 23px;
+  margin-bottom: 1.5rem;
   display: grid;
   justify-content: center;
   grid-template-columns: auto auto auto;
   grid-template-rows: auto auto;
-  grid-gap: 26px 16px;
+  grid-gap: 1rem;
 }
 
 .search-suggestions-bottom-bar {
   height: 5px;
-  width: 93.5%;
+  width: 100%;
   border-radius: 12px;
   background: var(--languages-panel-bar-color);
 }
@@ -84,10 +82,12 @@
 .preferred-language-btn {
   background-color: var(--languages-panel-button-color);
   color: var(--languages-panel-background-color);
-  width: 170px;
+  width: 180px;
   height: 60px;
-  border-radius: 8px;
+  border-radius: 10px;
   transition: all 300ms ease;
+  cursor: pointer;;
+  border: none;
 }
 
 .preferred-language-btn:hover {
@@ -105,7 +105,7 @@
   background: inherit;
   display: flex;
   flex-direction: column;
-  width: 562px;
+  width: 100%;
   margin-bottom: 20px;
   overflow: hidden;
   overflow-y: scroll;

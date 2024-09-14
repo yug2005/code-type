@@ -24,7 +24,7 @@ const Header = (props: HeaderInterface) => {
   return (
     <header className="header">
       <div className="title">
-        <Link className="title-text" to="/">
+        <Link className="title-text" to="/code-type">
           <h2>code type</h2>
         </Link>
       </div>
@@ -49,7 +49,7 @@ const Header = (props: HeaderInterface) => {
           >
             <h3 className="button-text">{props.language}</h3>
           </button>
-          <Link className="button navbar-link" to="/settings">
+          <Link className="button navbar-link" to="/code-type/settings">
             <h3 className="button-text">settings</h3>
           </Link>
           {/* <Link className="button sign-up-link" to="/signin">

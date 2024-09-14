@@ -65,7 +65,7 @@ const SelectLanguage = (props: LanguagesPanelInterface) => {
           <div className="search-suggestions">
             {recentLanguages.map((language) => (
               <button
-                className="button preferred-language-btn"
+                className="preferred-language-btn"
                 onClick={() => props.onLanguageClick(language)}
               >
                 <h3 className="button-text">{language}</h3>
