@@ -68,7 +68,7 @@ function App() {
   // Gets all the code block for a specified language from the mysql database
   // Callback to the function that gets the starting code block
   const getAllCodeBlocks = () => {
-    fetch(`http://54.164.131.36:3000/${language}`).then((response) => {
+    fetch(`https://code-type-api.org/${language}`).then((response) => {
       response.json().then((data: Array<{ id: number, code: string }>) => {
         let blocks: Array<Array<string>> = [];
         data.forEach(({ code }: { code: string }) => {
